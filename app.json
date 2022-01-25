@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "tipocracy",
+    "slug": "tipocracy",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "tipocracy"
+}

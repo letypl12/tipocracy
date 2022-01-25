@@ -1,0 +1,6 @@
+module Pods_tipocracy {
+  umbrella header "Pods-tipocracy-umbrella.h"
+
+  export *
+  module * { export * }
+}

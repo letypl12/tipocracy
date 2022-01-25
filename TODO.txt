@@ -1,0 +1,11 @@
+P0 [assigned to: XXX] Set up react navigation
+P0 [assigned to: XXX] Create icon and Splash Screen (investigate where they are with expo)
+P0 [assigned to: XXX] Stub out separate /Screens for the major functions (figure out together, have a meeting)
+P0 [assigned to: XXX] Integrate Firebase for login/authentication
+
+P1 [assigned to: XXX] Create tables in firebase
+P1 [assigned to: XXX] Assign screens to eachother, build fetches
+P1 [assigned to: XXX] Build back-end APIs
+
+P3 [assigned to: XXX] Set up expo-updates (https://github.com/expo/expo/blob/master/packages/expo-updates/README.md)
+P3 [assigned to: XXX] Create apple developer account, set up testflight, etc.
