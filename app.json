@@ -5,7 +5,13 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.tipocracy.tipocracy"
+    },
+    "ios": {
+      "bundleIdentifier": "com.tipocracy.tipocracy"
+    }
   },
   "name": "tipocracy"
 }

@@ -1,4 +1,4 @@
-package com.tipocracy;
+package com.tipocracy.tipocracy;
 
 import android.os.Build;
 import android.os.Bundle;
