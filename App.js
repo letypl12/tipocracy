@@ -6,20 +6,28 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeScreen from './Screens/Home'
+import HomeScreen from "./Screens/Home";
 import TeamsScreen from "./Screens/Teams";
-
-
+import HistoryScreen from "./Screens/History";
 
 const Tab = createBottomTabNavigator();
+// const Stack = createNativeStackNavigator();
 
 // export default function App() {
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Teams" component={TeamsScreen} />
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ tabBarLabel: "Home" }}
+        />
+        <Tab.Screen
+          name="History"
+          component={HistoryScreen}
+          options={{ tabBarLabel: "History" }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
