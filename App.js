@@ -1,18 +1,44 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 // import * as React from 'react';
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function App() {
+function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <NavigationContainer>{/* Rest of your app code */}</NavigationContainer>
-      <Text>Open up App.js to start working on your app Lety and Eunice!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Teams"
+        onPress={() => navigation.navigate("Teams")}
+      />
     </View>
   );
 }
+
+function TeamsScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Teams Screen</Text>
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+// export default function App() {
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Teams" component={TeamsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+export default App;
 
 const styles = StyleSheet.create({
   container: {
