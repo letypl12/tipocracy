@@ -6,25 +6,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Teams"
-        onPress={() => navigation.navigate("Teams")}
-      />
-    </View>
-  );
-}
+import HomeScreen from './Screens/Home'
+import TeamsScreen from "./Screens/Teams";
 
-function TeamsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Teams Screen</Text>
-    </View>
-  );
-}
+
 
 const Tab = createBottomTabNavigator();
 
