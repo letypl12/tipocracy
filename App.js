@@ -21,7 +21,7 @@ function App() {
         <Tab.Screen
           name="Home"
           component={HomeScreen}
-          options={{ tabBarLabel: "Home" }}
+          options={{ tabBarLabel: "My Home" }}
         />
         <Tab.Screen
           name="History"
