@@ -3,10 +3,20 @@ import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 // import * as React from 'react';
 import MainTabNavigator from "./Navigation/MainTabNavigator";
+import AuthNavigator from "./Navigation/AuthNavigator";
 
 function App() {
+  let renderedOutput = [];
+
+  if (!global.authenticated == true){
+    renderedOutput.push(<AuthNavigator/>);
+  }else{
+    renderedOutput.push(<MainTabNavigator/>);
+  }
+
   return (
-    <MainTabNavigator/>
+    renderedOutput
+    
   );
 }
 export default App;
