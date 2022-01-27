@@ -1,22 +1,24 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
-// import { navigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
+// // function GoToButton({ TeamsChoiceScreen }) {
+// const navigation = useNavigation();
 
-function TeamsScreen({navigation}) {
+function TeamsChoiceScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Text>Teams</Text>
+      <Text>Teams Choice</Text>
       <Button
-        title="Choose A Team"
+        title="Team A"
         onPress={() => {
-          navigation.navigate("Choose A Team");
+          navigation.navigate("Team A");
         }}
       />
       <Button
-        title="Edit A Team"
+        title="Team B"
         onPress={() => {
-          navigation.navigate("Edit A Team");
+          navigation.navigate("Team B");
         }}
       />
     </View>
@@ -33,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TeamsScreen;
+export default TeamsChoiceScreen;
