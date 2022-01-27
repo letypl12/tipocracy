@@ -8,19 +8,15 @@ import AuthNavigator from "./Navigation/AuthNavigator";
 function App() {
   let renderedOutput = [];
 
-  if (!global.authenticated == true){
-    renderedOutput.push(<AuthNavigator/>);
-  }else{
-    renderedOutput.push(<MainTabNavigator/>);
+  if (!global.authenticated == true) {
+    renderedOutput.push(<AuthNavigator />);
+  } else {
+    renderedOutput.push(<MainTabNavigator />);
   }
 
-  return (
-    renderedOutput
-    
-  );
+  return renderedOutput;
 }
 export default App;
-
 
 const styles = StyleSheet.create({
   container: {

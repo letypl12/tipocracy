@@ -2,8 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 // import { navigation } from '@react-navigation/native';
 
-
-function TeamsScreen({navigation}) {
+function TeamsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Teams</Text>
@@ -19,10 +18,15 @@ function TeamsScreen({navigation}) {
           navigation.navigate("Edit A Team");
         }}
       />
+      <Button
+        title="Create A Team"
+        onPress={() => {
+          navigation.navigate("Create A Team");
+        }}
+      />
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

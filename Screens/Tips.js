@@ -12,6 +12,7 @@ function TipsScreen({ navigation }) {
         value={number}
         keyboardType="numeric"
       ></TextInput>
+      <Button title="Enter"></Button>
       <Button title="Go to Team" onPress={() => navigation.goBack()} />
     </View>
   );
