@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button } from "react-native";
 const logout = (navigation) =>{
   console.log('in logout');
   global.authenticated = false;
-  navigation.navigate('Login');
+
 }
 // const navigation = useNavigation();
 function HomeScreen({navigation}) {
