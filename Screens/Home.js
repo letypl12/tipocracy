@@ -1,6 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-
+const logout = (navigation) =>{
+  console.log('in logout');
+  global.authenticated = false;
+  navigation.navigate('Login');
+}
 // const navigation = useNavigation();
 function HomeScreen({navigation}) {
   return (
@@ -11,6 +15,11 @@ function HomeScreen({navigation}) {
         title="Want to join a Team?"
         onPress={() => navigation.navigate("Teams")}
       />
+
+      <Button
+        title="Logout"
+        onPress={() => logout(navigation)}
+      />      
     </View>
   );
 }
