@@ -3,6 +3,17 @@
     "name": "tipocracy",
     "slug": "tipocracy",
     "version": "1.0.0",
+    "icon": "./images/tipicracy_icon.png",
+    "splash": {
+      "image":"./images/tipocracy_splash.png",
+      "resizeMode":"contain",
+      "backgroundColor":"#FFF"
+    },
+    "updates":{
+      "enabled":true,
+      "checkAutomatically":"ON_LOAD",
+      "fallbackToCacheTimeout":30000
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
