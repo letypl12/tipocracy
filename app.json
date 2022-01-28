@@ -19,7 +19,7 @@
     ],
     "android": {
       "package": "com.tipocracy.tipocracy",
-      "googleServicesFile": "./google-serviices.json"
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
       "bundleIdentifier": "com.tipocracy.tipocracy"
