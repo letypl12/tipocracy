@@ -3,7 +3,7 @@
     "name": "tipocracy",
     "slug": "tipocracy",
     "version": "1.0.0",
-    "icon": "./images/tipicracy_icon.png",
+    "icon": "./images/tipocracy_icon.png",
     "splash": {
       "image":"./images/tipocracy_splash.png",
       "resizeMode":"contain",
@@ -18,7 +18,8 @@
       "**/*"
     ],
     "android": {
-      "package": "com.tipocracy.tipocracy"
+      "package": "com.tipocracy.tipocracy",
+      "googleServicesFile": "./google-serviices.json"
     },
     "ios": {
       "bundleIdentifier": "com.tipocracy.tipocracy"
