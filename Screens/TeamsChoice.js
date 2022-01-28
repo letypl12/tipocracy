@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 // // function GoToButton({ TeamsChoiceScreen }) {
 // const navigation = useNavigation();
 
-function TeamsChoiceScreen({navigation}) {
+function TeamsChoiceScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Teams Choice</Text>
@@ -25,11 +25,10 @@ function TeamsChoiceScreen({navigation}) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "orange",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

@@ -2,8 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 // import { navigation } from '@react-navigation/native';
 
-
-function TeamsEditScreen({navigation}) {
+function TeamsEditScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Teams Edit</Text>
@@ -23,11 +22,10 @@ function TeamsEditScreen({navigation}) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "orange",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

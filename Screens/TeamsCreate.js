@@ -10,7 +10,7 @@ function TeamsCreateScreen({ navigation }) {
       <Button
         title="Team A created"
         onPress={() => {
-          navigation.navigate("Team A");
+          navigation.navigate("Tips");
         }}
       />
     </View>
@@ -20,7 +20,7 @@ function TeamsCreateScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "orange",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

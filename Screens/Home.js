@@ -1,12 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-const logout = (navigation) =>{
-  console.log('in logout');
+const logout = (navigation) => {
+  console.log("in logout");
   global.authenticated = false;
-
-}
+};
 // const navigation = useNavigation();
-function HomeScreen({navigation}) {
+function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.setFontSizeOne}>Hello User!:</Text>
@@ -16,19 +15,15 @@ function HomeScreen({navigation}) {
         onPress={() => navigation.navigate("Teams")}
       />
 
-      <Button
-        title="Logout"
-        onPress={() => logout(navigation)}
-      />      
+      <Button title="Logout" onPress={() => logout(navigation)} />
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "aquamarine",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

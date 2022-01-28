@@ -5,6 +5,7 @@ function TipsScreen({ navigation }) {
   const [number, onChangeNumber] = React.useState(null);
   return (
     <View style={styles.container}>
+      <Text>You are on Team:</Text>
       <Text>Enter Tip:</Text>
       <TextInput
         style={styles.input}
@@ -21,7 +22,7 @@ function TipsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "pink",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
