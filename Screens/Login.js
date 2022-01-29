@@ -1,18 +1,35 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import AuthNavigator from "../Navigation/AuthNavigator";
+import * as SecureStore from "expo-secure-store";
 // import { navigation } from '@react-navigation/native';
 
-const login = () =>{
-    global.authenticated = true
-}
+const login = () => {
+  await SecureStore.setItemAsync("authenticated", true);
+};
+function LoginScreen({ navigation }) {
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-function LoginScreen({navigation}) {
+  const { logIn } = React.useContext(AuthContext);
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <TextInput>Login</TextInput>
+      <TextInput
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      >
+        Login
+      </TextInput>
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      ></TextInput>
       <Button
         title="Authenticate"
-        onPress={() => login()}
+        onPress={() => logIn({ username, password })}
       />
     </View>
   );

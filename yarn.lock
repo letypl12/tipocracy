@@ -2682,6 +2682,11 @@
     "compare-versions" "^3.4.0"
     "invariant" "^2.2.4"
 
+"expo-secure-store@^11.1.0":
+  "integrity" "sha512-LyCLqsoibP90Td4mSWc+un+xGNYnIuGOrfbp2aG2KAn1ZGcDL6muxIaFj7a/4Kh+EiCIoU5EPb1YjOATbmaBnQ=="
+  "resolved" "https://registry.npmjs.org/expo-secure-store/-/expo-secure-store-11.1.0.tgz"
+  "version" "11.1.0"
+
 "expo-splash-screen@~0.14.1":
   "integrity" "sha512-Y08wMIVjRuPbBnH2N6KwUfQYYnAiBrZMFAfXjjPPObyMDZ7v5VXTcbAWHqGdnYDcIbXRpat+fiWpTeU2HanBBg=="
   "resolved" "https://registry.npmjs.org/expo-splash-screen/-/expo-splash-screen-0.14.1.tgz"
