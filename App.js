@@ -1,55 +1,141 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-// import * as React from 'react';
+import 'react-native-gesture-handler';
+import React, {useEffect, useContext, useMemo, useReducer} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+
 import MainTabNavigator from "./Navigation/MainTabNavigator";
-import AuthNavigator from "./Navigation/AuthNavigator";
 import * as SecureStore from "expo-secure-store";
 
-function App() {
-  const [authenticated, setAuthenticated] = React.useState(false);
+import {stateConditionString} from './utils/helpers';
+import {AuthContext} from './utils/authContext';
+import {reducer, initialState} from './utils/reducer';
 
 
-  React.useEffect(() => {
+import SignInScreen from './Screens/SignIn';
+import SignUpScreen from './Screens/SignUp';
+import SplashScreen from './Screens/Splash';
+
+
+const Stack = createStackNavigator();
+
+
+
+export default App = ({navigation}) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync("authenticated");
+        userToken = await SecureStore.getItemAsync('userToken');
       } catch (e) {
         // Restoring token failed
       }
 
       // After restoring token, we may need to validate it in production apps
-
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      setAuthenticated(userToken)
+      dispatch({type: 'RESTORE_TOKEN', token: userToken});
     };
-
     bootstrapAsync();
   }, []);
 
+  // In a production app, we need to send some data (usually username, password) to server and get a token
+  // We will also need to handle errors if sign in failed
+  // After getting token, we need to persist the token using `AsyncStorage`
+  const authContextValue = useMemo(
+    () => ({
+      signIn: async (data) => {
+        if (
+          data &&
+          data.emailAddress !== undefined &&
+          data.password !== undefined
+        ) {
+          dispatch({type: 'SIGN_IN', token: 'Token-For-Now'});
+        } else {
+          dispatch({type: 'TO_SIGNIN_PAGE'});
+        }
+      },
+      signOut: async (data) => {
+        dispatch({type: 'SIGN_OUT'});
+      },
 
-
-  return (
-
-      {authenticated == null ? (
-        <AuthNavigator />
-      ) : (
-        <MainTabNavigator />
-      )}
-
+      signUp: async (data) => {
+        if (
+          data &&
+          data.emailAddress !== undefined &&
+          data.password !== undefined
+        ) {
+          dispatch({type: 'SIGNED_UP', token: 'dummy-auth-token'});
+        } else {
+          dispatch({type: 'TO_SIGNUP_PAGE'});
+        }
+      },
+    }),
+    [],
   );
-}
 
-export default App;
+  const chooseScreen = (state) => {
+    let navigateTo = stateConditionString(state);
+    let arr = [];
 
-styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
+    switch (navigateTo) {
+      case 'LOAD_APP':
+        arr.push(<Stack.Screen name="Splash" component={SplashScreen} />);
+        break;
+
+      case 'LOAD_SIGNUP':
+        arr.push(
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{
+              title: 'Sign Up',
+              animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+            }}
+          />,
+        );
+        break;
+      case 'LOAD_SIGNIN':
+        arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
+        break;
+
+      case 'LOAD_HOME':
+        arr.push(
+          <Stack.Screen
+            name="Home"
+            component={MainTabNavigator}
+            options={{
+              title: 'Home Screen Parent',
+              headerStyle: {backgroundColor: 'black'},
+              headerTintColor: 'white',
+            }}
+          />,
+        );
+        break;
+      default:
+        arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
+        break;
+    }
+    return arr[0];
+  };
+  console.log('The state is:' + stateConditionString(state));
+  
+  if (stateConditionString(state) == 'LOAD_HOME'){
+    return(
+      <MainTabNavigator/>
+    )
+  }else{
+    return (
+      <AuthContext.Provider value={authContextValue}>
+        <NavigationContainer>
+          <Stack.Navigator>{chooseScreen(state)}</Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
+    );
   }
-});
+
+};

@@ -10,40 +10,36 @@ import {
 
 import { AuthContext } from '../utils/authContext';
 
-const SignUpScreen = ({ navigation }) => {
+const SignInScreen = ({ navigation }) => {
     const [emailAddress, setemailAddress] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
     const [SignUpErrors, setSignUpErrors] = useState({});
 
-    const { signUp, signIn } = useContext(AuthContext); // should be signUp
+    const { signIn, signUp } = useContext(AuthContext);
 
-    const handleSignUp = () => {
+    const handleSignIn = () => {
         // https://indicative.adonisjs.com
         const rules = {
             email: 'required|email',
-            password: 'required|string|min:6|max:40|confirmed'
+            password: 'required|string|min:6|max:40'
         };
 
         const data = {
             email: emailAddress,
-            password: password,
-            password_confirmation: passwordConfirm
+            password: password
         };
 
         const messages = {
             required: field => `${field} is required`,
             'username.alpha': 'Username contains unallowed characters',
             'email.email': 'Please enter a valid email address',
-            'password.min':
-                'Password is too short. Must be greater than 6 characters',
-            'password.confirmed': 'Passwords do not match'
+            'password.min': 'Wrong Password?'
         };
 
         validateAll(data, rules, messages)
             .then(() => {
                 console.log('success sign in');
-                signUp({ emailAddress, password });
+                signIn({ emailAddress, password });
             })
             .catch(err => {
                 const formatError = {};
@@ -54,49 +50,36 @@ const SignUpScreen = ({ navigation }) => {
             });
     };
 
-    useEffect(() => {}, [SignUpErrors]);
-
     return (
-        <View style={{ paddingVertical: 20 }}>
+        <View>
             <Card>
                 <Input
                     label={'Email'}
-                    placeholder="Email address..."
+                    placeholder="Email"
                     value={emailAddress}
                     onChangeText={setemailAddress}
                     errorStyle={{ color: 'red' }}
                     errorMessage={SignUpErrors ? SignUpErrors.email : null}
                 />
                 <Input
-                    label={'Password'}
-                    placeholder="Password.."
+                    placeholder="Password"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
+                    errorStyle={{ color: 'red' }}
+                    errorMessage={SignUpErrors ? SignUpErrors.password : null}
                 />
-                <Input
-                    label={'Password Confirm'}
-                    placeholder="Enter password again"
-                    value={passwordConfirm}
-                    onChangeText={setPasswordConfirm}
-                    secureTextEntry
-                />
-                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
-                    {SignUpErrors ? SignUpErrors.password : null}
-                </Text>
-
                 <Button
                     buttonStyle={{ margin: 10, marginTop: 50 }}
-                    backgroundColor="#03A9F4"
-                    title="SIGN UP"
-                    onPress={() => handleSignUp()}
+                    title="Sign in"
+                    onPress={() => handleSignIn()}
                 />
-                <Text style={{ marginLeft: 80 }} onPress={() => signIn()}>
-                    Already Signed Up? Sign In
+                <Text style={{ marginLeft: 100 }} onPress={() => signUp()}>
+                    No Acount? Sign Up
                 </Text>
             </Card>
         </View>
     );
 };
 
-export default SignUpScreen;
+export default SignInScreen;

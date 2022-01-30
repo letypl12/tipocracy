@@ -1,6 +1,9 @@
+import React, {useEffect, useContext, useMemo, useReducer} from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {AuthContext} from '../utils/authContext';
+
 import HomeScreen from "../Screens/Home";
 import TeamsScreen from "../Screens/Teams";
 import TeamsChoiceScreen from "../Screens/TeamsChoice";
@@ -37,6 +40,7 @@ function TeamsNav() {
 }
 
 const MainTabNavigator = () => {
+  const {signOut} = useContext(AuthContext);
   const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer>

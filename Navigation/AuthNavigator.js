@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "../Screens/Login";
-import SignupScreen from "../Screens/Signup";
+import SignupScreen from "../Screens/SignUp";
 
 const Auth = createNativeStackNavigator();
 const AuthStack = () => (
