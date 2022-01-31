@@ -9,6 +9,8 @@ import {
 } from 'react-native-elements';
 
 import { AuthContext } from '../utils/authContext';
+import auth from '@react-native-firebase/auth';
+
 
 const SignUpScreen = ({ navigation }) => {
     const [emailAddress, setemailAddress] = useState('');
@@ -18,7 +20,7 @@ const SignUpScreen = ({ navigation }) => {
 
     const { signUp, signIn } = useContext(AuthContext); // should be signUp
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         // https://indicative.adonisjs.com
         const rules = {
             email: 'required|email',
@@ -41,18 +43,53 @@ const SignUpScreen = ({ navigation }) => {
         };
 
         validateAll(data, rules, messages)
-            .then(() => {
-                console.log('success sign in');
-                signUp({ emailAddress, password });
+            .then(async () => {
+                console.log('form validated, sending: ' + JSON.stringify(data));
+                await registerUser(data)
             })
+        
             .catch(err => {
+                console.log('caught:' + JSON.stringify(err));
                 const formatError = {};
-                err.forEach(err => {
-                    formatError[err.field] = err.message;
-                });
+                for (let myErr of err) {
+
+                    formatError[myErr.field] = myErr.message;
+                };
                 setSignUpErrors(formatError);
             });
     };
+
+    const registerUser = async (data) => {
+        console.log('in registerUser' + data.email + data.password);
+                auth()
+                .createUserWithEmailAndPassword(data.email, data.password)
+                .then(() =>{
+                    //get the userid from firebase and make that a token
+                    //save a user info in your datastore with their first, last names and the token
+                    
+                })                 
+                .then(() => {
+                    console.log('User account created & signed in!');
+
+                    signUp({ emailAddress, password })
+
+
+                }) 
+
+                .catch(error => {
+                    console.log('FIREBASE ERROR:' + error);
+                    if (error.code === 'auth/email-already-in-use') {
+                    alert('That email address is already in use!');
+                    }
+    
+                    if (error.code === 'auth/invalid-email') {
+                    alert('That email address is invalid!');
+                    }                               
+                    return false
+                });
+        
+    }
+
 
     useEffect(() => {}, [SignUpErrors]);
 

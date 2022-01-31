@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>145623109584-oj4soh06sul1jvegep3m7v1edts088fm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.145623109584-oj4soh06sul1jvegep3m7v1edts088fm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBbYOcpfq5IQSbI9NwthviWsIEQEYJnWyI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>145623109584</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tipocracy.tipocracy</string>
+	<key>PROJECT_ID</key>
+	<string>leteuni-tipocracy-ab66b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>leteuni-tipocracy-ab66b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:145623109584:ios:59e425370fe7234cec73d5</string>
+	<key>DATABASE_URL</key>
+	<string>https://leteuni-tipocracy-ab66b-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
