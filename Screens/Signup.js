@@ -13,6 +13,7 @@ import auth from '@react-native-firebase/auth';
 
 
 const SignUpScreen = ({ navigation }) => {
+    const [displayName, setDisplayName] = useState('');
     const [emailAddress, setemailAddress] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -23,11 +24,13 @@ const SignUpScreen = ({ navigation }) => {
     const handleSignUp = async () => {
         // https://indicative.adonisjs.com
         const rules = {
+            displayName: 'required|string',
             email: 'required|email',
             password: 'required|string|min:6|max:40|confirmed'
         };
 
         const data = {
+            displayName: displayName,
             email: emailAddress,
             password: password,
             password_confirmation: passwordConfirm
@@ -64,17 +67,25 @@ const SignUpScreen = ({ navigation }) => {
                 auth()
                 .createUserWithEmailAndPassword(data.email, data.password)
                 .then(() =>{
-                    //get the userid from firebase and make that a token
-                    //save a user info in your datastore with their first, last names and the token
+                    const update = {
+                        displayName: data.displayName,
+                    };
+                    auth()
+                    .currentUser.updateProfile(update)
+                    .then(() => {
+                        //get the userid from firebase and make that a token
+                        //save a user info in your datastore with their first, last names and the token  
+                        
+                        
+                        console.log('User account created & signed in!');
+    
+                        signUp({ emailAddress, password })
+    
+    
+                    }) 
                     
                 })                 
-                .then(() => {
-                    console.log('User account created & signed in!');
 
-                    signUp({ emailAddress, password })
-
-
-                }) 
 
                 .catch(error => {
                     console.log('FIREBASE ERROR:' + error);
@@ -96,6 +107,14 @@ const SignUpScreen = ({ navigation }) => {
     return (
         <View style={{ paddingVertical: 20 }}>
             <Card>
+            <Input
+                    label={'Name'}
+                    placeholder="First Last"
+                    value={displayName}
+                    onChangeText={setDisplayName}
+                    errorStyle={{ color: 'red' }}
+                    errorMessage={SignUpErrors ? SignUpErrors.displayName : null}
+                />
                 <Input
                     label={'Email'}
                     placeholder="Email address..."
