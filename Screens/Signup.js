@@ -10,7 +10,7 @@ import {
 
 import { AuthContext } from '../utils/authContext';
 import auth from '@react-native-firebase/auth';
-
+import firestore from '@react-native-firebase/firestore';
 
 const SignUpScreen = ({ navigation }) => {
     const [displayName, setDisplayName] = useState('');
@@ -73,14 +73,29 @@ const SignUpScreen = ({ navigation }) => {
                     auth()
                     .currentUser.updateProfile(update)
                     .then(() => {
+                        let myUser = auth().currentUser;
+                        console.log('The user\'s ID is: ' + myUser.uid);
+                        firestore()
+                            .collection('Users')
+                            .doc(myUser.uid)
+                            .set({
+                                name: myUser.displayName,
+                                email: myUser.email,
+                                defaultTeam: ''
+                            })
+                            .then(() => {
+                            console.log('User added!');
+                            });
+
+                    }
+                    )
+                    .then(() => {
                         //get the userid from firebase and make that a token
                         //save a user info in your datastore with their first, last names and the token  
-                        
-                        
                         console.log('User account created & signed in!');
     
                         signUp({ emailAddress, password })
-    
+                        
     
                     }) 
                     
