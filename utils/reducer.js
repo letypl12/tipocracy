@@ -39,6 +39,8 @@ export const reducer = (prevState, action) => {
       case 'SIGN_OUT':
         return {
           ...prevState,
+          isSignedIn: false,
+          isSignedUp: false,
           isSignedOut: true,
         };
     }

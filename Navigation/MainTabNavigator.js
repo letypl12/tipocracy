@@ -40,7 +40,7 @@ function TeamsNav() {
 }
 
 const MainTabNavigator = () => {
-  const {signOut} = useContext(AuthContext);
+  // const {signOut} = useContext(AuthContext);
   const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer>

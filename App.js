@@ -126,7 +126,10 @@ export default App = ({navigation}) => {
   
   if (stateConditionString(state) == 'LOAD_HOME'){
     return(
-      <MainTabNavigator/>
+      <AuthContext.Provider value={authContextValue}>
+        <MainTabNavigator/>
+      </AuthContext.Provider>
+
     )
   }else{
     return (

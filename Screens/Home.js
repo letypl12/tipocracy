@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useState, useContext, useReducer } from 'react';
 import { StyleSheet, Text, View, Button } from "react-native";
-const logout = (navigation) => {
-  console.log("in logout");
-  global.authenticated = false;
-};
-// const navigation = useNavigation();
+import { AuthContext } from '../utils/authContext';
+
+
+
 function HomeScreen({ navigation }) {
+  
+  const {signOut} = useContext(AuthContext);
+
+  const logout = () => {
+    console.log("in logout");
+    signOut();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.setFontSizeOne}>Hello User!:</Text>
@@ -15,7 +22,7 @@ function HomeScreen({ navigation }) {
         onPress={() => navigation.navigate("Teams")}
       />
 
-      <Button title="Logout" onPress={() => logout(navigation)} />
+      <Button title="Logout" onPress={() => logout()} />
     </View>
   );
 }
