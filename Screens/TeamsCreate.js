@@ -1,33 +1,43 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, ActivityIndicator } from "react-native";
 import { CheckBox, Icon, Card, Input } from "react-native-elements";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-// import { navigation } from '@react-navigation/native';
-// CheckboxComponentProps = {};
-
-// const CheckboxComponent: React.FunctionComponent<CheckboxComponentProps> = () => {
-//   const [check1, setCheck1] = useState(false);
-//   const [check2, setCheck2] = useState(false);
-//   const [check3, setCheck3] = useState(false);
-//   const [check4, setCheck4] = useState(false);
 
 function TeamsCreateScreen({ navigation }) {
   const [teamName, setTeamName] = useState("");
   const [isSelected, setIsSelected] = useState(false);
-  const getData = firebase.firestore();
+  const [isLoading, setIsLoading] = useState(true);
 
-  getData
-    .collection("Users")
-    .get()
-    .then((querySnapshot) => {
-      console.log("Total users: ", querySnapshot.size);
-
-      querySnapshot.forEach((documentSnapshot) => {
-        console.log("User ID: ", documentSnapshot.id, documentSnapshot.data());
+  useEffect(() => {
+    const getData = () =>{
+      firebase.firestore()
+      .collection("Users")
+      .get()
+      .then((querySnapshot) => {
+        console.log("Total users: ", querySnapshot.size);
+  
+        querySnapshot.forEach((documentSnapshot) => {
+          console.log("User ID: ", documentSnapshot.id, documentSnapshot.data());
+        });
+      })
+      .then(()=>{
+        setIsLoading(false);
       });
-    });
+    };
+
+    getData();
+  }, []);
+
+
+
+  if (isLoading){
+    return(
+      <ActivityIndicator/>
+    )
+  }
+
   return (
     <View style={{ paddingVertical: 20 }}>
       <Card>
