@@ -75,6 +75,7 @@ const SignUpScreen = ({ navigation }) => {
                     .then(() => {
                         let myUser = auth().currentUser;
                         console.log('The user\'s ID is: ' + myUser.uid);
+                        
                         firestore()
                             .collection('Users')
                             .doc(myUser.uid)
@@ -87,17 +88,21 @@ const SignUpScreen = ({ navigation }) => {
                             console.log('User added!');
                             });
 
-                    }
-                    )
-                    .then(() => {
+                        //Now store it in the authContext (global state)
+                        const userToken = {
+                            uid: myUser.uid,
+                            name: myUser.displayName,
+                            email: myUser.email,
+                            defaultTeam: ''                            
+                            }
+                        
                         //get the userid from firebase and make that a token
                         //save a user info in your datastore with their first, last names and the token  
-                        console.log('User account created & signed in!');
-    
-                        signUp({ emailAddress, password })
-                        
-    
-                    }) 
+                        console.log('User account created & signed in!');                            
+                        signUp({ emailAddress, password, userToken })
+                    }
+                    )
+
                     
                 })                 
 

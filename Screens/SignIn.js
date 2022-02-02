@@ -9,6 +9,8 @@ import {
 } from 'react-native-elements';
 
 import { AuthContext } from '../utils/authContext';
+import auth from '@react-native-firebase/auth';
+import * as SecureStore from "expo-secure-store";
 
 const SignInScreen = ({ navigation }) => {
     const [emailAddress, setemailAddress] = useState('');
@@ -37,19 +39,59 @@ const SignInScreen = ({ navigation }) => {
         };
 
         validateAll(data, rules, messages)
-            .then(() => {
-                console.log('success sign in');
-                signIn({ emailAddress, password });
+            .then(async () => {
+
+                await firebaseSignIn(data);
+                // signIn({ emailAddress, password });
             })
             .catch(err => {
+                console.log('caught:' + JSON.stringify(err));
                 const formatError = {};
-                err.forEach(err => {
-                    formatError[err.field] = err.message;
-                });
+                for (let myErr of err) {
+
+                    formatError[myErr.field] = myErr.message;
+                };
                 setSignUpErrors(formatError);
             });
     };
 
+
+    const firebaseSignIn = async (data) => {
+        console.log('in firebaseSignIn' + data.email + data.password);
+        auth()
+        .signInWithEmailAndPassword(data.email, data.password)
+        .then(async () =>{
+            
+            let myUser = auth().currentUser;
+            console.log('The user\'s ID is: ' + myUser.uid);
+                //Now store it in the authContext (global state)
+                const userToken = {
+                    uid: myUser.uid,
+                    name: myUser.displayName,
+                    email: myUser.email,
+                    defaultTeam: ''                            
+                }
+            
+
+            await SecureStore.setItemAsync('userToken', JSON.stringify(userToken))
+
+            console.log('User account signed in!  Dispatching to protected route/screen.');
+            signIn({ emailAddress, password, userToken });                
+        })               
+        .catch(error => {
+            console.log('FIREBASE ERROR:' + error);
+            if (error.code === 'auth/email-already-in-use') {
+            alert('That email address is already in use!');
+            }
+
+            if (error.code === 'auth/invalid-email') {
+            alert('That email address is invalid!');
+            }                               
+            return false
+        });
+
+        
+    }
     return (
         <View>
             <Card>

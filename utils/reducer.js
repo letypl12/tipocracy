@@ -52,5 +52,5 @@ export const reducer = (prevState, action) => {
     isSignedUp: false,
     noAccount: false,
     isSignedIn: false,
-    userToken: null,
+    userToken: {name:'TEST1', uid:'', email:'', defaultTeam:''},
   };

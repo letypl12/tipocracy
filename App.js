@@ -54,12 +54,16 @@ export default App = ({navigation}) => {
           data.emailAddress !== undefined &&
           data.password !== undefined
         ) {
-          dispatch({type: 'SIGN_IN', token: 'Token-For-Now'});
+          console.log('dispatcing with token: ' + JSON.stringify(data.userToken));
+          global.userToken = data.userToken
+          dispatch({type: 'SIGN_IN', token: data.userToken});
+          
         } else {
           dispatch({type: 'TO_SIGNIN_PAGE'});
         }
       },
       signOut: async (data) => {
+        global.userToken = {};
         dispatch({type: 'SIGN_OUT'});
       },
 
@@ -69,7 +73,8 @@ export default App = ({navigation}) => {
           data.emailAddress !== undefined &&
           data.password !== undefined
         ) {
-          dispatch({type: 'SIGNED_UP', token: 'dummy-auth-token'});
+          global.userToken = data.userToken
+          dispatch({type: 'SIGNED_UP', token: data.userToken});
         } else {
           dispatch({type: 'TO_SIGNUP_PAGE'});
         }
@@ -103,19 +108,6 @@ export default App = ({navigation}) => {
         arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
         break;
 
-      case 'LOAD_HOME':
-        arr.push(
-          <Stack.Screen
-            name="Home"
-            component={MainTabNavigator}
-            options={{
-              title: 'Home Screen Parent',
-              headerStyle: {backgroundColor: 'black'},
-              headerTintColor: 'white',
-            }}
-          />,
-        );
-        break;
       default:
         arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
         break;
@@ -123,6 +115,7 @@ export default App = ({navigation}) => {
     return arr[0];
   };
   console.log('The state is:' + stateConditionString(state));
+  console.log('The state userToken is:' + JSON.stringify(state.userToken));
   
   if (stateConditionString(state) == 'LOAD_HOME'){
     return(
