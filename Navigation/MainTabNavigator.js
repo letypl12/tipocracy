@@ -1,9 +1,8 @@
-import React, {useEffect, useContext, useMemo, useReducer} from 'react';
+import React, { useEffect, useContext, useMemo, useReducer } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
 
 import HomeScreen from "../Screens/Home";
 import TeamsScreen from "../Screens/Teams";
@@ -49,41 +48,57 @@ const MainTabNavigator = () => {
         <Tab.Screen
           name="HomeTab"
           component={HomeNav}
-          options={{ 
-                    tabBarLabel: "Home",
-                    tabBarIcon: ({focused, color, size}) => (
-                      <Ionicons name={focused?"home":"home-outline"} color={color} size={size} />
-                    )
-                  }}
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? "home" : "home-outline"}
+                color={color}
+                size={size}
+              />
+            ),
+          }}
         />
         <Tab.Screen
           name="TeamsTab"
           component={TeamsNav}
-          options={{ 
+          options={{
             tabBarLabel: "Teams",
-            tabBarIcon: ({focused, color, size}) => (
-              <Ionicons name={focused?"people":"people-outline"} color={color} size={size} />
-            )
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? "people" : "people-outline"}
+                color={color}
+                size={size}
+              />
+            ),
           }}
         />
         <Tab.Screen
           name="TipsTab"
           component={TipsScreen}
-          options={{ 
+          options={{
             tabBarLabel: "Add A Tip",
-            tabBarIcon: ({focused, color, size}) => (
-              <Ionicons name={focused?"cash":"cash-outline"} color={color} size={size} />
-            )
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? "cash" : "cash-outline"}
+                color={color}
+                size={size}
+              />
+            ),
           }}
-        />        
+        />
         <Tab.Screen
           name="HistoryTab"
           component={HistoryScreen}
-          options={{ 
+          options={{
             tabBarLabel: "History",
-            tabBarIcon: ({focused, color, size}) => (
-              <Ionicons name={focused?"book":"book-outline"} color={color} size={size} />
-            )
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? "book" : "book-outline"}
+                color={color}
+                size={size}
+              />
+            ),
           }}
         />
       </Tab.Navigator>
