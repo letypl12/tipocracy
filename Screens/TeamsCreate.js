@@ -15,6 +15,7 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import styles from "../utils/styles";
 import { ScrollView } from "react-native-gesture-handler";
+import { validateAll } from "indicative/validator";
 
 function TeamsCreateScreen({ navigation }) {
   const [teamName, setTeamName] = useState("");
@@ -23,10 +24,10 @@ function TeamsCreateScreen({ navigation }) {
   const [isSelected, setIsSelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteeEmail, setInviteeEmail] = useState("");
+  const [InvitesErrors, setInvitesErrors] = useState({});
 
+  const creator_uid = global.userToken.uid;
 
-
-  const creator_uid = global.userToken.uid
   const addTeam = async () => {
     //Validate all the data you are sending
     console.log("in create a team");
@@ -42,40 +43,65 @@ function TeamsCreateScreen({ navigation }) {
       });
   };
 
+  const handleInvites = () => {
+    // https://indicative.adonisjs.com
+  };
+
   const handleAddFriend = async () => {
     //Put in validation for the email address here
+    const rules = {
+      email: "required|email",
+    };
+    const data = {
+      email: emailAddress,
+    };
+    const messages = {
+      required: (field) => `${field} is required`,
+      "email.email": "Please enter a valid email address",
+    };
+    // validate(data, rules, messages).then(console.log).catch(console.error);
+    validateAll(data, rules, messages)
+      .then(async () => {
+        console.log("in validating");
+        // await handleAddFriend(data);
+        // signIn({ emailAddress, password });
+      })
+      .catch((err) => {
+        console.log("caught:" + JSON.stringify(err));
 
-    let newValue = {email: inviteeEmail};
-    setMembers(oldArray => [newValue,...oldArray] );
+        const formatError = {};
+        for (let emailInviteErr of err) {
+          formatError[emailInviteErr.field] = emailInviteErr.message;
+        }
+        setInvitesErrors(formatError);
+      });
+
+    let newValue = { email: inviteeEmail };
+    setMembers((oldArray) => [newValue, ...oldArray]);
     //clear the email from the form
-    setInviteeEmail('');
+    setInviteeEmail("");
   };
   const Item = ({ title }) => (
     <View style={styles.item}>
       <Text style={styles.item_email}>{title}</Text>
     </View>
   );
-  const renderItem = ({ item }) => (
-    <Item title={item.email} />
-
-  );
-
+  const renderItem = ({ item }) => <Item title={item.email} />;
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
   return (
-
     <View style={styles.container_std}>
       <ScrollView>
-
-
         <Input
           label={"Team"}
           placeholder="Name your Team"
           value={teamName}
           onChangeText={setTeamName}
+          errorStyle={{ color: "red" }}
+          errorMessage={InvitesErrors ? InvitesErrors.email : null}
         ></Input>
         <Input label={"Creator"} value={creator}></Input>
 
@@ -95,20 +121,18 @@ function TeamsCreateScreen({ navigation }) {
           label="Invitees"
           data={members}
           renderItem={renderItem}
-          keyExtractor={item => item.email}
-
+          keyExtractor={(item) => item.email}
         />
 
-      <Button
+        <Button
           buttonStyle={styles.standardButton}
           backgroundColor="#03A9F4"
           title="Create Team"
           onPress={() => addTeam()}
-        /> 
-      </ScrollView>             
+        />
+      </ScrollView>
     </View>
   );
 }
-
 
 export default TeamsCreateScreen;
