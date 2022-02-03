@@ -38,6 +38,19 @@ function TeamsCreateScreen({ navigation }) {
         creator: creator_uid,
       })
       .then(() => {
+        // //Now create collection("Invites") records
+        // for let i=0; i<members.length; i++{
+          // {
+          //   team_uid: <from the previous addTeam stuff,
+          //   creator_uid: from global.userToken.uid
+          //   email: <from members>,
+          //   active: boolean,
+          //   createDate: datetime now
+          //   deactiveDate: null
+
+          // }
+        //}
+
         console.log("Team Created!");
       });
   };
