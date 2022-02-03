@@ -13,57 +13,29 @@ import { CheckBox, Icon, Card, Input } from "react-native-elements";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import styles from "../utils/styles";
+import { ScrollView } from "react-native-gesture-handler";
 
 function TeamsCreateScreen({ navigation }) {
   const [teamName, setTeamName] = useState("");
   const [members, setMembers] = useState("");
   const [creator, setCreator] = useState(global.userToken.name);
   const [isSelected, setIsSelected] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [inviteName, setInviteName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [inviteeEmail, setInviteeEmail] = useState("");
 
-  useEffect(() => {
-    const getData = () => {
-      firebase
-        .firestore()
-        .collection("Users")
-        .get()
-        .then((querySnapshot) => {
-          console.log("Total users: ", querySnapshot.size);
 
-          querySnapshot.forEach((documentSnapshot) => {
-            console.log(
-              "User ID: ",
-              documentSnapshot.id,
-              documentSnapshot.data()
-            );
-          });
-        })
-        .then(() => {
-          setIsLoading(false);
-        });
-    };
 
-    getData();
-  }, []);
-
-  const inviteData = {
-    inviteName: inviteName,
-  };
-  // const creator = global.userToken.name
+  const creator_uid = global.userToken.uid
   const addTeam = async () => {
-    const rules = {
-      teamName: "required|string",
-    };
+    //Validate all the data you are sending
     console.log("in create a team");
     firestore()
       .collection("Teams")
-      .doc(`${teamName}`)
-      .set({
-        // .add({
+      .add({
         name: teamName,
         members: members,
-        creator: creator,
+        creator: creator_uid,
       })
       .then(() => {
         console.log("Team Created!");
@@ -71,114 +43,72 @@ function TeamsCreateScreen({ navigation }) {
   };
 
   const handleAddFriend = async () => {
-    const rules = {
-      inviteName: "required|string",
-    };
+    //Put in validation for the email address here
 
-    console.log("name to use:", inviteName);
-    firebase
-      .firestore()
-      .collection("Users")
-      .get()
-      .then((querySnapshot) => {
-        console.log("Total users: ", querySnapshot.size);
-
-        querySnapshot.forEach((documentSnapshot) => {
-          if (documentSnapshot.get("name") === inviteName) {
-            console.log("user:", documentSnapshot.get("email"));
-            const addFriend = documentSnapshot.get("email");
-            // return (
-            //   <FlatList
-            //     data={[{ key: `${addFriend}` }]}
-            //     renderItem={({ item }) => (
-            //       <Text style={styles.item}>{item.key}</Text>
-            //     )}
-            //   ></FlatList>
-            // );
-          }
-        });
-      });
-    // return (
-    //   <FlatList
-    //     data={addFriend}
-    //     renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-    //   ></FlatList>
-    // );
-
-    // .doc(inviteName)
-    // .then((documentSnapshot) => {
-    //   console.log("Exists?: ", documentSnapshot.exists);
-
-    //   if (documentSnapshot.exists) {
-    //     console.log("User data: ", documentSnapshot.get("email"));
-    //   }
-    // });
+    let newValue = {email: inviteeEmail};
+    setMembers(oldArray => [newValue,...oldArray] );
+    //clear the email from the form
+    setInviteeEmail('');
   };
+  const Item = ({ title }) => (
+    <View style={styles.item}>
+      <Text style={styles.item_email}>{title}</Text>
+    </View>
+  );
+  const renderItem = ({ item }) => (
+    <Item title={item.email} />
 
-  // https://indicative.adonisjs.com
+  );
+
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
   return (
-    <View style={{ paddingVertical: 20 }}>
-      <Card>
+
+    <View style={styles.container_std}>
+      <ScrollView>
+
+
         <Input
           label={"Team"}
           placeholder="Name your Team"
           value={teamName}
           onChangeText={setTeamName}
         ></Input>
-        <Input
-          label={"Members"}
-          placeholder=""
-          value={members}
-          onChangeText={setMembers}
-        ></Input>
         <Input label={"Creator"} value={creator}></Input>
-        <Button
-          buttonStyle={{ margin: 10, marginTop: 50 }}
-          backgroundColor="#03A9F4"
-          title="Create Team"
-          onPress={() => addTeam()}
-        />
+
         <Input
           label={"Invitee"}
-          placeholder="Invitee name"
-          value={inviteName}
-          onChangeText={setInviteName}
+          placeholder="Invitee email"
+          value={inviteeEmail}
+          onChangeText={setInviteeEmail}
         ></Input>
         <Button
-          buttonStyle={{ margin: 10, marginTop: 50 }}
+          buttonStyle={styles.standardButton}
           title="Add to Team"
           onPress={() => handleAddFriend()}
         />
 
-        <CheckBox
-          title={inviteName}
-          checked={isSelected}
-          onPress={() => setIsSelected(!isSelected)}
-          // onValueChange={setIsSelected}
-          style={styles.checkbox}
+        <FlatList
+          label="Invitees"
+          data={members}
+          renderItem={renderItem}
+          keyExtractor={item => item.email}
+
         />
-      </Card>
+
+      <Button
+          buttonStyle={styles.standardButton}
+          backgroundColor="#03A9F4"
+          title="Create Team"
+          onPress={() => addTeam()}
+        /> 
+      </ScrollView>             
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-});
 
 export default TeamsCreateScreen;

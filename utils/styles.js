@@ -4,6 +4,14 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
+    container_std: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        flexDirection: "row",
+    },
+
     container: {
         flex: 1,
         backgroundColor: "#fff",
@@ -50,6 +58,21 @@ const styles = StyleSheet.create({
         fontSize: 25,
     },
 
+    standardButton: {
+        margin: 10, 
+        marginTop: 50 
+    },
+
+    item: {
+        backgroundColor: '#f9c2ff',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },   
+    
+    item_email: {
+        fontSize: 12,
+    },    
 
 });
 
