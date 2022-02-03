@@ -34,20 +34,20 @@ function TeamsCreateScreen({ navigation }) {
       .collection("Teams")
       .add({
         name: teamName,
-        members: members,
         creator: creator_uid,
       })
       .then(() => {
         // //Now create collection("Invites") records
+        // Don't forget to add a record for the creator with active: true
         // for let i=0; i<members.length; i++{
           // {
           //   team_uid: <from the previous addTeam stuff,
           //   creator_uid: from global.userToken.uid
+          //   teamName: teamName
           //   email: <from members>,
           //   active: boolean,
           //   createDate: datetime now
           //   deactiveDate: null
-
           // }
         //}
 
