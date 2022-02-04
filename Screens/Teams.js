@@ -47,7 +47,7 @@ function TeamsScreen({ navigation }) {
     };
 
     getData();
-  }, [dataSource]);
+  }, []);
 
   const Item = ({ name, creator }) => (
     <View style={styles.item}>

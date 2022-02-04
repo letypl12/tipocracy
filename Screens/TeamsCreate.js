@@ -21,16 +21,12 @@ function TeamsCreateScreen({ navigation }) {
   const [teamName, setTeamName] = useState("");
   const [members, setMembers] = useState("");
   const [creator, setCreator] = useState(global.userToken.name);
-  const [isSelected, setIsSelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteeEmail, setInviteeEmail] = useState("");
   const [InvitesErrors, setInvitesErrors] = useState({});
-  const [isActive, setIsActive] = useState(true);
-  const [deActive, setDeActive] = useState(null);
 
   const creator_uid = global.userToken.uid;
   const EMAIL = global.userToken.email;
-
   const addTeam = async () => {
     //Validate all the data you are sending
     console.log("in create a team");
@@ -41,39 +37,39 @@ function TeamsCreateScreen({ navigation }) {
         creator: creator_uid,
       })
       .then(() => {
-        // //Now create collection("Invites") records
-        // Don't forget to add a record for the creator with active: true
-        // for let i=0; i<members.length; i++{
-        // {
-        //   team_uid: <from the previous addTeam stuff,
-        //   creator_uid: from global.userToken.uid
-        //   teamName: teamName
-        //   email: <from members>,
-        //   active: boolean,
-        //   createDate: datetime now
-        //   deactiveDate: null
-        // }
-        //}
         const team_uid = firebase.firestore().collection("Teams").id;
         let timestamp = firebase.firestore.FieldValue.serverTimestamp();
         console.log("in create invite");
-        firebase
-          .firestore()
-          .collection("Invites")
-          .add({
-            email: EMAIL,
-            creator: creator_uid,
-            active: isActive,
-            dateCreated: timestamp,
-            deactivateDate: null,
-            team: teamName,
-            teamId: team_uid,
-          })
-          .then(() => {
-            console.log("Invite created");
+        console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
+        // add an invite specifiaclly for the creator with active to true
+        firebase.firestore().collection("Invites").add({
+          email: EMAIL,
+          creator_uid: creator_uid,
+          active: true,
+          createDate: timestamp,
+          deactivateDate: "",
+          teamName: teamName,
+          team_uid: team_uid,
+        });
+        //add invites for everybodu's emails we are adding
+        for (let i = 0; i < members.length; i++) {
+          console.log(
+            members.email + creator_uid + timestamp + teamName + team_uid
+          );
+          console.log(JSON.stringify(members));
+          firebase.firestore().collection("Invites").add({
+            email: members[i].email,
+            creator_uid: creator_uid,
+            active: false,
+            createDate: timestamp,
+            deactivateDate: "",
+            teamName: teamName,
+            team_uid: team_uid,
           });
-
-        console.log("Team Created!");
+        }
+      })
+      .then(() => {
+        console.log("Invite created");
       });
   };
 
