@@ -26,8 +26,10 @@ function TeamsCreateScreen({ navigation }) {
   const [inviteeEmail, setInviteeEmail] = useState("");
   const [InvitesErrors, setInvitesErrors] = useState({});
   const [isActive, setIsActive] = useState(true);
+  const [deActive, setDeActive] = useState(null);
 
   const creator_uid = global.userToken.uid;
+  const EMAIL = global.userToken.email;
 
   const addTeam = async () => {
     //Validate all the data you are sending
@@ -52,15 +54,17 @@ function TeamsCreateScreen({ navigation }) {
         //   deactiveDate: null
         // }
         //}
-        const team_uid = firebase.firestore().collection("Teams").get(uid);
-        // let timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        firestore()
+        const team_uid = firebase.firestore().collection("Teams").id;
+        let timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        console.log("in create invite");
+        firebase
+          .firestore()
           .collection("Invites")
           .add({
-            email: inviteeEmail,
+            email: EMAIL,
             creator: creator_uid,
             active: isActive,
-            dateCreated: firebase.serverTimestamp,
+            dateCreated: timestamp,
             deactivateDate: null,
             team: teamName,
             teamId: team_uid,
@@ -79,32 +83,32 @@ function TeamsCreateScreen({ navigation }) {
 
   const handleAddFriend = async () => {
     //Put in validation for the email address here
-    const rules = {
-      email: "required|email",
-    };
-    const data = {
-      email: emailAddress,
-    };
-    const messages = {
-      required: (field) => `${field} is required`,
-      "email.email": "Please enter a valid email address",
-    };
-    // validate(data, rules, messages).then(console.log).catch(console.error);
-    validateAll(data, rules, messages)
-      .then(async () => {
-        console.log("in validating");
-        // await handleAddFriend(data);
-        // signIn({ emailAddress, password });
-      })
-      .catch((err) => {
-        console.log("caught:" + JSON.stringify(err));
+    // const rules = {
+    //   email: "required|email",
+    // };
+    // const data = {
+    //   email: emailAddress,
+    // };
+    // const messages = {
+    //   required: (field) => `${field} is required`,
+    //   "email.email": "Please enter a valid email address",
+    // };
+    // // validate(data, rules, messages).then(console.log).catch(console.error);
+    // validateAll(data, rules, messages)
+    //   .then(async () => {
+    //     console.log("in validating");
+    //     // await handleAddFriend(data);
+    //     // signIn({ emailAddress, password });
+    //   })
+    //   .catch((err) => {
+    //     console.log("caught:" + JSON.stringify(err));
 
-        const formatError = {};
-        for (let emailInviteErr of err) {
-          formatError[emailInviteErr.field] = emailInviteErr.message;
-        }
-        setInvitesErrors(formatError);
-      });
+    //     const formatError = {};
+    //     for (let emailInviteErr of err) {
+    //       formatError[emailInviteErr.field] = emailInviteErr.message;
+    //     }
+    //     setInvitesErrors(formatError);
+    //   });
 
     let newValue = { email: inviteeEmail };
     setMembers((oldArray) => [newValue, ...oldArray]);

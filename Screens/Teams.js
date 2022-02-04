@@ -27,7 +27,7 @@ function TeamsScreen({ navigation }) {
       firebase
         .firestore()
         .collection("Invites")
-        .where("email" == EMAIL)
+        .where("email", "==", EMAIL)
         .get()
         .then((querySnapshot) => {
           console.log("Total Teams: ", querySnapshot.size);
