@@ -56,6 +56,7 @@ const SignInScreen = ({ navigation }) => {
     };
 
 
+
     const firebaseSignIn = async (data) => {
         console.log('in firebaseSignIn' + data.email + data.password);
         auth()
@@ -79,18 +80,24 @@ const SignInScreen = ({ navigation }) => {
             signIn({ emailAddress, password, userToken });                
         })               
         .catch(error => {
+            const formatError = {};
             console.log('FIREBASE ERROR:' + error);
             if (error.code === 'auth/email-already-in-use') {
-            alert('That email address is already in use!');
+                formatError['email'] = 'That email address is already in use!';
             }
 
             if (error.code === 'auth/invalid-email') {
-            alert('That email address is invalid!');
-            }                               
+                formatError['email'] = 'That email address is invalid!';
+            }   
+            if (error.code === 'auth/wrong-password') {
+                formatError['password'] = 'Incorrect password.';
+            }                         
+            
+            setSignUpErrors(formatError);                            
             return false
         });
 
-        
+        useEffect(() => {}, [SignUpErrors]);    
     }
     return (
         <View>
