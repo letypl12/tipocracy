@@ -42,13 +42,14 @@ function HomeScreen({ navigation }) {
   //   bootstrapAsync();
   // }, []);
 
-  const logout = () => {
+  const logout = async () => {
     console.log("in logout");
     //first signout of firebase auth
     auth()
       .signOut()
       .then(() => console.log("User signed out!"));
-
+    
+      await SecureStore.deleteItemAsync('userToken')
     //now clear out values stored in our AuthContext
     signOut();
   };

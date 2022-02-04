@@ -27,8 +27,10 @@ export default App = ({ navigation }) => {
 
       try {
         userToken = await SecureStore.getItemAsync("userToken");
+        global.userToken = userToken;
       } catch (e) {
         // Restoring token failed
+        console.log('restoring user token failed');
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -60,7 +62,8 @@ export default App = ({ navigation }) => {
         }
       },
       signOut: async (data) => {
-        global.userToken = {};
+        
+        global.userToken = null;
         dispatch({ type: "SIGN_OUT" });
       },
 

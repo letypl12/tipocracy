@@ -18,6 +18,8 @@ export const reducer = (prevState, action) => {
         return {
           ...prevState,
           userToken: action.token,
+          isSignedIn: true,
+          isSignedUp: true,
           isLoading: false,
         };
       case 'SIGNED_UP':
@@ -42,6 +44,7 @@ export const reducer = (prevState, action) => {
           isSignedIn: false,
           isSignedUp: false,
           isSignedOut: true,
+          userToken: null
         };
     }
   };

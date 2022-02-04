@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { validateAll } from 'indicative/validator';
 import { View, Text } from 'react-native';
 import {
+    CheckBox, 
     Input,
     Card,
     FormValidationMessage,
@@ -16,6 +17,7 @@ const SignInScreen = ({ navigation }) => {
     const [emailAddress, setemailAddress] = useState('');
     const [password, setPassword] = useState('');
     const [SignUpErrors, setSignUpErrors] = useState({});
+    const [rememberMe, setRememberMe] = useState(false);
 
     const { signIn, signUp } = useContext(AuthContext);
 
@@ -73,8 +75,10 @@ const SignInScreen = ({ navigation }) => {
                     defaultTeam: ''                            
                 }
             
-
-            await SecureStore.setItemAsync('userToken', JSON.stringify(userToken))
+                if (rememberMe){
+                    await SecureStore.setItemAsync('userToken', JSON.stringify(userToken))
+                }
+            
 
             console.log('User account signed in!  Dispatching to protected route/screen.');
             signIn({ emailAddress, password, userToken });                
@@ -118,6 +122,13 @@ const SignInScreen = ({ navigation }) => {
                     errorStyle={{ color: 'red' }}
                     errorMessage={SignUpErrors ? SignUpErrors.password : null}
                 />
+                <CheckBox
+                    center
+                    title="Remember Me"
+                    checked={rememberMe}
+                    onPress={() => setRememberMe(!rememberMe)}
+                />
+
                 <Button
                     buttonStyle={{ margin: 10, marginTop: 50 }}
                     title="Sign in"
