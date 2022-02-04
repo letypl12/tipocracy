@@ -25,6 +25,7 @@ function TeamsCreateScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [inviteeEmail, setInviteeEmail] = useState("");
   const [InvitesErrors, setInvitesErrors] = useState({});
+  const [isActive, setIsActive] = useState(true);
 
   const creator_uid = global.userToken.uid;
 
@@ -41,16 +42,32 @@ function TeamsCreateScreen({ navigation }) {
         // //Now create collection("Invites") records
         // Don't forget to add a record for the creator with active: true
         // for let i=0; i<members.length; i++{
-          // {
-          //   team_uid: <from the previous addTeam stuff,
-          //   creator_uid: from global.userToken.uid
-          //   teamName: teamName
-          //   email: <from members>,
-          //   active: boolean,
-          //   createDate: datetime now
-          //   deactiveDate: null
-          // }
+        // {
+        //   team_uid: <from the previous addTeam stuff,
+        //   creator_uid: from global.userToken.uid
+        //   teamName: teamName
+        //   email: <from members>,
+        //   active: boolean,
+        //   createDate: datetime now
+        //   deactiveDate: null
+        // }
         //}
+        const team_uid = firebase.firestore().collection("Teams").get(uid);
+        // let timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        firestore()
+          .collection("Invites")
+          .add({
+            email: inviteeEmail,
+            creator: creator_uid,
+            active: isActive,
+            dateCreated: firebase.serverTimestamp,
+            deactivateDate: null,
+            team: teamName,
+            teamId: team_uid,
+          })
+          .then(() => {
+            console.log("Invite created");
+          });
 
         console.log("Team Created!");
       });
