@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import "react-native-gesture-handler";
-import React, { useEffect, useContext, useMemo, useReducer } from "react";
+import React, { useState, useEffect, useContext, useMemo, useReducer } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -26,8 +26,13 @@ export default App = ({ navigation }) => {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync("userToken");
-        global.userToken = userToken;
+        SecureStore.getItemAsync("userToken").then((token) => {
+          console.log('token from secure store is: ' + JSON.stringify(token))
+          global.userToken = JSON.parse(token);
+        }).then(() =>{
+          dispatch({ type: "RESTORE_TOKEN", token: global.userToken });
+        })
+
       } catch (e) {
         // Restoring token failed
         console.log('restoring user token failed');
@@ -36,7 +41,7 @@ export default App = ({ navigation }) => {
       // After restoring token, we may need to validate it in production apps
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: "RESTORE_TOKEN", token: userToken });
+      
     };
     bootstrapAsync();
   }, []);
