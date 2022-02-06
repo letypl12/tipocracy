@@ -74,9 +74,10 @@ const SignInScreen = ({ navigation }) => {
                     email: myUser.email,
                     defaultTeam: ''                            
                 }
-            
+
                 if (rememberMe){
                     await SecureStore.setItemAsync('userToken', JSON.stringify(userToken))
+                    
                 }
             
 
@@ -101,14 +102,17 @@ const SignInScreen = ({ navigation }) => {
             return false
         });
 
-        useEffect(() => {}, [SignUpErrors]);    
+          
     }
+
+    useEffect(() => {}, [SignUpErrors]);  
     return (
         <View>
             <Card>
                 <Input
                     label={'Email'}
                     placeholder="Email"
+                    autoCapitalize="none"
                     value={emailAddress}
                     onChangeText={setemailAddress}
                     errorStyle={{ color: 'red' }}
