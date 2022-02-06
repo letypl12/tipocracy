@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { validateAll } from "indicative/validator";
-import { View, Text } from "react-native";
+import { Image, View, Text } from "react-native";
 import {
     Input,
     Card,
@@ -118,8 +118,11 @@ const SignUpScreen = ({ navigation }) => {
     useEffect(() => {}, [SignUpErrors]);
 
     return (
-        <View style={{ paddingVertical: 20 }}>
-        <Card>
+        <View style={{flex:1, backgroundColor:'#FFE500'}}>
+                <View style={{alignItems:'center'}}>
+                    <Image resizeMode='contain' source={require('../images/tipocracy_logo.png')} style={{width:300, height:100}} />
+                </View>
+        <Card title="Sign Up">
             <Input
             label={"Name"}
             placeholder="First Last"

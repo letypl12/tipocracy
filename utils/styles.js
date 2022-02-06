@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     buttonBase:{
         padding:10,
         //margin:10,
+        color: '#007AFF',
     },    
 
     home_container: {
@@ -107,16 +108,9 @@ const styles = StyleSheet.create({
         fontSize: normalize(25),
     },
 
-    standardButton: {
-        margin: 10, 
-        marginTop: 50 
-    },
 
     teamListItem: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        padding: 2,
         color:'black',
     },   
     

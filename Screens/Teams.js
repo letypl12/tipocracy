@@ -11,7 +11,7 @@ import {
 import firestore from "@react-native-firebase/firestore";
 import { useEffect, useState, useContext } from "react";
 import styles from "../utils/styles";
-import {ListItem, Button} from "react-native-elements"
+import {ListItem, Button, Avatar} from "react-native-elements"
 
 
 
@@ -27,6 +27,7 @@ function TeamsScreen({ route, navigation }) {
 
   useEffect(() => {
     const getData = async () => {
+      console.log('in getData, checking records for:' + global.userToken.email);
       firestore()
         .collection("Invites")
         .where("email", "==", global.userToken.email)
@@ -61,6 +62,7 @@ function TeamsScreen({ route, navigation }) {
           setDataSourceInvites(myInvites);  
           console.log('Length of new teams object:' + myTeams.length);   
           console.log('TEAMS: ' + JSON.stringify(myTeams));
+          console.log('INVITES: ' + JSON.stringify(myInvites));
           console.log('dataSourceTeams: ' + JSON.stringify(dataSourceTeams));
 
           
@@ -89,20 +91,23 @@ const renderTeams = () =>{
   if (dataSourceTeams.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Teams</Text>)
   
-    tmpArr.push(<Text style={styles.textBase}>Choose a team to work on below.</Text>)        
+    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.</Text>)        
     
     tmpArr.push(
     <FlatList
           data={dataSourceTeams}
-          style={{flex: 1, borderColor:'red', borderWidth:5}}
+          style={{flex: 1}}
           renderItem={({ item }) => (
               <ListItem
                     onPress={() => {chooseTeam(item.team_uid)}}
                     chevron={true}
-                    style={{ borderColor: 'red', borderWidth: 1 }}
+                    style={{ flex:1 }}
                   >
+                  <Avatar large
+                              rounded
+                              title={`${item.teamName}`} 
+                              containerStyle={{ backgroundColor: '#007AFF' }}/>                    
                   <ListItem.Content>
-                      
                       <ListItem.Title style={styles.teamListItem}>
                       {`${item.teamName}`}
                       </ListItem.Title>
@@ -126,19 +131,22 @@ const renderInvites = () =>{
   tmpArr = []
   if (dataSourceInvites.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Invites</Text>)
-    tmpArr.push(<Text style={styles.textBase}>Accept an Invite to join a team.</Text>)  
+    tmpArr.push(<Text style={styles.textBase}>Click to accept an Invite to join a team.</Text>)  
     tmpArr.push(
       <FlatList
       data={dataSourceInvites}
-      style={{flex: 1, borderColor:'red', borderWidth:5}}
+      style={{flex: 1}}
       renderItem={({ item }) => (
           <ListItem
                 onPress={() => {acceptInvite(item.team_uid)}}
                 chevron={true}
-                style={{ borderColor: 'red', borderWidth: 1 }}
+                style={{flex:1}}
               >
-              <ListItem.Content>
-                  
+                <Avatar large
+                              rounded
+                              title={`${item.teamName}`} 
+                              containerStyle={{ backgroundColor: '#007AFF' }}/> 
+              <ListItem.Content>     
                   <ListItem.Title style={styles.teamListItem}>
                   {`${item.teamName}`}
                   </ListItem.Title>

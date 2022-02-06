@@ -112,18 +112,27 @@ export default App = ({ navigation }) => {
             name="SignUp"
             component={SignUpScreen}
             options={{
-              title: "Sign Up",
+              headerShown: false,
               animationTypeForReplace: state.isSignout ? "pop" : "push",
             }}
           />
         );
         break;
       case "LOAD_SIGNIN":
-        arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
+        arr.push(<Stack.Screen name="SignIn" 
+                              component={SignInScreen} 
+                              options={{
+                                headerShown: false,
+                                animationTypeForReplace: state.isSignin ? "pop" : "push",
+                              }}
+              />);
         break;
 
       default:
-        arr.push(<Stack.Screen name="SignIn" component={SignInScreen} />);
+        arr.push(<Stack.Screen name="SignIn" component={SignInScreen} options={{
+          headerShown: false,
+          animationTypeForReplace: state.isSignin ? "pop" : "push",
+        }} />);
         break;
     }
     return arr[0];
@@ -142,9 +151,11 @@ export default App = ({ navigation }) => {
   } else {
     return (
       <AuthContext.Provider value={authContextValue}>
+        <SafeAreaView style={styles.container}>
         <NavigationContainer>
           <Stack.Navigator>{chooseScreen(state)}</Stack.Navigator>
         </NavigationContainer>
+        </SafeAreaView>
       </AuthContext.Provider>
     );
   }

@@ -4,13 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   TextInput,
   ActivityIndicator,
   FlatList,
   ScrollView,
 } from "react-native";
-import { CheckBox, Icon, Card, Input } from "react-native-elements";
+import { Button, CheckBox, Icon, Card, Input } from "react-native-elements";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
@@ -162,7 +161,7 @@ function TeamsCreateScreen({ navigation }) {
           </View>
           <View style={{flex:.2, flexDirection:'column'}}>
               <Button
-              buttonStyle={styles.standardButton}
+              buttonStyle={styles.buttonBase}
               title="Add"
               onPress={() => handleAddFriend()}
               />
@@ -180,7 +179,7 @@ function TeamsCreateScreen({ navigation }) {
         />
 
         <Button
-          buttonStyle={styles.standardButton}
+          buttonStyle={styles.buttonBase}
           backgroundColor="#03A9F4"
           title="Create Team"
           onPress={() => addTeam()}

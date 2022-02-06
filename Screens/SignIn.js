@@ -1,13 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { validateAll } from 'indicative/validator';
-import { View, Text } from 'react-native';
+
 import {
     CheckBox, 
     Input,
     Card,
     FormValidationMessage,
-    Button
+    Button,
 } from 'react-native-elements';
+import {
+    ActivityIndicator,
+    Image,
+    Text,
+    View,
+    TouchableOpacity,
+  } from "react-native";
 
 import { AuthContext } from '../utils/authContext';
 import auth from '@react-native-firebase/auth';
@@ -107,8 +114,12 @@ const SignInScreen = ({ navigation }) => {
 
     useEffect(() => {}, [SignUpErrors]);  
     return (
-        <View>
-            <Card>
+        <View style={{flex:1, backgroundColor:'#FFE500'}}>
+                <View style={{alignItems:'center'}}>
+                    <Image resizeMode='contain' source={require('../images/tipocracy_logo.png')} style={{width:300, height:100}} />
+                </View>
+            <Card title="Sign In">
+
                 <Input
                     label={'Email'}
                     placeholder="Email"
