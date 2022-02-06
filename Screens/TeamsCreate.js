@@ -46,7 +46,7 @@ function TeamsCreateScreen({ navigation }) {
         console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
         // add an invite specifiaclly for the creator with active to true
         firebase.firestore().collection("Invites").add({
-          email: EMAIL,
+          email: EMAIL.toLowerCase(),
           creator_uid: creator_uid,
           active: true,
           createDate: timestamp,
@@ -112,7 +112,7 @@ function TeamsCreateScreen({ navigation }) {
     //     setInvitesErrors(formatError);
     //   });
 
-    let newValue = { email: inviteeEmail };
+    let newValue = { email: inviteeEmail.toLowerCase() };
     setMembers((oldArray) => [newValue, ...oldArray]);
     //clear the email from the form
     setInviteeEmail("");
