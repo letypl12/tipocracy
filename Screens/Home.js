@@ -72,7 +72,7 @@ function HomeScreen({ navigation }) {
         <View style={styles.containerBody}>
           <View style={styles.containerRow}>
             <Text style={styles.setFontSizeOne}>
-              Hello {global.userToken.name} !:
+              Hello {global.userToken.name} ,
             </Text>
           </View>
 
