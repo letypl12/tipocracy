@@ -78,7 +78,7 @@ function HomeScreen({ navigation }) {
 
           <View style={styles.containerRow}>
             <Button
-              title="Want to join a Team?"
+              title="Choose A Team To Get Started"
               onPress={() => navigation.navigate("Teams")}
             />
           </View>

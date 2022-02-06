@@ -17,14 +17,9 @@ import {ListItem, Button} from "react-native-elements"
 
 
 
-function TeamsScreen({ navigation }) {
-
-  // const testData = [
-  //   {teamName:"Tester",team_uid:"Teams1",creator_uid:"fwLz9DnrWOSiPigLFDqBco0b9De2"},
-  //   {teamName:"Tester2",team_uid:"Teams12",creator_uid:"fwLz9DnrWOSiPigLFDqBco0b9De2"},
-  // ]
-  const testData = [{"teamName":"Tester","team_uid":"Teams1","creator_uid":"fwLz9DnrWOSiPigLFDqBco0b9De2"},{"teamName":"Test 1","team_uid":"Teams","creator_uid":"fwLz9DnrWOSiPigLFDqBco0b9De2"}];
-  const [dataSourceTeams, setDataSourceTeams] = useState(testData);
+function TeamsScreen({ route, navigation }) {
+  const { reload } = route.params;
+  const [dataSourceTeams, setDataSourceTeams] = useState([]);
   const [dataSourceInvites, setDataSourceInvites] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   let myInvites = []
@@ -43,6 +38,7 @@ function TeamsScreen({ navigation }) {
             if (documentSnapshot.get("active") == true){
               let tmpTeam = {
                               teamName: documentSnapshot.get("teamName"),
+                              teamDescription: documentSnapshot.get("teamDescription"),
                               team_uid: documentSnapshot.get("team_uid"),
                               creator_uid: documentSnapshot.get("creator_uid")
                             }
@@ -52,6 +48,7 @@ function TeamsScreen({ navigation }) {
               console.log('there is an invite');
               myInvites.push({
                 teamName: documentSnapshot.get("teamName"),
+                teamDescription: documentSnapshot.get("teamDescription"),
                 team_uid: documentSnapshot.get("team_uid"),
                 creator_uid: documentSnapshot.get("creator_uid")
               })
@@ -60,11 +57,12 @@ function TeamsScreen({ navigation }) {
           // 
           // setDataSourceInvites((oldArray) => [myInvites, ...oldArray]);
 
-          setDataSourceTeams(myTeams);    
+          setDataSourceTeams(myTeams);  
+          setDataSourceInvites(myInvites);  
           console.log('Length of new teams object:' + myTeams.length);   
           console.log('TEAMS: ' + JSON.stringify(myTeams));
           console.log('dataSourceTeams: ' + JSON.stringify(dataSourceTeams));
-          //{teamName:'test', team_uid:'test1', creator_uid:'asdf'}
+
           
           setIsLoading(false);
         })
@@ -72,11 +70,93 @@ function TeamsScreen({ navigation }) {
     };
 
     getData();
-  }, []);
+  }, [reload]);
 
+const chooseTeam = (team_uid) =>{
+  //1. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
+  //2. update the global.userToken the same way
+  //3. navigate to home, and have home reload to show the new team name
+  //4. on home, you'll need to go to firestore to get the team name and description, and don't show the 'choose team' button.
+}
 
+const acceptInvite = (team_uid) =>{
+  //1. update the Invite record for the user's uid and this team_uid for "active" to be true.
+}
 
+const renderTeams = () =>{
+  console.log('in renderTeams, the dataSourceTeams.length is: ' + dataSourceTeams.length);
+  tmpArr = []
+  if (dataSourceTeams.length > 0){
+    tmpArr.push(<Text>My Teams</Text>)
+  
+    tmpArr.push(<Text>Choose a team to work on below.</Text>)        
+    
+    tmpArr.push(
+    <FlatList
+          data={dataSourceTeams}
+          style={{flex: 1, borderColor:'red', borderWidth:5}}
+          renderItem={({ item }) => (
+              <ListItem
+                    onPress={() => {chooseTeam(item.team_uid)}}
+                    chevron={true}
+                    style={{ borderColor: 'red', borderWidth: 1 }}
+                  >
+                  <ListItem.Content>
+                      
+                      <ListItem.Title style={styles.teamListItem}>
+                      {`${item.teamName}`}
+                      </ListItem.Title>
+                      <ListItem.Subtitle style={{ color: 'black' }}>
+                      {`${item.teamDescription}`}
+                      </ListItem.Subtitle>                                  
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+              </ListItem>                                 
+          )}
+          keyExtractor={(item) => item.team_uid.toString()}
+        />   
+    )      
+  }else{
+    tmpArr.push(<Text>You do not have any teams yet...</Text>)
+  }
+  return tmpArr
+}
 
+const renderInvites = () =>{
+  tmpArr = []
+  if (dataSourceInvites.length > 0){
+    tmpArr.push(<Text>My Invites</Text>)
+    tmpArr.push(<Text>Accept an Invite to join a team.</Text>)  
+    tmpArr.push(
+      <FlatList
+      data={dataSourceInvites}
+      style={{flex: 1, borderColor:'red', borderWidth:5}}
+      renderItem={({ item }) => (
+          <ListItem
+                onPress={() => {acceptInvite(item.team_uid)}}
+                chevron={true}
+                style={{ borderColor: 'red', borderWidth: 1 }}
+              >
+              <ListItem.Content>
+                  
+                  <ListItem.Title style={styles.teamListItem}>
+                  {`${item.teamName}`}
+                  </ListItem.Title>
+                  <ListItem.Subtitle style={{ color: 'black' }}>
+                  {`${item.creator_uid}`}
+                  </ListItem.Subtitle>                                  
+              </ListItem.Content>
+              <ListItem.Chevron />
+          </ListItem>                                 
+      )}
+      keyExtractor={(item) => item.team_uid.toString()}
+    />   
+    )      
+  }else{
+    tmpArr.push(<Text>You do not have any invites yet...</Text>)
+  }  
+  return tmpArr
+}
 
   if (isLoading) {
     return <ActivityIndicator />;
@@ -85,39 +165,14 @@ function TeamsScreen({ navigation }) {
     return (
 
       <View style={{flex:1}}>
-          <Text>My Teams</Text>        
-  
-          <Text>Choose a team to work on below.</Text>        
-          
-
-          <FlatList
-                data={dataSourceTeams}
-                style={{flex: 1, borderColor:'red', borderWidth:5}}
-                renderItem={({ item }) => (
-                    <ListItem
-                          onPress={() => {alert(item.team_uid)}}
-                          chevron={true}
-                          style={{ borderColor: 'red', borderWidth: 1 }}
-                        >
-                        <ListItem.Content>
-                            
-                            <ListItem.Title style={styles.teamListItem}>
-                            {`${item.teamName}`}
-                            </ListItem.Title>
-                            <ListItem.Subtitle style={{ color: 'black' }}>
-                            {`${item.creator_uid}`}
-                            </ListItem.Subtitle>                                  
-                        </ListItem.Content>
-                        <ListItem.Chevron />
-                    </ListItem>                                 
-                )}
-                keyExtractor={(item) => item.team_uid.toString()}
-              />          
+        {renderTeams()}
+        {renderInvites()}      
+            
 
   
   
   
-  
+  <Text>Or, create a new team by clicking below.</Text>  
         <Button
           title="Create A Team"
           onPress={() => {

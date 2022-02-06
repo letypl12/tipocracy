@@ -29,7 +29,7 @@ function TeamsNav() {
   return (
     <TeamsStack.Navigator>
       <TeamsStack.Group>
-        <TeamsStack.Screen name="Teams" component={TeamsScreen} />
+        <TeamsStack.Screen name="Teams" component={TeamsScreen} initialParams={{ reload: false }}/>
         <TeamsStack.Screen name="Choose A Team" component={TeamsChoiceScreen} />
         <TeamsStack.Screen name="Create A Team" component={TeamsCreateScreen} />
         <TeamsStack.Screen name="Edit A Team" component={TeamsEditScreen} />
