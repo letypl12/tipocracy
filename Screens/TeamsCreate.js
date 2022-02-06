@@ -20,6 +20,7 @@ import { validateAll } from "indicative/validator";
 
 function TeamsCreateScreen({ navigation }) {
   const [teamName, setTeamName] = useState("");
+  const [teamDescription, setTeamDescription] = useState("");
   const [members, setMembers] = useState("");
   const [creator, setCreator] = useState(global.userToken.name);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,8 +38,9 @@ function TeamsCreateScreen({ navigation }) {
         name: teamName,
         creator: creator_uid,
       })
-      .then(() => {
-        const team_uid = firebase.firestore().collection("Teams").id;
+      .then((docRef) => {
+        console.log(docRef);
+        const team_uid = docRef.id;
         let timestamp = firebase.firestore.FieldValue.serverTimestamp();
         console.log("in create invite");
         console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
@@ -50,6 +52,7 @@ function TeamsCreateScreen({ navigation }) {
           createDate: timestamp,
           deactivateDate: "",
           teamName: teamName,
+          teamDescription: teamDescription,
           team_uid: team_uid,
         });
         //add invites for everybodu's emails we are adding
@@ -65,12 +68,14 @@ function TeamsCreateScreen({ navigation }) {
             createDate: timestamp,
             deactivateDate: "",
             teamName: teamName,
+            teamDescription: teamDescription,
             team_uid: team_uid,
           });
         }
       })
       .then(() => {
         console.log("Invite created");
+        navigation.navigate("Teams", {reload:true});
       });
   };
 
@@ -133,7 +138,16 @@ function TeamsCreateScreen({ navigation }) {
           onChangeText={setTeamName}
           errorStyle={{ color: "red" }}
           errorMessage={InvitesErrors ? InvitesErrors.email : null}
-        ></Input>
+        />
+        <Input
+          label={"Team Description"}
+          placeholder="Describe your Team"
+          value={teamDescription}
+          onChangeText={setTeamDescription}
+          errorStyle={{ color: "red" }}
+          errorMessage={InvitesErrors ? InvitesErrors.email : null}
+        />
+
         <Input label={"Creator"} value={creator}></Input>
 
         <Input
@@ -141,7 +155,7 @@ function TeamsCreateScreen({ navigation }) {
           placeholder="Invitee email"
           value={inviteeEmail}
           onChangeText={setInviteeEmail}
-        ></Input>
+        />
         <Button
           buttonStyle={styles.standardButton}
           title="Add to Team"
