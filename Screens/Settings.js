@@ -12,8 +12,8 @@ import { AuthContext } from "../utils/authContext";
 import { useEffect, useState, useContext } from "react";
 import styles from "../utils/styles";
 import {ListItem, Button} from "react-native-elements"
-
-
+import auth from "@react-native-firebase/auth";
+import * as SecureStore from "expo-secure-store";
 
 
 

@@ -8,11 +8,11 @@ import {
     Button,
     } from "react-native-elements";
 
-    import { AuthContext } from "../utils/authContext";
-    import auth from "@react-native-firebase/auth";
-    import firestore from "@react-native-firebase/firestore";
+import { AuthContext } from "../utils/authContext";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
-    const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
     const [displayName, setDisplayName] = useState("");
     const [emailAddress, setemailAddress] = useState("");
     const [password, setPassword] = useState("");
@@ -123,6 +123,7 @@ import {
             <Input
             label={"Name"}
             placeholder="First Last"
+            autoCapitalize="words"
             value={displayName}
             onChangeText={setDisplayName}
             errorStyle={{ color: "red" }}
@@ -131,6 +132,7 @@ import {
             <Input
             label={"Email"}
             placeholder="Email address..."
+            autoCapitalize="none"
             value={emailAddress}
             onChangeText={setemailAddress}
             errorStyle={{ color: "red" }}
