@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import "react-native-gesture-handler";
+
 import React, { useState, useEffect, useContext, useMemo, useReducer } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import MainTabNavigator from "./Navigation/MainTabNavigator";
 import * as SecureStore from "expo-secure-store";
@@ -14,8 +14,9 @@ import { reducer, initialState } from "./utils/reducer";
 import SignInScreen from "./Screens/SignIn";
 import SignUpScreen from "./Screens/SignUp";
 import SplashScreen from "./Screens/Splash";
+import 'react-native-gesture-handler';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default App = ({ navigation }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
