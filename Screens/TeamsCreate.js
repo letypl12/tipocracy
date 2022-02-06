@@ -129,8 +129,8 @@ function TeamsCreateScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container_std}>
-      <ScrollView>
+    <View style={styles.container}>
+
         <Input
           label={"Team"}
           placeholder="Name your Team"
@@ -150,23 +150,33 @@ function TeamsCreateScreen({ navigation }) {
 
         <Input label={"Creator"} value={creator}></Input>
 
-        <Input
-          label={"Invitee"}
-          placeholder="Invitee email"
-          value={inviteeEmail}
-          onChangeText={setInviteeEmail}
-        />
-        <Button
-          buttonStyle={styles.standardButton}
-          title="Add to Team"
-          onPress={() => handleAddFriend()}
-        />
+        <View style={{flex:1, flexDirection:'row'}}>
+          <View style={{flex:.8, flexDirection:'column'}}>
+              <Input
+              label={"Invitee"}
+              autoCapitalize="none"
+              placeholder="Invitee email"
+              value={inviteeEmail}
+              onChangeText={setInviteeEmail}
+              />
+          </View>
+          <View style={{flex:.2, flexDirection:'column'}}>
+              <Button
+              buttonStyle={styles.standardButton}
+              title="Add"
+              onPress={() => handleAddFriend()}
+              />
+          </View>          
+        </View>
+
+
 
         <FlatList
           label="Invitees"
           data={members}
           renderItem={renderItem}
-          keyExtractor={(item) => item.email}
+          keyExtractor={(item, index) => index}
+          style={{flex:1, margin:20, height:100}}
         />
 
         <Button
@@ -175,7 +185,7 @@ function TeamsCreateScreen({ navigation }) {
           title="Create Team"
           onPress={() => addTeam()}
         />
-      </ScrollView>
+
     </View>
   );
 }

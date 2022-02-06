@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 
     
     setFontSizeOne: {
-        fontSize: 25,
+        fontSize: normalize(25),
     },
 
     standardButton: {
@@ -120,7 +120,10 @@ const styles = StyleSheet.create({
         color:'black',
     },   
     
-
+    item_email: {
+        padding:5,
+        fontSize: normalize(12)
+    }
 
 
 });
