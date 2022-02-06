@@ -8,13 +8,14 @@ import {
   TextInput,
   ActivityIndicator,
   FlatList,
+  ScrollView,
 } from "react-native";
 import { CheckBox, Icon, Card, Input } from "react-native-elements";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import styles from "../utils/styles";
-import { ScrollView } from "react-native-gesture-handler";
+
 import { validateAll } from "indicative/validator";
 
 function TeamsCreateScreen({ navigation }) {
