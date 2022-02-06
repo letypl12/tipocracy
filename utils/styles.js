@@ -45,14 +45,14 @@ const styles = StyleSheet.create({
     },    
 
     textBase:{
-        padding:10,
+        padding:1,
         // margin:10,
     },
     
     textH1:{
-        padding:10,
+        padding:5,
         //margin:10,
-        fontSize: normalize(24),
+        fontSize: normalize(18),
     },
 
     buttonBase:{
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     teamListItem: {
         padding: 2,
         color:'black',
+
     },   
     
     item_email: {

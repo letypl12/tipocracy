@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   FlatList,
+  ScrollView
 } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
@@ -96,7 +97,7 @@ const renderTeams = () =>{
     tmpArr.push(
     <FlatList
           data={dataSourceTeams}
-          style={{flex: 1}}
+          style={{ borderColor: '#eee', borderWidth:1, margin:5}}
           renderItem={({ item }) => (
               <ListItem
                     onPress={() => {chooseTeam(item.team_uid)}}
@@ -135,7 +136,7 @@ const renderInvites = () =>{
     tmpArr.push(
       <FlatList
       data={dataSourceInvites}
-      style={{flex: 1}}
+      style={{ borderColor: '#eee', borderWidth:1, margin:5}}
       renderItem={({ item }) => (
           <ListItem
                 onPress={() => {acceptInvite(item.team_uid)}}
@@ -151,7 +152,7 @@ const renderInvites = () =>{
                   {`${item.teamName}`}
                   </ListItem.Title>
                   <ListItem.Subtitle style={{ color: 'black' }}>
-                  {`${item.creator_uid}`}
+                  {`${item.teamDescription}`}
                   </ListItem.Subtitle>                                  
               </ListItem.Content>
               <ListItem.Chevron />
@@ -172,7 +173,7 @@ const renderInvites = () =>{
 
     return (
 
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {renderTeams()}
         {renderInvites()}      
             
@@ -188,7 +189,7 @@ const renderInvites = () =>{
             navigation.navigate("Create A Team");
           }}
         />
-      </View>
+      </ScrollView>
     );
 
 }
