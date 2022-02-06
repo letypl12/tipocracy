@@ -1,103 +1,134 @@
 import React from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   View,
-  Button,
   TextInput,
   FlatList,
 } from "react-native";
-// import { navigation } from '@react-navigation/native';
-import firestore from "@react-native-firebase/firestore";
-// import { query, where} from firebase/firestore
-import { firebase } from "@react-native-firebase/auth";
-import { useEffect, useState, useContext } from "react";
 
-//useEffect to query for teams by invitee and by creator
-// firestore join for two collections, Teams and Invitees
+import firestore from "@react-native-firebase/firestore";
+import { useEffect, useState, useContext } from "react";
+import styles from "../utils/styles";
+import {ListItem, Button} from "react-native-elements"
+
+
+
+
+
 function TeamsScreen({ navigation }) {
-  const [dataSource, setDataSource] = useState([]);
-  const EMAIL = global.userToken.email;
-  const UID = global.userToken.uid;
+
+  // const testData = [
+  //   {teamName:"Tester",team_uid:"Teams1",creator_uid:"fwLz9DnrWOSiPigLFDqBco0b9De2"},
+  //   {teamName:"Tester2",team_uid:"Teams12",creator_uid:"fwLz9DnrWOSiPigLFDqBco0b9De2"},
+  // ]
+  const testData = [{"teamName":"Tester","team_uid":"Teams1","creator_uid":"fwLz9DnrWOSiPigLFDqBco0b9De2"},{"teamName":"Test 1","team_uid":"Teams","creator_uid":"fwLz9DnrWOSiPigLFDqBco0b9De2"}];
+  const [dataSourceTeams, setDataSourceTeams] = useState(testData);
+  const [dataSourceInvites, setDataSourceInvites] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  let myInvites = []
+  let myTeams = []
 
   useEffect(() => {
-    // const getData = () =>{
-    //   firebase.firestore()
-    const getData = () => {
-      firebase
-        .firestore()
+    const getData = async () => {
+      firestore()
         .collection("Invites")
-        .where("email", "==", EMAIL)
+        .where("email", "==", global.userToken.email)
         .get()
         .then((querySnapshot) => {
-          console.log("Total Teams: ", querySnapshot.size);
+          console.log("Firestore Total Teams: ", querySnapshot.size);
 
           querySnapshot.forEach((documentSnapshot) => {
-            let newValue = {
-              team_uid: documentSnapshot.team_uid,
-              teamName: documentSnapshot.teamName,
-              creator_uid: documentSnapshot.creator_uid,
-            };
-            setDataSource((oldArray) => [newValue, ...oldArray]);
+            if (documentSnapshot.get("active") == true){
+              let tmpTeam = {
+                              teamName: documentSnapshot.get("teamName"),
+                              team_uid: documentSnapshot.get("team_uid"),
+                              creator_uid: documentSnapshot.get("creator_uid")
+                            }
+              myTeams.push(tmpTeam)
+              setDataSourceTeams((oldArray) => [tmpTeam, ...oldArray]);                          
+            }else{
+              console.log('there is an invite');
+              myInvites.push({
+                teamName: documentSnapshot.get("teamName"),
+                team_uid: documentSnapshot.get("team_uid"),
+                creator_uid: documentSnapshot.get("creator_uid")
+              })
+            }
           });
-        })
-        .then(() => {
+          // 
+          // setDataSourceInvites((oldArray) => [myInvites, ...oldArray]);
+
+          setDataSourceTeams(myTeams);    
+          console.log('Length of new teams object:' + myTeams.length);   
+          console.log('TEAMS: ' + JSON.stringify(myTeams));
+          console.log('dataSourceTeams: ' + JSON.stringify(dataSourceTeams));
+          //{teamName:'test', team_uid:'test1', creator_uid:'asdf'}
+          
           setIsLoading(false);
-        });
+        })
+
     };
 
     getData();
   }, []);
 
-  const Item = ({ name, creator }) => (
-    <View style={styles.item}>
-      <Text style={styles.item_email}>
-        {name} {creator == UID ? "yes" : "no"}
-      </Text>
-    </View>
-  );
 
-  const renderItem = ({ item }) => (
-    <Item name={item.teamName} creator={item.creator_uid} />
-  );
 
-  return (
-    <View style={styles.container_std}>
-      <Text>My Teams</Text>
-      <Text>Choose a team to work on below.</Text>
-      <FlatList
-        data={dataSource}
-        // data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
 
-      <Button
-        title="Choose A Team"
-        onPress={() => {
-          navigation.navigate("Choose A Team");
-        }}
-      />
-      <Text>Invites</Text>
-      <Text>Accept any open invitations to join a team.</Text>
 
-      <Button
-        title="Create A Team"
-        onPress={() => {
-          navigation.navigate("Create A Team");
-        }}
-      />
-    </View>
-  );
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+    return (
+
+      <View style={{flex:1}}>
+          <Text>My Teams</Text>        
+  
+          <Text>Choose a team to work on below.</Text>        
+          
+
+          <FlatList
+                data={dataSourceTeams}
+                style={{flex: 1, borderColor:'red', borderWidth:5}}
+                renderItem={({ item }) => (
+                    <ListItem
+                          onPress={() => {alert(item.team_uid)}}
+                          chevron={true}
+                          style={{ borderColor: 'red', borderWidth: 1 }}
+                        >
+                        <ListItem.Content>
+                            
+                            <ListItem.Title style={styles.teamListItem}>
+                            {`${item.teamName}`}
+                            </ListItem.Title>
+                            <ListItem.Subtitle style={{ color: 'black' }}>
+                            {`${item.creator_uid}`}
+                            </ListItem.Subtitle>                                  
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                    </ListItem>                                 
+                )}
+                keyExtractor={(item) => item.team_uid.toString()}
+              />          
+
+  
+  
+  
+  
+        <Button
+          title="Create A Team"
+          onPress={() => {
+            navigation.navigate("Create A Team");
+          }}
+        />
+      </View>
+    );
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+
 
 export default TeamsScreen;

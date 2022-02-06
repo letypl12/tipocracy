@@ -63,16 +63,16 @@ const styles = StyleSheet.create({
         marginTop: 50 
     },
 
-    item: {
+    teamListItem: {
         backgroundColor: '#f9c2ff',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
+        color:'black',
     },   
     
-    item_email: {
-        fontSize: 12,
-    },    
+
+
 
 });
 
