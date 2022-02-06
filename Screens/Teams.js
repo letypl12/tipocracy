@@ -87,9 +87,9 @@ const renderTeams = () =>{
   console.log('in renderTeams, the dataSourceTeams.length is: ' + dataSourceTeams.length);
   tmpArr = []
   if (dataSourceTeams.length > 0){
-    tmpArr.push(<Text>My Teams</Text>)
+    tmpArr.push(<Text style={styles.textH1}>My Teams</Text>)
   
-    tmpArr.push(<Text>Choose a team to work on below.</Text>)        
+    tmpArr.push(<Text style={styles.textBase}>Choose a team to work on below.</Text>)        
     
     tmpArr.push(
     <FlatList
@@ -117,7 +117,7 @@ const renderTeams = () =>{
         />   
     )      
   }else{
-    tmpArr.push(<Text>You do not have any teams yet...</Text>)
+    //tmpArr.push(<Text>It looks like you have not accepted any team invites or created a team yet.</Text>)
   }
   return tmpArr
 }
@@ -125,8 +125,8 @@ const renderTeams = () =>{
 const renderInvites = () =>{
   tmpArr = []
   if (dataSourceInvites.length > 0){
-    tmpArr.push(<Text>My Invites</Text>)
-    tmpArr.push(<Text>Accept an Invite to join a team.</Text>)  
+    tmpArr.push(<Text style={styles.textH1}>My Invites</Text>)
+    tmpArr.push(<Text style={styles.textBase}>Accept an Invite to join a team.</Text>)  
     tmpArr.push(
       <FlatList
       data={dataSourceInvites}
@@ -153,7 +153,7 @@ const renderInvites = () =>{
     />   
     )      
   }else{
-    tmpArr.push(<Text>You do not have any invites yet...</Text>)
+    //tmpArr.push(<Text>You do not have any invites yet...</Text>)
   }  
   return tmpArr
 }
@@ -164,16 +164,17 @@ const renderInvites = () =>{
 
     return (
 
-      <View style={{flex:1}}>
+      <View style={styles.container}>
         {renderTeams()}
         {renderInvites()}      
             
 
   
   
-  
-  <Text>Or, create a new team by clicking below.</Text>  
+        <Text style={styles.textH1}>New Team</Text>
+        <Text style={styles.textBase}>Create a new team by clicking below.</Text>  
         <Button
+          style={styles.buttonBase}
           title="Create A Team"
           onPress={() => {
             navigation.navigate("Create A Team");

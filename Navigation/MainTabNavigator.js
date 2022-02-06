@@ -5,8 +5,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import HomeScreen from "../Screens/Home";
+import SettingsScreen from "../Screens/Settings";
 import TeamsScreen from "../Screens/Teams";
-import TeamsChoiceScreen from "../Screens/TeamsChoice";
+import TeamsChoiceScreen from "../Screens/TeamsChoice_deprecated";
 import TeamsCreateScreen from "../Screens/TeamsCreate";
 import TeamsEditScreen from "../Screens/TeamsEdit";
 import TipsScreen from "../Screens/Tips";
@@ -18,7 +19,8 @@ function HomeNav() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Group>
-        <HomeStack.Screen name="Home" component={HomeScreen} />
+        <HomeStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+        <HomeStack.Screen name="Settings" component={SettingsScreen} />        
       </HomeStack.Group>
     </HomeStack.Navigator>
   );
@@ -29,11 +31,10 @@ function TeamsNav() {
   return (
     <TeamsStack.Navigator>
       <TeamsStack.Group>
-        <TeamsStack.Screen name="Teams" component={TeamsScreen} initialParams={{ reload: false }}/>
-        <TeamsStack.Screen name="Choose A Team" component={TeamsChoiceScreen} />
-        <TeamsStack.Screen name="Create A Team" component={TeamsCreateScreen} />
-        <TeamsStack.Screen name="Edit A Team" component={TeamsEditScreen} />
-        <TeamsStack.Screen name="Tips" component={TipsScreen} />
+        <TeamsStack.Screen name="Teams" component={TeamsScreen} initialParams={{ reload: false }} options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
+        <TeamsStack.Screen name="Create A Team" component={TeamsCreateScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
+        <TeamsStack.Screen name="Edit A Team" component={TeamsEditScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
+        <TeamsStack.Screen name="Tips" component={TipsScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
       </TeamsStack.Group>
     </TeamsStack.Navigator>
   );
@@ -57,6 +58,10 @@ const MainTabNavigator = () => {
                 size={size}
               />
             ),
+            headerStyle: {
+              backgroundColor: '#FFE500',
+            },
+            headerTintColor: '#fff',
           }}
         />
         <Tab.Screen
@@ -71,13 +76,18 @@ const MainTabNavigator = () => {
                 size={size}
               />
             ),
+            headerStyle: {
+              backgroundColor: '#FFE500',
+            },
+            headerTintColor: '#fff',
           }}
         />
         <Tab.Screen
-          name="TipsTab"
+          name="Add A Tip"
           component={TipsScreen}
           options={{
             tabBarLabel: "Add A Tip",
+            headerShown: true,
             tabBarIcon: ({ focused, color, size }) => (
               <Ionicons
                 name={focused ? "cash" : "cash-outline"}
@@ -85,12 +95,17 @@ const MainTabNavigator = () => {
                 size={size}
               />
             ),
+            headerStyle: {
+              backgroundColor: '#FFE500',
+            },
+            headerTintColor: '#000',
           }}
         />
         <Tab.Screen
-          name="HistoryTab"
+          name="History"
           component={HistoryScreen}
           options={{
+            headerShown: true,
             tabBarLabel: "History",
             tabBarIcon: ({ focused, color, size }) => (
               <Ionicons
@@ -99,6 +114,10 @@ const MainTabNavigator = () => {
                 size={size}
               />
             ),
+            headerStyle: {
+              backgroundColor: '#FFE500',
+            },
+            headerTintColor: '#000',
           }}
         />
       </Tab.Navigator>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useReducer } from "react";
 import {
   ActivityIndicator,
+  Image,
   Text,
   View,
   Button,
@@ -15,63 +16,41 @@ import * as SecureStore from "expo-secure-store";
 import { reducer, initialState } from "../utils/reducer";
 
 function HomeScreen({ navigation }) {
-  // const [state, dispatch] = useReducer(reducer, initialState);
-  const { signOut } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   // Fetch the token from storage then navigate to our appropriate place
-
-  //   const bootstrapAsync = async () => {
-  //     let userToken;
-  //     try {
-  //       userToken = await SecureStore.getItemAsync('userToken');
-  //       console.log('userToken from SecureStore:' + userToken);
-  //     } catch (e) {
-  //       // Restoring token failed
-  //       console.log('restoring token failed');
-  //     }
-
-  //     // After restoring token, we may need to validate it in production apps
-  //     // This will switch to the App screen or Auth screen and this loading
-  //     // screen will be unmounted and thrown away.
-  //     setUserToken(JSON.parse(userToken));
-  //     console.log('setting isLoading to false');
-  //     setIsLoading(false);
-  //   };
-  //   bootstrapAsync();
-  // }, []);
-
-  const logout = async () => {
-    console.log("in logout");
-    //first signout of firebase auth
-    auth()
-      .signOut()
-      .then(() => console.log("User signed out!"));
-    
-      await SecureStore.deleteItemAsync('userToken')
-    //now clear out values stored in our AuthContext
-    signOut();
-  };
-
-  if (isLoading) {
-    return <ActivityIndicator />;
+  const goToSettings = () => {
+    navigation.navigate("Settings")
   }
+
 
   if (!isLoading) {
     return (
-      <View style={styles.container}>
-        <View style={styles.containerTopRow}>
-          <View style={styles.containerTop}>
-            <TouchableOpacity title="Logout" onPress={() => logout()}>
-              <Ionicons name="log-out" style={styles.containerTopFont} />
-            </TouchableOpacity>
+      <View style={styles.home_container}>
+        <View style={styles.home_containerTopRow}>
+          <View style={styles.home_containerTop}>
+            <View style={{flex:.8, flexDirection:'column'}}>
+              <View style={{flex:1, flexDirection:'row'}}>
+                <Image resizeMethod='resize' resizeMode='contain'  source={require('../images/tipocracy_logo.png')} style={{flex:1, height:'95%'}}/>
+              </View>
+              
+            </View>
+            <View style={{flex:.2, flexDirection:'column'}}>
+              <TouchableOpacity title="Settings" onPress={() => goToSettings()}>
+                <View style={{alignItems:'center'}}>
+                  <Ionicons name="settings" style={styles.home_textTitle} />  
+                </View>
+                <View style={{alignItems:'center'}}>
+                  <Text style={styles.home_textSubTitle}>Settings</Text>
+                </View>            
+              </TouchableOpacity>
+            </View>
+
           </View>
         </View>
 
-        <View style={styles.containerBody}>
+        <View style={styles.home_containerBody}>
           <View style={styles.containerRow}>
-            <Text style={styles.setFontSizeOne}>
+            <Text style={styles.textH1}>
               Hello {global.userToken.name} ,
             </Text>
           </View>

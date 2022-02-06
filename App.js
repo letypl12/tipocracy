@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 
 import React, { useState, useEffect, useContext, useMemo, useReducer } from "react";
+import { StyleSheet, Text, SafeAreaView } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -47,6 +48,13 @@ export default App = ({ navigation }) => {
     bootstrapAsync();
   }, []);
 
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor:'#FFE500'
+    }
+  });
   // In a production app, we need to send some data (usually username, password) to server and get a token
   // We will also need to handle errors if sign in failed
   // After getting token, we need to persist the token using `AsyncStorage`
@@ -126,7 +134,9 @@ export default App = ({ navigation }) => {
   if (stateConditionString(state) == "LOAD_HOME") {
     return (
       <AuthContext.Provider value={authContextValue}>
-        <MainTabNavigator />
+        <SafeAreaView style={styles.container}>
+          <MainTabNavigator />
+        </SafeAreaView>
       </AuthContext.Provider>
     );
   } else {
@@ -138,4 +148,7 @@ export default App = ({ navigation }) => {
       </AuthContext.Provider>
     );
   }
+
+
+  
 };
