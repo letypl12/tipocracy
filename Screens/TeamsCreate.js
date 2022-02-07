@@ -30,6 +30,46 @@ function TeamsCreateScreen({ navigation }) {
   const EMAIL = global.userToken.email;
   const addTeam = async () => {
     //Validate all the data you are sending
+      // https://indicative.adonisjs.com
+      const rules = {
+        displayName: "required|string",
+        email: "required|email",
+        password: "required|string|min:6|max:40|confirmed",
+        };
+
+        const data = {
+        displayName: displayName,
+        email: emailAddress,
+        password: password,
+        password_confirmation: passwordConfirm,
+        };
+
+        const messages = {
+        required: (field) => `${field} is required`,
+        "username.alpha": "Username contains unallowed characters",
+        "email.email": "Please enter a valid email address",
+        "password.min":
+            "Password is too short. Must be greater than 6 characters",
+        "password.confirmed": "Passwords do not match",
+        };
+
+        validateAll(data, rules, messages)
+        .then(async () => {
+            console.log("form validated, sending: " + JSON.stringify(data));
+            await registerUser(data);
+        })
+
+        .catch((err) => {
+            console.log("caught:" + JSON.stringify(err));
+            const formatError = {};
+            for (let myErr of err) {
+            formatError[myErr.field] = myErr.message;
+            }
+            setSignUpErrors(formatError);
+        });
+
+
+
     console.log("in create a team");
     firestore()
       .collection("Teams")
@@ -83,39 +123,42 @@ function TeamsCreateScreen({ navigation }) {
   };
 
   const handleAddFriend = async () => {
-    //Put in validation for the email address here
-    // const rules = {
-    //   email: "required|email",
-    // };
-    // const data = {
-    //   email: emailAddress,
-    // };
-    // const messages = {
-    //   required: (field) => `${field} is required`,
-    //   "email.email": "Please enter a valid email address",
-    // };
-    // // validate(data, rules, messages).then(console.log).catch(console.error);
-    // validateAll(data, rules, messages)
-    //   .then(async () => {
-    //     console.log("in validating");
-    //     // await handleAddFriend(data);
-    //     // signIn({ emailAddress, password });
-    //   })
-    //   .catch((err) => {
-    //     console.log("caught:" + JSON.stringify(err));
+    //validate the email
+    // https://indicative.adonisjs.com
+    const rules = {
+      email: "required|email",
+      };
 
-    //     const formatError = {};
-    //     for (let emailInviteErr of err) {
-    //       formatError[emailInviteErr.field] = emailInviteErr.message;
-    //     }
-    //     setInvitesErrors(formatError);
-    //   });
+      const data = {
+      email: inviteeEmail.toLowerCase(),
+      };
 
-    let newValue = { email: inviteeEmail.toLowerCase() };
-    setMembers((oldArray) => [newValue, ...oldArray]);
-    //clear the email from the form
-    setInviteeEmail("");
+      const messages = {
+      required: (field) => `${field} is required`,
+      "email.email": "Please enter a valid email address",
+      };
+
+      validateAll(data, rules, messages)
+      .then(async () => {
+          console.log("form validated, sending: " + JSON.stringify(data));
+          //update the email list for the team to include the new email
+          let newValue = { email: inviteeEmail.toLowerCase() };
+          setMembers((oldArray) => [newValue, ...oldArray]);
+          //clear the email from the form
+          setInviteeEmail("");
+      })
+
+      .catch((err) => {
+          console.log("caught:" + JSON.stringify(err));
+          const formatError = {};
+          for (let myErr of err) {
+          formatError[myErr.field] = myErr.message;
+          }
+          setInvitesErrors(formatError);
+      });
   };
+
+
   const Item = ({ title }) => (
     <View style={styles.item}>
       <Text style={styles.item_email}>{title}</Text>
@@ -136,7 +179,7 @@ function TeamsCreateScreen({ navigation }) {
           value={teamName}
           onChangeText={setTeamName}
           errorStyle={{ color: "red" }}
-          errorMessage={InvitesErrors ? InvitesErrors.email : null}
+          errorMessage={InvitesErrors ? InvitesErrors.name : null}
         />
         <Input
           label={"Team Description"}
@@ -144,7 +187,7 @@ function TeamsCreateScreen({ navigation }) {
           value={teamDescription}
           onChangeText={setTeamDescription}
           errorStyle={{ color: "red" }}
-          errorMessage={InvitesErrors ? InvitesErrors.email : null}
+          errorMessage={InvitesErrors ? InvitesErrors.description : null}
         />
 
         <Input label={"Creator"} value={creator}></Input>
@@ -158,6 +201,7 @@ function TeamsCreateScreen({ navigation }) {
               placeholder="Invitee email"
               value={inviteeEmail}
               onChangeText={setInviteeEmail}
+              errorMessage={InvitesErrors ? InvitesErrors.email : null}
               />
           </View>
           <View style={{flex:.2, flexDirection:'column'}}>
