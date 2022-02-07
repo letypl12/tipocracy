@@ -107,53 +107,6 @@ function TeamsCreateScreen({ navigation }) {
         }
         setTeamsErrors(formatError);
       });
-
-    // console.log("in create a team");
-    // firestore()
-    //   .collection("Teams")
-    //   .add({
-    //     name: teamName,
-    //     creator: creator_uid,
-    //   })
-    //   .then((docRef) => {
-    //     console.log(docRef);
-    //     const team_uid = docRef.id;
-    //     let timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    //     console.log("in create invite");
-    //     console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
-    //     // add an invite specifiaclly for the creator with active to true
-    //     firebase.firestore().collection("Invites").add({
-    //       email: EMAIL.toLowerCase(),
-    //       creator_uid: creator_uid,
-    //       active: true,
-    //       createDate: timestamp,
-    //       deactivateDate: "",
-    //       teamName: teamName,
-    //       teamDescription: teamDescription,
-    //       team_uid: team_uid,
-    //     });
-    //     //add invites for everybodu's emails we are adding
-    //     for (let i = 0; i < members.length; i++) {
-    //       console.log(
-    //         members.email + creator_uid + timestamp + teamName + team_uid
-    //       );
-    //       console.log(JSON.stringify(members));
-    //       firebase.firestore().collection("Invites").add({
-    //         email: members[i].email,
-    //         creator_uid: creator_uid,
-    //         active: false,
-    //         createDate: timestamp,
-    //         deactivateDate: "",
-    //         teamName: teamName,
-    //         teamDescription: teamDescription,
-    //         team_uid: team_uid,
-    //       });
-    //     }
-    //   })
-    //   .then(() => {
-    //     console.log("Invite created");
-    //     navigation.navigate("Teams", {reload:true});
-    //   });
   };
 
   const handleInvites = () => {
