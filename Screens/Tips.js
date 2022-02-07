@@ -11,7 +11,7 @@ function TipsScreen({ navigation }) {
         style={styles.input}
         onChangeText={onChangeNumber}
         value={number}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       ></TextInput>
       <Button title="Enter"></Button>
       <Button title="Go to Team" onPress={() => navigation.goBack()} />

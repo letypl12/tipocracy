@@ -61,6 +61,13 @@ const styles = StyleSheet.create({
         color: '#007AFF',
     },    
 
+    buttonSmall:{
+        padding:1,
+        //margin:10,
+        color: '#007AFF',
+        fontSize: normalize(8),
+    },        
+
     home_container: {
         flex: 1,
         backgroundColor: "#fff",

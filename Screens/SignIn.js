@@ -124,6 +124,7 @@ const SignInScreen = ({ navigation }) => {
                     label={'Email'}
                     placeholder="Email"
                     autoCapitalize="none"
+                    keyboardType='email-address'
                     value={emailAddress}
                     onChangeText={setemailAddress}
                     errorStyle={{ color: 'red' }}

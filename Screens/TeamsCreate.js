@@ -154,6 +154,7 @@ function TeamsCreateScreen({ navigation }) {
               <Input
               label={"Invitee"}
               autoCapitalize="none"
+              keyboardType='email-address'
               placeholder="Invitee email"
               value={inviteeEmail}
               onChangeText={setInviteeEmail}

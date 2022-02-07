@@ -136,6 +136,7 @@ const SignUpScreen = ({ navigation }) => {
             label={"Email"}
             placeholder="Email address..."
             autoCapitalize="none"
+            keyboardType='email-address'
             value={emailAddress}
             onChangeText={setemailAddress}
             errorStyle={{ color: "red" }}

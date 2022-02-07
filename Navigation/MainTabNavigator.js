@@ -7,7 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeScreen from "../Screens/Home";
 import SettingsScreen from "../Screens/Settings";
 import TeamsScreen from "../Screens/Teams";
-import TeamsChoiceScreen from "../Screens/TeamsChoice_deprecated";
+import ProfileScreen from "../Screens/Profile";
 import TeamsCreateScreen from "../Screens/TeamsCreate";
 import TeamsEditScreen from "../Screens/TeamsEdit";
 import TipsScreen from "../Screens/Tips";
@@ -20,7 +20,8 @@ function HomeNav() {
     <HomeStack.Navigator>
       <HomeStack.Group>
         <HomeStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-        <HomeStack.Screen name="Settings" component={SettingsScreen} />        
+        <HomeStack.Screen name="Settings" component={SettingsScreen} options={{headerStyle:{backgroundColor:'#FFE500'}}}/> 
+        <HomeStack.Screen name="Profile" component={ProfileScreen} initialParams={{ reload: false }} options={{headerStyle:{backgroundColor:'#FFE500'}}}/>        
       </HomeStack.Group>
     </HomeStack.Navigator>
   );

@@ -35,7 +35,9 @@ function SettingsScreen({ route, navigation }) {
     signOut();
   };
 
-  
+  const editProfile = () =>{
+    navigation.navigate("Profile")
+  }
 
  
 
@@ -47,7 +49,15 @@ function SettingsScreen({ route, navigation }) {
 
       <View style={styles.container}>
 
-  
+
+        <Text style={styles.textH1}>Personal Profile</Text>
+        <Text style={styles.textBase}>Create your avatar, choose your pronouns, and more.</Text>  
+        <Button
+          style={styles.buttonBase}
+          title="Edit Profile"
+          onPress={editProfile}
+        />       
+
         <Text style={styles.textH1}>Sign Out</Text>
         <Text style={styles.textBase}>Click the button below to sign out completely from TIPocracy.</Text>  
         <Button
