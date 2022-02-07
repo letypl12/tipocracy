@@ -77,6 +77,7 @@ function TeamsScreen({ route, navigation }) {
 
 const chooseTeam = (team_uid) =>{
   //1. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
+  
   //2. update the global.userToken the same way
   //3. navigate to home, and have home reload to show the new team name
   //4. on home, you'll need to go to firestore to get the team name and description, and don't show the 'choose team' button.
