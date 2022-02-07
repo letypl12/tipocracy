@@ -25,97 +25,135 @@ function TeamsCreateScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [inviteeEmail, setInviteeEmail] = useState("");
   const [InvitesErrors, setInvitesErrors] = useState({});
+  const [TeamsErrors, setTeamsErrors] = useState({});
 
   const creator_uid = global.userToken.uid;
   const EMAIL = global.userToken.email;
   const addTeam = async () => {
     //Validate all the data you are sending
-      // https://indicative.adonisjs.com
-      const rules = {
-        displayName: "required|string",
-        email: "required|email",
-        password: "required|string|min:6|max:40|confirmed",
-        };
+    // https://indicative.adonisjs.com
+    const rules = {
+      name: "required|string|min:4|max:15",
+      description: "required|string|min:6|max:40",
+    };
 
-        const data = {
-        displayName: displayName,
-        email: emailAddress,
-        password: password,
-        password_confirmation: passwordConfirm,
-        };
+    const data = {
+      name: teamName,
+      description: teamDescription,
+    };
 
-        const messages = {
-        required: (field) => `${field} is required`,
-        "username.alpha": "Username contains unallowed characters",
-        "email.email": "Please enter a valid email address",
-        "password.min":
-            "Password is too short. Must be greater than 6 characters",
-        "password.confirmed": "Passwords do not match",
-        };
+    const messages = {
+      required: (field) => `${field} is required`,
+      "name.alpha": "The name of the team contains unallowed characters",
+      "description.alpha": "Provide valid description",
+    };
 
-        validateAll(data, rules, messages)
-        .then(async () => {
-            console.log("form validated, sending: " + JSON.stringify(data));
-            await registerUser(data);
-        })
-
-        .catch((err) => {
-            console.log("caught:" + JSON.stringify(err));
-            const formatError = {};
-            for (let myErr of err) {
-            formatError[myErr.field] = myErr.message;
+    validateAll(data, rules, messages)
+      .then(async () => {
+        console.log("form validated, sending: " + JSON.stringify(data));
+        console.log("in create a team");
+        firestore()
+          .collection("Teams")
+          .add({
+            name: teamName,
+            creator: creator_uid,
+          })
+          .then((docRef) => {
+            console.log(docRef);
+            const team_uid = docRef.id;
+            let timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            console.log("in create invite");
+            console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
+            // add an invite specifiaclly for the creator with active to true
+            firebase.firestore().collection("Invites").add({
+              email: EMAIL.toLowerCase(),
+              creator_uid: creator_uid,
+              active: true,
+              createDate: timestamp,
+              deactivateDate: "",
+              teamName: teamName,
+              teamDescription: teamDescription,
+              team_uid: team_uid,
+            });
+            //add invites for everybodu's emails we are adding
+            for (let i = 0; i < members.length; i++) {
+              console.log(
+                members.email + creator_uid + timestamp + teamName + team_uid
+              );
+              console.log(JSON.stringify(members));
+              firebase.firestore().collection("Invites").add({
+                email: members[i].email,
+                creator_uid: creator_uid,
+                active: false,
+                createDate: timestamp,
+                deactivateDate: "",
+                teamName: teamName,
+                teamDescription: teamDescription,
+                team_uid: team_uid,
+              });
             }
-            setSignUpErrors(formatError);
-        });
-
-
-
-    console.log("in create a team");
-    firestore()
-      .collection("Teams")
-      .add({
-        name: teamName,
-        creator: creator_uid,
-      })
-      .then((docRef) => {
-        console.log(docRef);
-        const team_uid = docRef.id;
-        let timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        console.log("in create invite");
-        console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
-        // add an invite specifiaclly for the creator with active to true
-        firebase.firestore().collection("Invites").add({
-          email: EMAIL.toLowerCase(),
-          creator_uid: creator_uid,
-          active: true,
-          createDate: timestamp,
-          deactivateDate: "",
-          teamName: teamName,
-          teamDescription: teamDescription,
-          team_uid: team_uid,
-        });
-        //add invites for everybodu's emails we are adding
-        for (let i = 0; i < members.length; i++) {
-          console.log(
-            members.email + creator_uid + timestamp + teamName + team_uid
-          );
-          console.log(JSON.stringify(members));
-          firebase.firestore().collection("Invites").add({
-            email: members[i].email,
-            creator_uid: creator_uid,
-            active: false,
-            createDate: timestamp,
-            deactivateDate: "",
-            teamName: teamName,
-            teamDescription: teamDescription,
-            team_uid: team_uid,
+          })
+          .then(() => {
+            console.log("Invite created");
+            navigation.navigate("Teams", { reload: true });
           });
-        }
       })
-      .then(() => {
-        console.log("Invite created");
-        navigation.navigate("Teams", {reload:true});
+
+      .catch((err) => {
+        console.log("caught:" + JSON.stringify(err));
+        const formatError = {};
+        for (let myErr of err) {
+          formatError[myErr.field] = myErr.message;
+        }
+        setTeamsErrors(formatError);
       });
+
+    // console.log("in create a team");
+    // firestore()
+    //   .collection("Teams")
+    //   .add({
+    //     name: teamName,
+    //     creator: creator_uid,
+    //   })
+    //   .then((docRef) => {
+    //     console.log(docRef);
+    //     const team_uid = docRef.id;
+    //     let timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    //     console.log("in create invite");
+    //     console.log(EMAIL + creator_uid + timestamp + teamName + team_uid);
+    //     // add an invite specifiaclly for the creator with active to true
+    //     firebase.firestore().collection("Invites").add({
+    //       email: EMAIL.toLowerCase(),
+    //       creator_uid: creator_uid,
+    //       active: true,
+    //       createDate: timestamp,
+    //       deactivateDate: "",
+    //       teamName: teamName,
+    //       teamDescription: teamDescription,
+    //       team_uid: team_uid,
+    //     });
+    //     //add invites for everybodu's emails we are adding
+    //     for (let i = 0; i < members.length; i++) {
+    //       console.log(
+    //         members.email + creator_uid + timestamp + teamName + team_uid
+    //       );
+    //       console.log(JSON.stringify(members));
+    //       firebase.firestore().collection("Invites").add({
+    //         email: members[i].email,
+    //         creator_uid: creator_uid,
+    //         active: false,
+    //         createDate: timestamp,
+    //         deactivateDate: "",
+    //         teamName: teamName,
+    //         teamDescription: teamDescription,
+    //         team_uid: team_uid,
+    //       });
+    //     }
+    //   })
+    //   .then(() => {
+    //     console.log("Invite created");
+    //     navigation.navigate("Teams", {reload:true});
+    //   });
   };
 
   const handleInvites = () => {
@@ -127,37 +165,36 @@ function TeamsCreateScreen({ navigation }) {
     // https://indicative.adonisjs.com
     const rules = {
       email: "required|email",
-      };
+    };
 
-      const data = {
+    const data = {
       email: inviteeEmail.toLowerCase(),
-      };
+    };
 
-      const messages = {
+    const messages = {
       required: (field) => `${field} is required`,
       "email.email": "Please enter a valid email address",
-      };
+    };
 
-      validateAll(data, rules, messages)
+    validateAll(data, rules, messages)
       .then(async () => {
-          console.log("form validated, sending: " + JSON.stringify(data));
-          //update the email list for the team to include the new email
-          let newValue = { email: inviteeEmail.toLowerCase() };
-          setMembers((oldArray) => [newValue, ...oldArray]);
-          //clear the email from the form
-          setInviteeEmail("");
+        console.log("form validated, sending: " + JSON.stringify(data));
+        //update the email list for the team to include the new email
+        let newValue = { email: inviteeEmail.toLowerCase() };
+        setMembers((oldArray) => [newValue, ...oldArray]);
+        //clear the email from the form
+        setInviteeEmail("");
       })
 
       .catch((err) => {
-          console.log("caught:" + JSON.stringify(err));
-          const formatError = {};
-          for (let myErr of err) {
+        console.log("caught:" + JSON.stringify(err));
+        const formatError = {};
+        for (let myErr of err) {
           formatError[myErr.field] = myErr.message;
-          }
-          setInvitesErrors(formatError);
+        }
+        setInvitesErrors(formatError);
       });
   };
-
 
   const Item = ({ title }) => (
     <View style={styles.item}>
@@ -172,64 +209,60 @@ function TeamsCreateScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Input
+        label={"Team"}
+        placeholder="Name your Team"
+        value={teamName}
+        onChangeText={setTeamName}
+        errorStyle={{ color: "red" }}
+        errorMessage={TeamsErrors ? TeamsErrors.name : null}
+      />
+      <Input
+        label={"Team Description"}
+        placeholder="Describe your Team"
+        value={teamDescription}
+        onChangeText={setTeamDescription}
+        errorStyle={{ color: "red" }}
+        errorMessage={TeamsErrors ? TeamsErrors.description : null}
+      />
 
-        <Input
-          label={"Team"}
-          placeholder="Name your Team"
-          value={teamName}
-          onChangeText={setTeamName}
-          errorStyle={{ color: "red" }}
-          errorMessage={InvitesErrors ? InvitesErrors.name : null}
-        />
-        <Input
-          label={"Team Description"}
-          placeholder="Describe your Team"
-          value={teamDescription}
-          onChangeText={setTeamDescription}
-          errorStyle={{ color: "red" }}
-          errorMessage={InvitesErrors ? InvitesErrors.description : null}
-        />
+      <Input label={"Creator"} value={creator}></Input>
 
-        <Input label={"Creator"} value={creator}></Input>
-
-        <View style={{flex:1, flexDirection:'row'}}>
-          <View style={{flex:.8, flexDirection:'column'}}>
-              <Input
-              label={"Invitee"}
-              autoCapitalize="none"
-              keyboardType='email-address'
-              placeholder="Invitee email"
-              value={inviteeEmail}
-              onChangeText={setInviteeEmail}
-              errorMessage={InvitesErrors ? InvitesErrors.email : null}
-              />
-          </View>
-          <View style={{flex:.2, flexDirection:'column'}}>
-              <Button
-              buttonStyle={styles.buttonBase}
-              title="Add"
-              onPress={() => handleAddFriend()}
-              />
-          </View>          
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={{ flex: 0.8, flexDirection: "column" }}>
+          <Input
+            label={"Invitee"}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Invitee email"
+            value={inviteeEmail}
+            onChangeText={setInviteeEmail}
+            errorMessage={InvitesErrors ? InvitesErrors.email : null}
+          />
         </View>
+        <View style={{ flex: 0.2, flexDirection: "column" }}>
+          <Button
+            buttonStyle={styles.buttonBase}
+            title="Add"
+            onPress={() => handleAddFriend()}
+          />
+        </View>
+      </View>
 
+      <FlatList
+        label="Invitees"
+        data={members}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index}
+        style={{ flex: 1, margin: 20, height: 100 }}
+      />
 
-
-        <FlatList
-          label="Invitees"
-          data={members}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index}
-          style={{flex:1, margin:20, height:100}}
-        />
-
-        <Button
-          buttonStyle={styles.buttonBase}
-          backgroundColor="#03A9F4"
-          title="Create Team"
-          onPress={() => addTeam()}
-        />
-
+      <Button
+        buttonStyle={styles.buttonBase}
+        backgroundColor="#03A9F4"
+        title="Create Team"
+        onPress={() => addTeam()}
+      />
     </View>
   );
 }
