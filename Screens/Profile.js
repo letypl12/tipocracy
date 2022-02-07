@@ -24,14 +24,56 @@ function ProfileScreen({ route, navigation }) {
   const [dataSource, setDataSource] = useState([]);
   const [ProfileErrors, setProfileErrors] = useState({});
   const [phoneNumber, setPhoneNumber] = useState('');
-  
+  const [pronouns, setPronouns] = useState('');
+
+
   const avatarOptions = [
-                            {title: 'Hair', name:'hair', capname: 'Hair'},
-                            {title: 'Hair Color', name:'hairColor', capname: 'HairColor'},
-                            {title: 'Accessories', name:'accessory', capname: 'Accessory'},
-                            {title: 'Clothes', name:'clothing', capname: 'Clothing'},
-                            {title: 'Eyes', name:'eyes', capname: 'Eyes'},
-                        ]
+    {
+        title: 'Hair', 
+        name:'hair', 
+        setFunc: 'setHair', 
+        optionsName: 'hairOptions', 
+        expandedName: 'hairExpanded', 
+        expandedFunc: 'setHairExpanded',
+        options: ['none', 'long', 'bun', 'short', 'pixie', 'balding', 'buzz', 'afro', 'bob', 'mohawk']
+    },
+    {
+        title: 'Hair Color', 
+        name:'hairColor', 
+        setFunc: 'setHairColor', 
+        optionsName: 'hairColorOptions', 
+        expandedName: 'hairColorExpanded', 
+        expandedFunc: 'sethairColorExpanded',
+        options: ['blonde', 'orange', 'black', 'white', 'brown', 'blue', 'pink']
+    },
+    {
+        title: 'Accessories', 
+        name:'accessory', 
+        setFunc: 'setAccessory', 
+        optionsName: 'acessoryOptions', 
+        expandedName: 'accessoryExpanded', 
+        expandedFunc: 'setAccessoryExpanded',
+        options: ['none', 'roundGlasses', 'tinyGlasses', 'shades', 'faceMask', 'hoopEarrings']
+    },
+    {
+        title: 'Clothes', 
+        name:'clothing', 
+        setFunc: 'setClothing', 
+        optionsName: 'clothingOptions', 
+        expandedName: 'clothingExpanded', 
+        expandedFunc: 'setClothingExpanded',
+        options: ['naked', 'shirt', 'dressShirt', 'vneck', 'tankTop', 'dress', 'denimJacket', 'hoodie', 'chequeredShirt', 'chequeredShirtDark']
+    },
+    {
+        title: 'Eyes', 
+        name:'eyes', 
+        setFunc: 'setEyes', 
+        optionsName: 'eyesOptions', 
+        expandedName: 'eyesExpanded', 
+        expandedFunc: 'setEyesExpanded',
+        options: ['normal', 'leftTwitch', 'happy', 'content', 'squint', 'simple', 'dizzy', 'wink', 'hearts', 'crazy', 'cute', 'dollars', 'stars', 'cyborg', 'simplePatch', 'piratePatch']
+    },
+]
 
   const hairOptions = ['none', 'long', 'bun', 'short', 'pixie', 'balding', 'buzz', 'afro', 'bob', 'mohawk'];
   const [hair, setHair] = useState('none');
@@ -106,6 +148,12 @@ function ProfileScreen({ route, navigation }) {
  const saveProfile = () =>{
     console.log('in saveProfile');
     setIsLoading(true); 
+    // ToDo
+    //1. save the firebase auth changes (ie: password, name, email)
+    //2. Save the profile in firestore profile (pronouns, phone, avatar)
+    //3. create a global.profile object to use on the home page and elsewhere we want the avatar.
+
+    
      alert('Profile Saved')
      setIsLoading(false);
      navigation.navigate('Home')
@@ -129,6 +177,16 @@ function ProfileScreen({ route, navigation }) {
     })
     return tmpArr
 }
+
+const expandThis = (action, myThing, myThingFunc) =>{
+    if (action == 'check'){
+        return({myThing}) 
+    }else{
+        //it is expando press
+        // eval(`$myThingFunc(!{`myThing``})`);
+    }
+
+}
   if (isLoading) {
     return <ActivityIndicator />;
   }
@@ -151,33 +209,50 @@ function ProfileScreen({ route, navigation }) {
             errorStyle={{ color: "red" }}
             errorMessage={ProfileErrors ? ProfileErrors.phone : null}
             />
+            <Input
+            label={"Pronouns"}
+            placeholder="they/them"
+            value={pronouns}
+            onChangeText={setPronouns}
+            keyboardType='default'
+            errorStyle={{ color: "red" }}
+            errorMessage={ProfileErrors ? ProfileErrors.pronouns : null}
+            />
 
         <View style={{flexDirection:'row'}}>
             <View style={{flex:.5, flexDirection:'column'}}>
                 <Text style={styles.textH1}>Avatar</Text>
-
-                {/* {avatarOptions.map((avatarOption, i) => (
+                {/* {
+                    avatarOptions.map((avatarOption, i) => (
                         <ListItem.Accordion
-                        isExpanded={{Expanded}}
-                        onPress={() => {setHairExpanded(!hairExpanded); }}
-                        content={
-                            <>
-                            <ListItem.Content>
-                                <ListItem.Title>Hair</ListItem.Title>
-                            </ListItem.Content>
-                            </>
-                        }
+                            isExpanded={expandThis('check', avatarOption.expandedName)}
+                            onPress={() => {expandThis('press', avatarOption.expandedName, avatarOption.expandedFunc)}}
+                            content={
+                                <>
+                                <ListItem.Content>
+                                    <ListItem.Title>{avatarOption.title}</ListItem.Title>
+                                </ListItem.Content>
+                                </>
+                            }
                         >
-                        {hairOptions.map((myThing, i) => (
-                            <ListItem key={i} onPress={()=>setHair(myThing)} bottomDivider>
-                            <ListItem.Content>
-                                <ListItem.Title>{myThing}</ListItem.Title>
-                            </ListItem.Content>
-                            <ListItem.Chevron />
-                            </ListItem>
-                        ))}
-                        </ListItem.Accordion>
-                ))} */}
+
+                    
+                            {avatarOption.options.map((myThing, i) => (
+                                    <ListItem 
+                                        key={avatarOption.name+i} 
+                                        onPress={()=>{avatarOption.setFunc(myThing)}} 
+                                        bottomDivider
+                                    >
+                                    <ListItem.Content>
+                                        <ListItem.Title>{myThing}</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron />
+                                    </ListItem>
+                            ))}                
+
+                        </ListItem.Accordion> 
+                    )
+                    )} */}
                 <ListItem.Accordion
                 isExpanded={hairExpanded}
                 onPress={() => {setHairExpanded(!hairExpanded); }}
@@ -271,19 +346,19 @@ function ProfileScreen({ route, navigation }) {
                     body="breasts"
                     clothing={clothing}
                     clothingColor="black"
-                    eyebrows="angry"
-                    eyes="wink"
-                    facialHair="mediumBeard"
-                    graphic="vue"
+                    eyebrows="raised"
+                    eyes="cute"
+                    facialHair="none"
+                    graphic="rainbow"
                     hair={hair}
                     hairColor={hairColor}
                     hat="none"
                     hatColor="green"
-                    lashes={false}
+                    lashes={true}
                     lipColor="purple"
                     mouth="open"
                     showBackground={true}
-                    size={100}
+                    size={200}
                     skinTone="brown"
                 />                
             </View>            

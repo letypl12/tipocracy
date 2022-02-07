@@ -15,13 +15,35 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import * as SecureStore from "expo-secure-store";
 import { reducer, initialState } from "../utils/reducer";
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
-
+  const {team_uid} = route.params;
   const goToSettings = () => {
     navigation.navigate("Settings")
   }
 
+  const renderHomeMessage = () =>{
+    console.log('in renderHomeMewssage, with team_uid: ' + team_uid);
+    let tmpArr = [];
+
+
+    if (team_uid == ''){
+      tmpArr.push(<View style={styles.containerRow}>
+              <Button
+              title="Choose A Team To Get Started"
+              onPress={() => navigation.navigate("Teams")}
+              />
+            
+            </View>)
+    }else{
+      tmpArr.push(<View style={styles.containerRow}>
+
+            <Text>Your team is {team_uid} </Text>
+            </View>)      
+    }
+
+    return tmpArr
+  }
 
   if (!isLoading) {
     return (
@@ -55,12 +77,7 @@ function HomeScreen({ navigation }) {
             </Text>
           </View>
 
-          <View style={styles.containerRow}>
-            <Button
-              title="Choose A Team To Get Started"
-              onPress={() => navigation.navigate("Teams")}
-            />
-          </View>
+          {renderHomeMessage()}
         </View>
       </View>
     );

@@ -19,7 +19,7 @@ function HomeNav() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Group>
-        <HomeStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+        <HomeStack.Screen name="Home" component={HomeScreen} initialParams={{ team_uid: '' }} options={{headerShown: false}}/>
         <HomeStack.Screen name="Settings" component={SettingsScreen} options={{headerStyle:{backgroundColor:'#FFE500'}}}/> 
         <HomeStack.Screen name="Profile" component={ProfileScreen} initialParams={{ reload: false }} options={{headerStyle:{backgroundColor:'#FFE500'}}}/>        
       </HomeStack.Group>

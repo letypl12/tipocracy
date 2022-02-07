@@ -80,6 +80,8 @@ const chooseTeam = (team_uid) =>{
   //2. update the global.userToken the same way
   //3. navigate to home, and have home reload to show the new team name
   //4. on home, you'll need to go to firestore to get the team name and description, and don't show the 'choose team' button.
+  alert('Team chosen.')
+  navigation.navigate('Home', {team_uid:team_uid})
 }
 
 const acceptInvite = (team_uid) =>{
@@ -92,7 +94,7 @@ const renderTeams = () =>{
   if (dataSourceTeams.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Teams</Text>)
   
-    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.</Text>)        
+    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.  Long-press to edit the team.</Text>)        
     
     tmpArr.push(
     <FlatList
@@ -119,7 +121,7 @@ const renderTeams = () =>{
                   <ListItem.Chevron />
               </ListItem>                                 
           )}
-          keyExtractor={(item) => item.team_uid.toString()}
+          keyExtractor={(item, i) => item.team_uid + i}
         />   
     )      
   }else{
