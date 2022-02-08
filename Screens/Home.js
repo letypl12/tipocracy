@@ -18,9 +18,8 @@ import { reducer, initialState } from "../utils/reducer";
 function HomeScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const {team_uid} = route.params;
-  const goToSettings = () => {
-    navigation.navigate("Settings")
-  }
+
+  
 
   const renderHomeMessage = () =>{
     console.log('in renderHomeMewssage, with team_uid: ' + team_uid);
@@ -28,10 +27,12 @@ function HomeScreen({ route, navigation }) {
 
 
     if (team_uid == ''){
-      tmpArr.push(<View style={styles.containerRow}>
+      tmpArr.push(
+            <View style={styles.containerRow}>
               <Button
               title="Choose A Team To Get Started"
               onPress={() => navigation.navigate("Teams")}
+              key={"chooseTeam"}
               />
             
             </View>)
@@ -52,12 +53,12 @@ function HomeScreen({ route, navigation }) {
           <View style={styles.home_containerTop}>
             <View style={{flex:.8, flexDirection:'column'}}>
               <View style={{flex:1, flexDirection:'row'}}>
-                <Image resizeMethod='resize' resizeMode='contain'  source={require('../images/tipocracy_logo.png')} style={{flex:1, height:'95%'}}/>
+                <Image key={"logo"} resizeMethod='resize' resizeMode='contain'  source={require('../images/tipocracy_logo.png')} style={{flex:1, height:'95%'}}/>
               </View>
               
             </View>
             <View style={{flex:.2, flexDirection:'column'}}>
-              <TouchableOpacity title="Settings" onPress={() => goToSettings()}>
+              <TouchableOpacity title="Settings" onPress={() => {navigation.navigate("Settings")}}>
                 <View style={{alignItems:'center'}}>
                   <Ionicons name="settings" style={styles.home_textTitle} />  
                 </View>

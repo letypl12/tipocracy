@@ -75,7 +75,7 @@ function TeamsScreen({ route, navigation }) {
 const chooseTeam = async (data) => {
   console.log('in chooseTeam' + data.team_uid + global.userToken.uid + global.userToken.email + global.userToken.name);
   setIsLoading(true);
-  //1b. Update firestore Users record
+  //1a. Update firestore Users record
     firestore()
     .collection("Users")
     .doc(global.userToken.uid)
@@ -88,7 +88,7 @@ const chooseTeam = async (data) => {
 
 
     .then(async () => {
-        //1. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
+        //1b. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
         //first check if the userToken exists in SecureStore (meaning they clicked "Remember Me")
         //if it does not, you can skip this step.
       SecureStore.getItemAsync('userToken')
@@ -102,17 +102,18 @@ const chooseTeam = async (data) => {
       })
       .then(async () =>{
         console.log('in 2')
-        //1a. save teamname and description as well in global.
+        //2. save teamname and description as well in global and create a new teamToken to restore a user that is remember-me.
         global.teamToken = data;
         SecureStore.setItemAsync('teamToken', JSON.stringify(data))
    
         .then(() => {
           console.log('in 3')
-            //2. update the global.userToken the same way
+          //3. update the global.userToken the same way
           global.userToken.defaultTeam = data.team_uid;
         })
 
         .then(() =>{
+          //4. navigate to home, and have home reload to show the new team name
           console.log('in 4')
           setIsLoading(false)
           navigation.navigate('Home', {team_uid:data.team_uid})
@@ -123,16 +124,31 @@ const chooseTeam = async (data) => {
       console.log("FIREBASE ERROR:" + error);
       setIsLoading(false);
   }) 
-
-
-  //3. navigate to home, and have home reload to show the new team name
-
-  //4. on home, you'll need to go to firestore to get the team name and description, and don't show the 'choose team' button.
-
 }
 
 const acceptInvite = (team_uid) =>{
   //1. update the Invite record for the user's uid and this team_uid for "active" to be true.
+  firestore()
+  .collection("Invites")
+  .where("email", "==", global.userToken.email)
+  .where("team_uid", "==", team_uid)
+  .get()
+  .then((querySnapshot) => {
+    console.log("Firestore accepting # of invites: ", querySnapshot.size);
+
+    querySnapshot.forEach((documentSnapshot) => {
+      let docRef = (documentSnapshot.id)
+      firestore()
+      .collection("Invites")
+      .doc(docRef)
+      .update({
+          active: true,
+       })
+
+    });
+  });
+  navigation.navigate("Teams", {reload:true})
+
 }
 
 const renderTeams = () =>{
@@ -222,7 +238,7 @@ const renderInvites = () =>{
 
     return (
 
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         {renderTeams()}
         {renderInvites()}      
             
@@ -238,7 +254,7 @@ const renderInvites = () =>{
             navigation.navigate("Create A Team");
           }}
         />
-      </ScrollView>
+      </View>
     );
 
 }
