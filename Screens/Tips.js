@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import { Input, Button, ActivityIndicator } from "react-native-elements";
+import { ActivityIndicator, StyleSheet, Text, View, TextInput } from "react-native";
+import { Input, Button } from "react-native-elements";
 import styles from "../utils/styles";
 // import { firebase } from "@react-native-firebase/auth";
 import { firebase, firestore } from "@react-native-firebase/firestore";
@@ -17,6 +17,7 @@ function TipsScreen({ navigation }) {
     const subscribe = navigation.addListener('focus', () => {
       //update the state vars that matter for a re-render of this screen
       setChosenTeam(global.teamToken || {teamName:'', team_uid:'', teamDescription:''});
+      setIsLoading(false);
     });
     return subscribe;
   }, [navigation]);  
@@ -111,7 +112,7 @@ function TipsScreen({ navigation }) {
 
 
   //check if isLoading and return ActivityIndicator
-  if (!isLoading) {
+  if (isLoading) {
     return <ActivityIndicator />;
   }
 
