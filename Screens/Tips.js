@@ -104,21 +104,34 @@ function TipsScreen({ navigation }) {
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.textH1}>
-            You are on Team: {chosenTeam.teamName}{" "}
-          </Text>
-          <Text style={styles.textH1}>Enter Tip:</Text>
+          <View>
+              <Text>Team:</Text>
+              <Text style={styles.textH1}>
+                {chosenTeam.teamName}
+              </Text>
+          </View>
+          <View>
+              <Button
+                title="Change Team"
+                onPress={() => {navigation.navigate("TeamsTab");}}
+                buttonStyle={styles.buttonBase}
+              />         
+          </View>
 
-          <Input
-            label={"Tip"}
-            placeholder="0.00"
-            value={tip}
-            onChangeText={setTip}
-            errorStyle={{ color: "red" }}
-            errorMessage={TipErrors ? TipErrors.tip : null}
-            keyboardType="decimal-pad"
-          />
-          <Button title="Save" onPress={saveTip}></Button>
+          {/* <Text style={styles.textH1}>Enter Tip:</Text> */}
+          <View style={{marginTop:50}}>
+            <Input
+              label={"Tip"}
+              placeholder="0.00"
+              value={tip}
+              onChangeText={setTip}
+              errorStyle={{ color: "red" }}
+              errorMessage={TipErrors ? TipErrors.tip : null}
+              keyboardType="decimal-pad"
+            />
+            <Button title="Save Tip" onPress={saveTip}></Button>
+          </View>
+
         </View>
       );
     }
@@ -137,15 +150,6 @@ function TipsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {renderTips()}
-      <Button
-        style={styles.Button}
-        title="Go to Teams"
-        onPress={returnToTeams}
-      ></Button>
-      {/*  
-      create a render function and then show a message to choose a team if defaultTeam and global.teamName are not set
-      otherwise show the form to add a tip
-      */}
     </View>
   );
 }
