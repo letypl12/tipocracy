@@ -13,10 +13,7 @@ import firestore from "@react-native-firebase/firestore";
 import { useEffect, useState, useContext } from "react";
 import styles from "../utils/styles";
 import {ListItem, Button, Avatar} from "react-native-elements"
-
-
-
-
+import * as SecureStore from "expo-secure-store";
 
 function TeamsScreen({ route, navigation }) {
   const { reload } = route.params;
@@ -75,14 +72,63 @@ function TeamsScreen({ route, navigation }) {
     getData();
   }, [reload]);
 
-const chooseTeam = (team_uid) =>{
-  //1. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
-  
-  //2. update the global.userToken the same way
+const chooseTeam = async (data) => {
+  console.log('in chooseTeam' + data.team_uid + global.userToken.uid + global.userToken.email + global.userToken.name);
+  setIsLoading(true);
+  //1b. Update firestore Users record
+    firestore()
+    .collection("Users")
+    .doc(global.userToken.uid)
+    .update({
+        name: global.userToken.name,
+        email: global.userToken.email,
+        defaultTeam: data.team_uid,
+    })
+
+
+
+    .then(async () => {
+        //1. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
+        //first check if the userToken exists in SecureStore (meaning they clicked "Remember Me")
+        //if it does not, you can skip this step.
+      SecureStore.getItemAsync('userToken')
+      .then(async (userTokenobj) =>{
+        console.log('in 1')
+        if (typeof(userTokenobj) !== 'undefined'){
+          userTokenobj = JSON.parse(userTokenobj);
+          userTokenobj.defaultTeam = data.team_uid;
+          await SecureStore.setItemAsync('userToken', JSON.stringify(userTokenobj))
+        }
+      })
+      .then(async () =>{
+        console.log('in 2')
+        //1a. save teamname and description as well in global.
+        global.teamToken = data;
+        SecureStore.setItemAsync('teamToken', JSON.stringify(data))
+   
+        .then(() => {
+          console.log('in 3')
+            //2. update the global.userToken the same way
+          global.userToken.defaultTeam = data.team_uid;
+        })
+
+        .then(() =>{
+          console.log('in 4')
+          setIsLoading(false)
+          navigation.navigate('Home', {team_uid:data.team_uid})
+        })
+      })
+    })
+    .catch((error) => {
+      console.log("FIREBASE ERROR:" + error);
+      setIsLoading(false);
+  }) 
+
+
   //3. navigate to home, and have home reload to show the new team name
+
   //4. on home, you'll need to go to firestore to get the team name and description, and don't show the 'choose team' button.
-  alert('Team chosen.')
-  navigation.navigate('Home', {team_uid:team_uid})
+
 }
 
 const acceptInvite = (team_uid) =>{
@@ -103,7 +149,7 @@ const renderTeams = () =>{
           style={{ borderColor: '#eee', borderWidth:1, margin:5}}
           renderItem={({ item }) => (
               <ListItem
-                    onPress={() => {chooseTeam(item.team_uid)}}
+                    onPress={() => {chooseTeam(item)}}
                     chevron={true}
                     style={{ flex:1 }}
                   >
