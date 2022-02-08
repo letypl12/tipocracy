@@ -9,8 +9,17 @@ import { validateAll, validations, validate } from "indicative/validator";
 
 function TipsScreen({ navigation }) {
   const [TipErrors, setTipErrors] = useState({});
-  const [tip, setTip] = React.useState(0.0);
+  const [tip, setTip] = useState(0.0);
   const [isLoading, setIsLoading] = useState(true);
+  const [chosenTeam, setChosenTeam] = useState(global.teamToken || {teamName:'', team_uid:'', teamDescription:''});
+
+  useEffect(() => {
+    const subscribe = navigation.addListener('focus', () => {
+      //update the state vars that matter for a re-render of this screen
+      setChosenTeam(global.teamToken || {teamName:'', team_uid:'', teamDescription:''});
+    });
+    return subscribe;
+  }, [navigation]);  
 
   const saveTip = () => {
     // validate the input
@@ -29,9 +38,8 @@ function TipsScreen({ navigation }) {
 
     const messages = {
       required: (field) => `${field} is required`,
-      "tip.required": "An amount is required to save a tip",
+      "tip.above": "The tip should be a number greater than 0",
       "tip.number": "Make sure to enter a number",
-      "tip.above": "The tip should be greater than 0",
     };
 
     validateAll(data, rules, messages)
@@ -68,19 +76,21 @@ function TipsScreen({ navigation }) {
 
   //function to render the page components based on if a team is chosen
   const renderTips = () => {
-    console.log("in tips with default team: " + chosenTeam);
 
-    if (global.userToken.defaultTeam == '') {
+
+    console.log("in tips with default team: " + chosenTeam.teamName);
+
+    if (chosenTeam.team_uid == '') {
       return (
         <View style={styles.container}>
           <Text>You must first choose a team before entering tips.</Text>
-          <Button title="Choose Team" onPress={()=>{navigation.navigate("Teams")}}/>
+          <Button title="Choose Team" onPress={()=>{navigation.navigate("TeamsTab")}}/>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text>You are on Team: {global.teamToken.teamName} </Text>
+          <Text>You are on Team: {chosenTeam.teamName} </Text>
           <Text>Enter Tip:</Text>
 
           <Input
