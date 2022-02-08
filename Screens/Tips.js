@@ -68,19 +68,19 @@ function TipsScreen({ navigation }) {
 
   //function to render the page components based on if a team is chosen
   const renderTips = () => {
-    chosenTeam = global.userToken.defaultTeam;
     console.log("in tips with default team: " + chosenTeam);
 
-    if (chosenTeam == global.userToken.team_uid) {
+    if (global.userToken.defaultTeam == '') {
       return (
         <View style={styles.container}>
-          <Text>Choose a team: </Text>
+          <Text>You must first choose a team before entering tips.</Text>
+          <Button title="Choose Team" onPress={()=>{navigation.navigate("Teams")}}/>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text>You are on Team: {chosenTeam} </Text>
+          <Text>You are on Team: {global.teamToken.teamName} </Text>
           <Text>Enter Tip:</Text>
 
           <Input
@@ -98,18 +98,7 @@ function TipsScreen({ navigation }) {
     }
   };
 
-  // chosenTeam = global.userToken.defaultTeam;
-  // const renderTips = (chosenTeam) => {
-  //   if (chosenTeam) {
-  //     console.log("rendering tips");
-  //     return (
-  //       <View style={styles.container}>
-  //         <Text>Select a Team: {chosenTeam} </Text>
-  //         <Text>Enter Tip:</Text>
-  //       </View>
-  //     );
-  //   }
-  // };
+
 
   //check if isLoading and return ActivityIndicator
   if (!isLoading) {
