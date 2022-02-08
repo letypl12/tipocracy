@@ -24,6 +24,13 @@ function TeamsScreen({ route, navigation }) {
   let myTeams = []
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Refreshed!');
+    });
+    return unsubscribe;
+  }, [navigation]);  
+
+  useEffect(() => {
     const getData = async () => {
       console.log('in getData, checking records for:' + global.userToken.email);
       firestore()
