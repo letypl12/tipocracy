@@ -48,9 +48,8 @@ function TipsScreen({ navigation }) {
           })
           .then(() => {
             console.log("tip added");
-
-            navigation.navigate("Home", { reload: true });
             setTip(0.0);
+            navigation.navigate("Home", { reload: true });
           });
       })
       // create a new firestore record, set isLoading to true
@@ -68,36 +67,36 @@ function TipsScreen({ navigation }) {
   };
 
   //function to render the page components based on if a team is chosen
-  // const renderTips = () => {
-  //   chosenTeam = global.userToken.defaultTeam;
-  //   console.log("in tips with default team: " + chosenTeam);
+  const renderTips = () => {
+    chosenTeam = global.userToken.defaultTeam;
+    console.log("in tips with default team: " + chosenTeam);
 
-  //   if (chosenTeam != global.team_uid) {
-  //     return (
-  //       <View style={styles.container}>
-  //         <Text>Choose a team: </Text>
-  //       </View>
-  //     );
-  //   } else {
-  //     return (
-  //       <View style={styles.container}>
-  //         <Text>You are on Team: {chosenTeam} </Text>
-  //         <Text>Enter Tip:</Text>
+    if (chosenTeam == global.userToken.team_uid) {
+      return (
+        <View style={styles.container}>
+          <Text>Choose a team: </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <Text>You are on Team: {chosenTeam} </Text>
+          <Text>Enter Tip:</Text>
 
-  //         <Input
-  //           label={"Tip"}
-  //           placeholder="0.00"
-  //           value={tip}
-  //           onChangeText={setTip}
-  //           errorStyle={{ color: "red" }}
-  //           errorMessage={TipErrors ? TipErrors.tip : null}
-  //           keyboardType="decimal-pad"
-  //         />
-  //         <Button title="Save" onPress={saveTip}></Button>
-  //       </View>
-  //     );
-  //   }
-  // };
+          <Input
+            label={"Tip"}
+            placeholder="0.00"
+            value={tip}
+            onChangeText={setTip}
+            errorStyle={{ color: "red" }}
+            errorMessage={TipErrors ? TipErrors.tip : null}
+            keyboardType="decimal-pad"
+          />
+          <Button title="Save" onPress={saveTip}></Button>
+        </View>
+      );
+    }
+  };
 
   // chosenTeam = global.userToken.defaultTeam;
   // const renderTips = (chosenTeam) => {
@@ -121,17 +120,16 @@ function TipsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* {renderTips()} */}
+      {renderTips()}
 
       {/*  
       create a render function and then show a message to choose a team if defaultTeam and global.teamName are not set
       otherwise show the form to add a tip
       */}
 
-      <Text>You are on Team: {global.teamName} </Text>
-      <Text>Enter Tip:</Text>
+      <Text>You have entered: {tip} </Text>
 
-      <Input
+      {/* <Input
         label={"Tip"}
         placeholder="0.00"
         value={tip}
@@ -140,7 +138,7 @@ function TipsScreen({ navigation }) {
         errorMessage={TipErrors ? TipErrors.tip : null}
         keyboardType="decimal-pad"
       />
-      <Button title="Save" onPress={saveTip}></Button>
+      <Button title="Save" onPress={saveTip}></Button> */}
     </View>
   );
 }
