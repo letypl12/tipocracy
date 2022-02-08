@@ -1,6 +1,12 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
-import { ActivityIndicator, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+} from "react-native";
 import { Input, Button } from "react-native-elements";
 import styles from "../utils/styles";
 // import { firebase } from "@react-native-firebase/auth";
@@ -11,16 +17,20 @@ function TipsScreen({ navigation }) {
   const [TipErrors, setTipErrors] = useState({});
   const [tip, setTip] = useState(0.0);
   const [isLoading, setIsLoading] = useState(true);
-  const [chosenTeam, setChosenTeam] = useState(global.teamToken || {teamName:'', team_uid:'', teamDescription:''});
+  const [chosenTeam, setChosenTeam] = useState(
+    global.teamToken || { teamName: "", team_uid: "", teamDescription: "" }
+  );
 
   useEffect(() => {
-    const subscribe = navigation.addListener('focus', () => {
+    const subscribe = navigation.addListener("focus", () => {
       //update the state vars that matter for a re-render of this screen
-      setChosenTeam(global.teamToken || {teamName:'', team_uid:'', teamDescription:''});
+      setChosenTeam(
+        global.teamToken || { teamName: "", team_uid: "", teamDescription: "" }
+      );
       setIsLoading(false);
     });
     return subscribe;
-  }, [navigation]);  
+  }, [navigation]);
 
   const saveTip = () => {
     // validate the input
@@ -77,22 +87,27 @@ function TipsScreen({ navigation }) {
 
   //function to render the page components based on if a team is chosen
   const renderTips = () => {
-
-
     console.log("in tips with default team: " + chosenTeam.teamName);
 
-    if (chosenTeam.team_uid == '') {
+    if (chosenTeam.team_uid == "") {
       return (
         <View style={styles.container}>
           <Text>You must first choose a team before entering tips.</Text>
-          <Button title="Choose Team" onPress={()=>{navigation.navigate("TeamsTab")}}/>
+          <Button
+            title="Choose Team"
+            onPress={() => {
+              navigation.navigate("TeamsTab");
+            }}
+          />
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text>You are on Team: {chosenTeam.teamName} </Text>
-          <Text>Enter Tip:</Text>
+          <Text style={styles.textH1}>
+            You are on Team: {chosenTeam.teamName}{" "}
+          </Text>
+          <Text style={styles.textH1}>Enter Tip:</Text>
 
           <Input
             label={"Tip"}
@@ -109,36 +124,28 @@ function TipsScreen({ navigation }) {
     }
   };
 
-
-
   //check if isLoading and return ActivityIndicator
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
   //otherwise show the screen
+  const returnToTeams = () => {
+    navigation.navigate("Teams");
+  };
 
   return (
     <View style={styles.container}>
       {renderTips()}
-
+      <Button
+        style={styles.Button}
+        title="Go to Teams"
+        onPress={returnToTeams}
+      ></Button>
       {/*  
       create a render function and then show a message to choose a team if defaultTeam and global.teamName are not set
       otherwise show the form to add a tip
       */}
-
-      <Text>You have entered: {tip} </Text>
-
-      {/* <Input
-        label={"Tip"}
-        placeholder="0.00"
-        value={tip}
-        onChangeText={setTip}
-        errorStyle={{ color: "red" }}
-        errorMessage={TipErrors ? TipErrors.tip : null}
-        keyboardType="decimal-pad"
-      />
-      <Button title="Save" onPress={saveTip}></Button> */}
     </View>
   );
 }
