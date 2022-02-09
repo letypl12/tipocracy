@@ -29,8 +29,10 @@ function SettingsScreen({ route, navigation }) {
     auth()
       .signOut()
       .then(() => console.log("User signed out!"));
-    
-      await SecureStore.deleteItemAsync('userToken')
+        global.userToken = null;
+        global.teamToken = null;
+      await SecureStore.deleteItemAsync('userToken');
+      await SecureStore.deleteItemAsync('teamToken')
     //now clear out values stored in our AuthContext
     signOut();
   };

@@ -25,15 +25,19 @@ export default App = ({ navigation }) => {
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      let userToken;
 
       try {
         SecureStore.getItemAsync("userToken").then((token) => {
           console.log('token from secure store is: ' + JSON.stringify(token))
           global.userToken = JSON.parse(token);
         }).then(() =>{
-          dispatch({ type: "RESTORE_TOKEN", token: global.userToken });
-        })
+          SecureStore.getItemAsync("teamToken").then((token) => {
+            console.log('team token from secure store is: ' + JSON.stringify(token))
+            global.teamToken = JSON.parse(token);
+            }).then(() =>{
+              dispatch({ type: "RESTORE_TOKEN", token: global.userToken, teamToken: global.teamToken });
+            })
+      })
 
       } catch (e) {
         // Restoring token failed

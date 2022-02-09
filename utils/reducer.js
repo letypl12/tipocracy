@@ -18,6 +18,7 @@ export const reducer = (prevState, action) => {
         return {
           ...prevState,
           userToken: action.token,
+          teamToken: action.teamToken,
           isSignedIn: true,
           isSignedUp: true,
           isLoading: false,
@@ -29,6 +30,7 @@ export const reducer = (prevState, action) => {
           isSignedUp: true,
           isLoading: false,
           userToken: action.token,
+          teamToken: action.teamToken,
         };
       case 'SIGN_IN':
         return {
@@ -37,6 +39,7 @@ export const reducer = (prevState, action) => {
           isSignedIn: true,
           isSignedUp: true,
           userToken: action.token,
+          teamToken: action.teamToken,
         };
       case 'SIGN_OUT':
         return {
@@ -44,7 +47,8 @@ export const reducer = (prevState, action) => {
           isSignedIn: false,
           isSignedUp: false,
           isSignedOut: true,
-          userToken: null
+          userToken: null,
+          teamToken: null
         };
     }
   };
@@ -56,4 +60,5 @@ export const reducer = (prevState, action) => {
     noAccount: false,
     isSignedIn: false,
     userToken: {name:'TEST1', uid:'', email:'', defaultTeam:''},
+    teamToken: {teamName: '', team_uid: '', teamDescription: ''}
   };

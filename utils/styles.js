@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
 
     containerRow: {
-        flex:1,
+        // flex:1,
         flexDirection: "row",
         alignItems: "flex-start",
         justifyContent: "flex-start",
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
 
     textBase:{
         padding:1,
+        margin:5
         // margin:10,
     },
     
@@ -54,6 +55,15 @@ const styles = StyleSheet.create({
         //margin:10,
         fontSize: normalize(18),
     },
+    textH1home:{
+        padding:5,
+        //margin:10,
+        fontSize: normalize(20),
+        textShadowColor:'white',
+        textShadowOffset:{width:0,height:0},
+        textShadowRadius:3,
+        fontWeight:'bold',
+    },    
 
     buttonBase:{
         padding:10,
@@ -107,6 +117,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "flex-start",
         justifyContent: "flex-start",
+        width:'100%',
     },
     
 
@@ -125,7 +136,16 @@ const styles = StyleSheet.create({
     item_email: {
         padding:5,
         fontSize: normalize(12)
-    }
+    },
+    backgroundVideo: {
+        height: SCREEN_HEIGHT,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        alignItems: "stretch",
+        bottom: 0,
+        right: 0
+    },
 
 
 });

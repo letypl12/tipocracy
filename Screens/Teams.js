@@ -17,22 +17,28 @@ import * as SecureStore from "expo-secure-store";
 
 function TeamsScreen({ route, navigation }) {
   const { reload } = route.params;
-  const [dataSourceTeams, setDataSourceTeams] = useState([]);
-  const [dataSourceInvites, setDataSourceInvites] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  let myInvites = []
-  let myTeams = []
+  
+  
+  const [isLoading, setIsLoading] = useState(true);
+  const [renderedTeams, setRenderedTeams] = useState([]);
+  const [renderedInvites, setRenderedInvites] = useState([]);
+
+  const [reloadDate, setReloadDate] = useState(reload)
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('Refreshed!');
+      setReloadDate(Date.now())
     });
     return unsubscribe;
   }, [navigation]);  
 
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
       console.log('in getData, checking records for:' + global.userToken.email);
+      let myInvites = [];
+      let myTeams = [];      
       firestore()
         .collection("Invites")
         .where("email", "==", global.userToken.email)
@@ -48,8 +54,7 @@ function TeamsScreen({ route, navigation }) {
                               team_uid: documentSnapshot.get("team_uid"),
                               creator_uid: documentSnapshot.get("creator_uid")
                             }
-              myTeams.push(tmpTeam)
-              setDataSourceTeams((oldArray) => [tmpTeam, ...oldArray]);                          
+              myTeams.push(tmpTeam)                        
             }else{
               console.log('there is an invite');
               myInvites.push({
@@ -63,12 +68,13 @@ function TeamsScreen({ route, navigation }) {
           // 
           // setDataSourceInvites((oldArray) => [myInvites, ...oldArray]);
 
-          setDataSourceTeams(myTeams);  
-          setDataSourceInvites(myInvites);  
+ 
+          renderTeams(myTeams);
+          renderInvites(myInvites);
           console.log('Length of new teams object:' + myTeams.length);   
           console.log('TEAMS: ' + JSON.stringify(myTeams));
           console.log('INVITES: ' + JSON.stringify(myInvites));
-          console.log('dataSourceTeams: ' + JSON.stringify(dataSourceTeams));
+ 
 
           
           setIsLoading(false);
@@ -77,7 +83,7 @@ function TeamsScreen({ route, navigation }) {
     };
 
     getData();
-  }, [reload]);
+  }, [reloadDate]);
 
 const chooseTeam = async (data) => {
   console.log('in chooseTeam' + data.team_uid + global.userToken.uid + global.userToken.email + global.userToken.name);
@@ -154,21 +160,23 @@ const acceptInvite = (team_uid) =>{
 
     });
   });
-  navigation.navigate("Teams", {reload:true})
+  let myDate = Date.now()
+  console.log('mydate:' + myDate);
+  setReloadDate(myDate);
 
 }
 
-const renderTeams = () =>{
-  console.log('in renderTeams, the dataSourceTeams.length is: ' + dataSourceTeams.length);
+const renderTeams = (myTeams) =>{
+  console.log('in renderTeams, the myTeams.length is: ' + myTeams.length);
   tmpArr = []
-  if (dataSourceTeams.length > 0){
+  if (myTeams.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Teams</Text>)
   
     tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.  Long-press to edit the team.</Text>)        
     
     tmpArr.push(
     <FlatList
-          data={dataSourceTeams}
+          data={myTeams}
           style={{ borderColor: '#eee', borderWidth:1, margin:5}}
           renderItem={({ item }) => (
               <ListItem
@@ -197,17 +205,18 @@ const renderTeams = () =>{
   }else{
     //tmpArr.push(<Text>It looks like you have not accepted any team invites or created a team yet.</Text>)
   }
-  return tmpArr
+  setRenderedTeams(tmpArr);
 }
 
-const renderInvites = () =>{
+const renderInvites = (myInvites) =>{
+  console.log('in renderInvites, myInvites.length:' + myInvites.length);
   tmpArr = []
-  if (dataSourceInvites.length > 0){
+  if (myInvites.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Invites</Text>)
     tmpArr.push(<Text style={styles.textBase}>Click to accept an Invite to join a team.</Text>)  
     tmpArr.push(
       <FlatList
-      data={dataSourceInvites}
+      data={myInvites}
       style={{ borderColor: '#eee', borderWidth:1, margin:5}}
       renderItem={({ item }) => (
           <ListItem
@@ -236,7 +245,7 @@ const renderInvites = () =>{
   }else{
     //tmpArr.push(<Text>You do not have any invites yet...</Text>)
   }  
-  return tmpArr
+  setRenderedInvites(tmpArr)
 }
 
   if (isLoading) {
@@ -246,8 +255,8 @@ const renderInvites = () =>{
     return (
 
       <View style={styles.container}>
-        {renderTeams()}
-        {renderInvites()}      
+        {renderedTeams}
+        {renderedInvites}      
             
 
   
