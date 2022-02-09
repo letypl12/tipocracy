@@ -86,6 +86,31 @@ function TipsScreen({ navigation }) {
       });
   };
 
+  
+  const getTipsTotal = () => {
+    firebase
+      .firestore()
+      .collection("Tips")
+      .where("team_uid", "==", global.teamToken.team_uid)
+      .get()
+      .then((querySnapshot) => {
+        console.log("Firestore Total Teams in tips: ", querySnapshot);
+      // .doc("amount")
+      // .get()
+      // .then((querySnapshot) => {
+      //   console.log("Firestore all tips on team: ", querySnapshot);
+      
+        let newCount = 0;
+        querySnapshot.forEach((doc) => {
+        const docRef = collRef.doc(doc.amount);
+        docRef.update({ amount: newCount });
+        newCount += amount;
+      })
+
+      }); 
+        
+
+  }
   //function to render the page components based on if a team is chosen
   const renderTips = () => {
     console.log("in tips with default team: " + chosenTeam.teamName);
@@ -113,6 +138,7 @@ function TipsScreen({ navigation }) {
                 {chosenTeam.teamName}
               </Text>
           </View>
+          
           <View>
               <Button
                 title="Change Team"
@@ -147,6 +173,23 @@ function TipsScreen({ navigation }) {
                     buttonStyle={styles.buttonBase}
                     titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
             />
+          </View>
+          <View style={styles.container}>
+            <View>
+                <Text>Total:</Text>
+                <Text style={styles.textH1}>
+                  {getTipsTotal}
+                </Text>
+            </View>
+          
+            <View>
+                <Button
+                  title="total"
+                  onPress={() => {getTipsTotal()}}
+                  buttonStyle={styles.buttonBase}
+                  titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+                />         
+            </View>
           </View>
 
         </View>
