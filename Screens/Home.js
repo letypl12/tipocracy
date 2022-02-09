@@ -98,7 +98,7 @@ function HomeScreen({ route, navigation }) {
   }
   if (!isLoading) {
     return (
-      <View style={styles.home_container}>
+      <View style={[styles.home_container, {backgroundColor:'black'}]}>
 
         <View style={styles.home_containerTopRow}>
           <View style={styles.home_containerTop}>
@@ -123,7 +123,7 @@ function HomeScreen({ route, navigation }) {
         </View>
 
         <View style={styles.home_containerBody}>
-        <Video
+        {/* <Video
         source={require("../images/tipVideo1.mov")}
         style={styles.backgroundVideo}
         muted={true}
@@ -131,7 +131,8 @@ function HomeScreen({ route, navigation }) {
         resizeMode={"cover"}
         rate={1.0}
         ignoreSilentSwitch={"obey"}
-        />          
+        automaticallyWaitsToMinimizeStalling={true}
+        />           */}
           <View style={styles.containerRow}>
             <Text style={[styles.textH1home, {color:'white'}]}>
               Hello {global.userToken.name}
