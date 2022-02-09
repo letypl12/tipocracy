@@ -12,6 +12,7 @@ import { AuthContext } from "../utils/authContext";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import * as Icons from "react-native-vector-icons";
+import styles from "../utils/styles";
 
 
 const SignUpScreen = ({ navigation }) => {
@@ -191,10 +192,11 @@ const SignUpScreen = ({ navigation }) => {
             </Text>
 
             <Button
-            buttonStyle={{ margin: 10, marginTop: 50 }}
+            buttonStyle={styles.buttonBase}
             backgroundColor="#03A9F4"
             title="SIGN UP"
             onPress={() => handleSignUp()}
+            titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
             />
             <Text style={{ marginLeft: 80 }} onPress={() => signIn()}>
             Already Signed Up? Sign In
