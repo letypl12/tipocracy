@@ -25,7 +25,7 @@ export function normalize(size) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        // backgroundColor: "#fff",
         margin:0,
         padding:5
     },
@@ -68,7 +68,11 @@ const styles = StyleSheet.create({
     buttonBase:{
         padding:10,
         //margin:10,
-        color: '#007AFF',
+        color: '#000',
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 20,  
+        backgroundColor:'#FFE500',     
     },    
 
     buttonSmall:{

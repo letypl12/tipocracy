@@ -12,6 +12,7 @@ import styles from "../utils/styles";
 // import { firebase } from "@react-native-firebase/auth";
 import { firebase, firestore } from "@react-native-firebase/firestore";
 import { validateAll, validations, validate } from "indicative/validator";
+import Video from "react-native-video";
 
 function TipsScreen({ navigation }) {
   const [TipErrors, setTipErrors] = useState({});
@@ -98,6 +99,8 @@ function TipsScreen({ navigation }) {
             onPress={() => {
               navigation.navigate("TeamsTab");
             }}
+            buttonStyle={styles.buttonBase}
+            titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
           />
         </View>
       );
@@ -115,6 +118,7 @@ function TipsScreen({ navigation }) {
                 title="Change Team"
                 onPress={() => {navigation.navigate("TeamsTab");}}
                 buttonStyle={styles.buttonBase}
+                titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
               />         
           </View>
 
@@ -128,8 +132,21 @@ function TipsScreen({ navigation }) {
               errorStyle={{ color: "red" }}
               errorMessage={TipErrors ? TipErrors.tip : null}
               keyboardType="decimal-pad"
+              placeholderTextColor={'black'}
+              labelStyle={{
+                color: 'black',
+                fontWeight: 'bold'
+              }}
+              inputStyle={{
+                color: 'black',
+                fontWeight: 'bold'
+              }}
             />
-            <Button title="Save Tip" onPress={saveTip}></Button>
+            <Button title="Save Tip" 
+                    onPress={saveTip}
+                    buttonStyle={styles.buttonBase}
+                    titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+            />
           </View>
 
         </View>
@@ -148,7 +165,16 @@ function TipsScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor:'#00000050'}]}>
+        <Video
+        source={require("../images/tipVideo2.mov")}
+        style={styles.backgroundVideo}
+        muted={true}
+        repeat={true}
+        resizeMode={"cover"}
+        rate={1.0}
+        ignoreSilentSwitch={"obey"}
+        />   
       {renderTips()}
     </View>
   );

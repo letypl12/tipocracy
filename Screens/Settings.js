@@ -55,15 +55,19 @@ function SettingsScreen({ route, navigation }) {
         <Text style={styles.textH1}>Personal Profile</Text>
         <Text style={styles.textBase}>Create your avatar, choose your pronouns, and more.</Text>  
         <Button
-          style={styles.buttonBase}
+          buttonStyle={styles.buttonBase}
+          titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+
           title="Edit Profile"
           onPress={editProfile}
         />       
 
-        <Text style={styles.textH1}>Sign Out</Text>
+        <Text style={[styles.textH1, {marginTop:20}]}>Sign Out</Text>
         <Text style={styles.textBase}>Click the button below to sign out completely from TIPocracy.</Text>  
         <Button
-          style={styles.buttonBase}
+          buttonStyle={styles.buttonBase}
+          titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+
           title="Sign Out"
           onPress={logout}
         />

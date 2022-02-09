@@ -19,27 +19,30 @@ import Svg from "react-native-svg";
 
 function HomeScreen({ route, navigation }) {
   const [teamToken, setTeamToken] = useState({teamName:'', team_uid:'', teamDescription:''});
-  let myVideo = teamToken!== '' ? require("../images/tipVideo1.mov") : require("../images/tipVideo2.mov");
-  //let myVideo = require("../images/tipVideo1.mp4")
 
 
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
   const [myTipsTotal, setMyTipsTotal] = useState(0);
   const [teamTipsTotal, setTeamTipsTotal] = useState(0);
-  const [chosenVideo, setChosenVideo] = useState(myVideo);
+
   
   
   
 
   const getData = () =>{
-    if (global.teamToken !== null){      
+    if (global.teamToken !== null){
+      //we have the teamToken already saved somewhere      
       console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
       setTeamToken(global.teamToken);
-      setChosenVideo(require("../images/tipVideo2.mov"));
+      
     }else{
+      //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
+      //if the global.userToken.defaultTeam !== ''
       console.log('in getData, our team_uid is:' + teamToken.team_uid);
-      setChosenVideo(require("../images/tipVideo1.mov"));
+      
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -62,6 +65,10 @@ function HomeScreen({ route, navigation }) {
               title="Choose A Team To Get Started"
               onPress={() => navigation.navigate("TeamsTab")}
               key={"chooseTeam"}
+              buttonStyle={[styles.buttonBase, {marginTop:20}]}
+              titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+
+
               />
             
             </View>)
@@ -69,13 +76,13 @@ function HomeScreen({ route, navigation }) {
       tmpArr.push(
             <View>
               <View style={styles.containerRow}>
-                <Text style={styles.textBase}>Your current team is: {teamToken.teamName} </Text>
+                <Text style={[styles.textBase, {color:'white'}]}>Your current team is: {teamToken.teamName} </Text>
               </View>
               <View style={styles.containerRow}>
-                <Text style={styles.textBase}>You have made ${myTipsTotal} in the past 24 hours.</Text>
+              <Text style={[styles.textBase, {color:'white'}]}>You have made ${myTipsTotal} in the past 24 hours.</Text>
               </View>
               <View style={styles.containerRow}>
-                <Text style={styles.textBase}>Your team has made ${teamTipsTotal} in the past 24 hours.</Text>
+              <Text style={[styles.textBase, {color:'white'}]}>Your team has made ${teamTipsTotal} in the past 24 hours.</Text>
               </View>
             </View>
             )      
@@ -84,6 +91,11 @@ function HomeScreen({ route, navigation }) {
     return tmpArr
   }
 
+  if (isLoading){
+    return(
+      <ActivityIndicator />
+    )
+  }
   if (!isLoading) {
     return (
       <View style={styles.home_container}>
@@ -112,7 +124,7 @@ function HomeScreen({ route, navigation }) {
 
         <View style={styles.home_containerBody}>
         <Video
-        source={chosenVideo}
+        source={require("../images/tipVideo1.mov")}
         style={styles.backgroundVideo}
         muted={true}
         repeat={true}
@@ -121,7 +133,7 @@ function HomeScreen({ route, navigation }) {
         ignoreSilentSwitch={"obey"}
         />          
           <View style={styles.containerRow}>
-            <Text style={styles.textH1home}>
+            <Text style={[styles.textH1home, {color:'white'}]}>
               Hello {global.userToken.name}
             </Text> 
 

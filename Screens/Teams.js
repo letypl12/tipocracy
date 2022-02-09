@@ -264,7 +264,8 @@ const renderInvites = (myInvites) =>{
         <Text style={styles.textH1}>New Team</Text>
         <Text style={styles.textBase}>Create a new team by clicking below.</Text>  
         <Button
-          style={styles.buttonBase}
+          buttonStyle={styles.buttonBase}
+          titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
           title="Create A Team"
           onPress={() => {
             navigation.navigate("Create A Team");

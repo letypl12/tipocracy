@@ -198,6 +198,7 @@ function TeamsCreateScreen({ navigation }) {
             buttonStyle={styles.buttonBase}
             title="Add"
             onPress={() => handleAddFriend()}
+            titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
           />
         </View>
       </View>
@@ -215,6 +216,7 @@ function TeamsCreateScreen({ navigation }) {
         backgroundColor="#03A9F4"
         title="Create Team"
         onPress={() => addTeam()}
+        titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
       />
     </View>
   );

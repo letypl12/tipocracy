@@ -19,6 +19,8 @@ import {
 import { AuthContext } from '../utils/authContext';
 import auth from '@react-native-firebase/auth';
 import * as SecureStore from "expo-secure-store";
+import * as Icons from "react-native-vector-icons";
+
 
 const SignInScreen = ({ navigation }) => {
     const [emailAddress, setemailAddress] = useState('');
@@ -129,6 +131,13 @@ const SignInScreen = ({ navigation }) => {
                     onChangeText={setemailAddress}
                     errorStyle={{ color: 'red' }}
                     errorMessage={SignUpErrors ? SignUpErrors.email : null}
+                    leftIcon={
+                        <Icons.Fontisto
+                          name='email'
+                          size={24}
+                          color='black'
+                        />
+                      }
                 />
                 <Input
                     placeholder="Password"
@@ -137,6 +146,13 @@ const SignInScreen = ({ navigation }) => {
                     secureTextEntry
                     errorStyle={{ color: 'red' }}
                     errorMessage={SignUpErrors ? SignUpErrors.password : null}
+                    leftIcon={
+                        <Icons.Ionicons
+                          name='lock-closed-outline'
+                          size={24}
+                          color='black'
+                        />
+                      }
                 />
                 <CheckBox
                     center

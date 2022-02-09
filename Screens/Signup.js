@@ -11,6 +11,8 @@ import {
 import { AuthContext } from "../utils/authContext";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import * as Icons from "react-native-vector-icons";
+
 
 const SignUpScreen = ({ navigation }) => {
     const [displayName, setDisplayName] = useState("");
@@ -131,6 +133,13 @@ const SignUpScreen = ({ navigation }) => {
             onChangeText={setDisplayName}
             errorStyle={{ color: "red" }}
             errorMessage={SignUpErrors ? SignUpErrors.displayName : null}
+            leftIcon={
+                <Icons.Ionicons
+                  name='person-circle-outline'
+                  size={24}
+                  color='black'
+                />
+              }
             />
             <Input
             label={"Email"}
@@ -141,6 +150,13 @@ const SignUpScreen = ({ navigation }) => {
             onChangeText={setemailAddress}
             errorStyle={{ color: "red" }}
             errorMessage={SignUpErrors ? SignUpErrors.email : null}
+            leftIcon={
+                <Icons.Fontisto
+                  name='email'
+                  size={24}
+                  color='black'
+                />
+              }
             />
             <Input
             label={"Password"}
@@ -148,6 +164,13 @@ const SignUpScreen = ({ navigation }) => {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
+            leftIcon={
+                <Icons.Ionicons
+                  name='lock-closed-outline'
+                  size={24}
+                  color='black'
+                />
+              }
             />
             <Input
             label={"Password Confirm"}
@@ -155,6 +178,13 @@ const SignUpScreen = ({ navigation }) => {
             value={passwordConfirm}
             onChangeText={setPasswordConfirm}
             secureTextEntry
+            leftIcon={
+                <Icons.Ionicons
+                  name='lock-closed-outline'
+                  size={24}
+                  color='black'
+                />
+              }
             />
             <Text style={{ color: "red", marginLeft: 10, fontSize: 10 }}>
             {SignUpErrors ? SignUpErrors.password : null}
