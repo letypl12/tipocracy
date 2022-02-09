@@ -29,7 +29,7 @@ function HomeScreen({ route, navigation }) {
   
   
   
-
+  
   const getData = () =>{
     if (global.teamToken !== null){
       //we have the teamToken already saved somewhere      
@@ -40,10 +40,9 @@ function HomeScreen({ route, navigation }) {
       //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
       //if the global.userToken.defaultTeam !== ''
       console.log('in getData, our team_uid is:' + teamToken.team_uid);
-      
-    }
-    setIsLoading(false)
+    };
   }
+  
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -51,7 +50,50 @@ function HomeScreen({ route, navigation }) {
       getData()
     });
     return unsubscribe;
-  }, [navigation]);   
+  }, [navigation]);  
+  
+  const getTipsTotal = () => {
+    // firebase
+      let myTips = [];
+      
+      firestore()
+      .collection("Tips")
+      .where("team_uid", "==", global.teamToken.team_uid)
+      .get()
+      .then((querySnapshot) => {
+        console.log("Firestore Total Teams in tips: ", querySnapshot.size);
+       
+        querySnapshot.forEach((documentSnapshot) => {
+          let tmpTip = {
+                          amount: documentSnapshot.get('amount'),
+                          createdDateTime: documentSnapshot.get("createdDateTime"),
+                          team_uid: documentSnapshot.get("team_uid"),
+                          uid: documentSnapshot.get("uid")
+                        }
+          myTips.push(tmpTip)                        
+         
+        });
+        for (i=0; i<myTips.length; i++){
+          myTips[i].amount = parseFloat(myTips[i].amount)
+
+        }
+        console.log('Length of new tips object:' + myTips.length);   
+        console.log('TIPS: ' + JSON.stringify(myTips));
+
+        // teamTipsTotal=myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
+      
+        result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
+    
+        console.log(result);
+      
+
+      }); 
+    //   let result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
+    //     console.log((result));
+    // return result 
+        
+
+  }
 
   const renderHomeMessage = () =>{
     console.log('in renderHomeMewssage, with team_uid: ' + teamToken.team_uid);
@@ -84,6 +126,23 @@ function HomeScreen({ route, navigation }) {
               <View style={styles.containerRow}>
               <Text style={[styles.textBase, {color:'white'}]}>Your team has made ${teamTipsTotal} in the past 24 hours.</Text>
               </View>
+              <View style={styles.container}>
+            {/* <View>
+                <Text>Total:{result}</Text>
+                <Text style={styles.textH1}>
+                  
+                </Text>
+            </View>
+          
+            <View>
+                <Button
+                  title="total"
+                  onPress={() => {getTipsTotal()}}
+                  buttonStyle={styles.buttonBase}
+                  titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+                />         
+            </View> */}
+          </View>
             </View>
             )      
     }
