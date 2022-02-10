@@ -41,6 +41,9 @@ function HomeScreen({ route, navigation }) {
       //if the global.userToken.defaultTeam !== ''
       console.log('in getData, our team_uid is:' + teamToken.team_uid);
     };
+    setIsLoading(false);
+    getTipsTotal("team_uid", teamToken.team_uid);
+    // getTipsTotal("uid", global.teamToken.team_uid);
   }
   
 
@@ -52,13 +55,13 @@ function HomeScreen({ route, navigation }) {
     return unsubscribe;
   }, [navigation]);  
   
-  const getTipsTotal = () => {
+  const getTipsTotal = (queryparam, queryvalue) => {
     // firebase
       let myTips = [];
       
       firestore()
       .collection("Tips")
-      .where("team_uid", "==", global.teamToken.team_uid)
+      .where(queryparam, "==", queryvalue)
       .get()
       .then((querySnapshot) => {
         console.log("Firestore Total Teams in tips: ", querySnapshot.size);
@@ -74,7 +77,8 @@ function HomeScreen({ route, navigation }) {
          
         });
         for (i=0; i<myTips.length; i++){
-          myTips[i].amount = parseFloat(myTips[i].amount)
+          // myTips[i].amount = parseFloat(myTips[i].amount);
+          myTips[i].amount = parseFloat(myTips[i].amount);
 
         }
         console.log('Length of new tips object:' + myTips.length);   
@@ -83,8 +87,9 @@ function HomeScreen({ route, navigation }) {
         // teamTipsTotal=myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
       
         result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
+      
     
-        console.log(result);
+        setTeamTipsTotal(result);
       
 
       }); 
@@ -157,7 +162,7 @@ function HomeScreen({ route, navigation }) {
   }
   if (!isLoading) {
     return (
-      <View style={[styles.home_container, {backgroundColor:'black'}]}>
+      <View style={[styles.home_container,{backgroundColor:'black'}]}>
 
         <View style={styles.home_containerTopRow}>
           <View style={styles.home_containerTop}>
@@ -190,7 +195,6 @@ function HomeScreen({ route, navigation }) {
         resizeMode={"cover"}
         rate={1.0}
         ignoreSilentSwitch={"obey"}
-        automaticallyWaitsToMinimizeStalling={true}
         />           */}
           <View style={styles.containerRow}>
             <Text style={[styles.textH1home, {color:'white'}]}>
