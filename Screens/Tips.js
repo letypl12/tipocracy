@@ -16,7 +16,7 @@ import Video from "react-native-video";
 
 function TipsScreen({ navigation }) {
   const [TipErrors, setTipErrors] = useState({});
-  const [tip, setTip] = useState(0.0);
+  const [tip, setTip] = useState('0.0');
   const [isLoading, setIsLoading] = useState(true);
   const [chosenTeam, setChosenTeam] = useState(
     global.teamToken || { teamName: "", team_uid: "", teamDescription: "" }
@@ -171,7 +171,7 @@ function TipsScreen({ navigation }) {
   return (
     <View style={[styles.container, {backgroundColor:'#00000050'}]}>
         <Video
-        source={require("../images/tipVideo2.mov")}
+        source={require("../images/tipVideo2_white.mp4")}
         style={styles.backgroundVideo}
         muted={true}
         repeat={true}
