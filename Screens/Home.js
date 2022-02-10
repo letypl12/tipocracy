@@ -30,38 +30,43 @@ function HomeScreen({ route, navigation }) {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('Refreshed!');
       setReloadDate(Date.now())
+      getData();
     });
     return unsubscribe;
   }, [navigation]);  
   
   useEffect(() => {
-    const getData = async () =>{
-      if (teamTokenFromRoute) {
-        console.log('TOKEN FROM ROUTE ' + teamTokenFromRoute.team_uid)
-        setTeamToken(teamTokenFromRoute)
-      }else{
-        if (global.teamToken !== null){
-          //we have the teamToken already saved somewhere      
-          //console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
-          console.log('TOKEN FROM GLOBAL ' + global.teamToken.team_uid)
-          setTeamToken(global.teamToken);
-          
-        }else{
-          //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
-          //if the global.userToken.defaultTeam !== ''
-          console.log('TOKEN FROM STATE ' + teamToken.team_uid)
-        }
-      }
-      await getTipsTotal("team_uid", teamToken.team_uid);
-      await getTipsTotal("uid", global.userToken.uid);
-      setIsLoading(false);
-    };
-    getData();
-    
+    console.log('');
   }, [reloadDate])
 
   
-
+  const getData = async () =>{
+    // we identify where we are getting the team info from, and run the query appropriately using that token
+    // we do not wait for the state to be updated, which was causing a race condition/timing error for getting
+    // team totals
+    if (teamTokenFromRoute) {
+      console.log('TOKEN FROM ROUTE ' + teamTokenFromRoute.team_uid)
+      setTeamToken(teamTokenFromRoute)
+      await getTipsTotal("team_uid", teamTokenFromRoute.team_uid);
+    }else{
+      if (global.teamToken !== null){
+        //we have the teamToken already saved somewhere      
+        //console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
+        console.log('TOKEN FROM GLOBAL ' + global.teamToken.team_uid)
+        setTeamToken(global.teamToken);
+        await getTipsTotal("team_uid", global.teamToken.team_uid);
+      }else{
+        //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
+        //if the global.userToken.defaultTeam !== ''
+        console.log('TOKEN FROM STATE ' + teamToken.team_uid)
+        await getTipsTotal("team_uid", teamToken.team_uid);
+      }
+    } 
+    
+    //the userID will always be the logged in user context, which we expect as global.userToken.
+    await getTipsTotal("uid", global.userToken.uid);
+    setIsLoading(false);
+  };
 
   
   const getTipsTotal = async (queryparam, queryvalue) => {
@@ -76,7 +81,7 @@ function HomeScreen({ route, navigation }) {
       firestore()
       .collection("Tips")
       .where(queryparam, "==", queryvalue)
-      //.where("createdDateTime", ">=", firestore.Timestamp.fromDate(date24))
+      .where("createdDateTime", ">=", firestore.Timestamp.fromDate(date24))
       .get()
       .then((querySnapshot) => {
         //console.log("Firestore Total tips records: " + querySnapshot.size + " for " + queryparam + " : " + queryvalue);
@@ -120,6 +125,11 @@ function HomeScreen({ route, navigation }) {
 
 
     if (teamToken.team_uid == ''){
+      tmpArr.push(
+        <View style={styles.containerRow}>
+        <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
+        </View>
+      )
       tmpArr.push(
             <View style={styles.containerRow} style={{alignItems:'center', justifyContent:'center', width:'100%'}}>
               <Button
