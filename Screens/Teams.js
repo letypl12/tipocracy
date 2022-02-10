@@ -172,7 +172,7 @@ const renderTeams = (myTeams) =>{
   if (myTeams.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Teams</Text>)
   
-    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.  Long-press to edit the team.</Text>)        
+    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.  You can edit a team you created.</Text>)        
     
     tmpArr.push(
     <FlatList
@@ -180,6 +180,7 @@ const renderTeams = (myTeams) =>{
           style={{ borderColor: '#eee', borderWidth:1, margin:5}}
           renderItem={({ item }) => (
               <ListItem
+                    bottomDivider
                     onPress={() => {chooseTeam(item)}}
                     chevron={true}
                     style={{ flex:1 }}
@@ -187,16 +188,26 @@ const renderTeams = (myTeams) =>{
                   <Avatar large
                               rounded
                               title={`${item.teamName}`} 
-                              containerStyle={{ backgroundColor: '#007AFF' }}/>                    
+                              containerStyle={{ backgroundColor: '#FFE500', borderColor:'#eee', borderWidth:1 }}/>                    
                   <ListItem.Content>
                       <ListItem.Title style={styles.teamListItem}>
                       {`${item.teamName}`}
                       </ListItem.Title>
                       <ListItem.Subtitle style={{ color: 'black' }}>
                       {`${item.teamDescription}`}
-                      </ListItem.Subtitle>                                  
+                      </ListItem.Subtitle>       
+                      <ListItem.ButtonGroup
+                        buttons={item.creator_uid==global.userToken.uid ? ['Choose', 'Edit'] : ['Choose']}
+                        onPress={(index) => {
+                                            if (index == 0){
+                                              chooseTeam(item)
+                                            }else{
+                                              navigation.navigate("TeamsEdit", {item})
+                                            }
+                                          }
+                                }
+                      />                           
                   </ListItem.Content>
-                  <ListItem.Chevron />
               </ListItem>                                 
           )}
           keyExtractor={(item, i) => item.team_uid + i}
@@ -220,6 +231,7 @@ const renderInvites = (myInvites) =>{
       style={{ borderColor: '#eee', borderWidth:1, margin:5}}
       renderItem={({ item }) => (
           <ListItem
+                bottomDivider
                 onPress={() => {acceptInvite(item.team_uid)}}
                 chevron={true}
                 style={{flex:1}}

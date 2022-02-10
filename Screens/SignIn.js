@@ -20,6 +20,7 @@ import { AuthContext } from '../utils/authContext';
 import auth from '@react-native-firebase/auth';
 import * as SecureStore from "expo-secure-store";
 import * as Icons from "react-native-vector-icons";
+import styles from "../utils/styles";
 
 
 const SignInScreen = ({ navigation }) => {
@@ -162,9 +163,10 @@ const SignInScreen = ({ navigation }) => {
                 />
 
                 <Button
-                    buttonStyle={{ margin: 10, marginTop: 50 }}
+                    buttonStyle={styles.buttonBase}
                     title="Sign in"
                     onPress={() => handleSignIn()}
+                    titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
                 />
                 <Text style={{ marginLeft: 100 }} onPress={() => signUp()}>
                     No Acount? Sign Up
