@@ -16,52 +16,58 @@ import * as SecureStore from "expo-secure-store";
 import { reducer, initialState } from "../utils/reducer";
 import Video from "react-native-video";
 import Svg from "react-native-svg";
+import moment from "moment";
 
 function HomeScreen({ route, navigation }) {
+  const { reload } = route.params;
   const [teamToken, setTeamToken] = useState({teamName:'', team_uid:'', teamDescription:''});
-
-
-
   const [isLoading, setIsLoading] = useState(true);
   const [myTipsTotal, setMyTipsTotal] = useState(0);
   const [teamTipsTotal, setTeamTipsTotal] = useState(0);
-
+  const [reloadDate, setReloadDate] = useState(reload)
   
-  
-  
-  
-  const getData = () =>{
-    if (global.teamToken !== null){
-      //we have the teamToken already saved somewhere      
-      console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
-      setTeamToken(global.teamToken);
-      
-    }else{
-      //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
-      //if the global.userToken.defaultTeam !== ''
-      console.log('in getData, our team_uid is:' + teamToken.team_uid);
-    };
-    setIsLoading(false);
-    getTipsTotal("team_uid", teamToken.team_uid);
-    // getTipsTotal("uid", global.teamToken.team_uid);
-  }
-  
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('Refreshed!');
-      getData()
+      setReloadDate(Date.now())
     });
     return unsubscribe;
   }, [navigation]);  
   
+  useEffect(() => {
+    const getData = async () =>{
+      if (global.teamToken !== null){
+        //we have the teamToken already saved somewhere      
+        console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
+        setTeamToken(global.teamToken);
+        
+      }else{
+        //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
+        //if the global.userToken.defaultTeam !== ''
+        console.log('in getData, our team_uid is:' + teamToken.team_uid);
+      };
+      setIsLoading(false);
+      getTipsTotal("team_uid", teamToken.team_uid);
+      getTipsTotal("uid", global.userToken.uid);
+    };
+    getData();
+    
+  }, [reloadDate])
+
+  
+
+
+  
   const getTipsTotal = (queryparam, queryvalue) => {
     // firebase
       let myTips = [];
-      
+      let date24 = moment().subtract(24, "hours").toDate();
+      console.log(date24);
+      console.log(firestore.Timestamp.fromDate(date24));
       firestore()
       .collection("Tips")
       .where(queryparam, "==", queryvalue)
+      .where("createdDateTime", ">=", firestore.Timestamp.fromDate(date24))
       .get()
       .then((querySnapshot) => {
         console.log("Firestore Total Teams in tips: ", querySnapshot.size);
@@ -81,15 +87,19 @@ function HomeScreen({ route, navigation }) {
           myTips[i].amount = parseFloat(myTips[i].amount);
 
         }
-        console.log('Length of new tips object:' + myTips.length);   
-        console.log('TIPS: ' + JSON.stringify(myTips));
+        //console.log('Length of new tips object:' + myTips.length);   
+        //console.log('TIPS: ' + JSON.stringify(myTips));
 
         // teamTipsTotal=myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
       
         result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
-      
-    
-        setTeamTipsTotal(result);
+        console.log('in getTipsTotal, with query for: ' + queryparam + ', the total is: ' + result);
+        if (queryparam == 'uid'){
+          setMyTipsTotal(parseFloat(result).toFixed(2))
+        }else{
+          setTeamTipsTotal(parseFloat(result).toFixed(2));
+        }
+        
       
 
       }); 
@@ -126,10 +136,10 @@ function HomeScreen({ route, navigation }) {
                 <Text style={[styles.textBase, {color:'white'}]}>Your current team is: {teamToken.teamName} </Text>
               </View>
               <View style={styles.containerRow}>
-              <Text style={[styles.textBase, {color:'white'}]}>You have made ${myTipsTotal} in the past 24 hours.</Text>
+              <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
               </View>
               <View style={styles.containerRow}>
-              <Text style={[styles.textBase, {color:'white'}]}>Your team has made ${teamTipsTotal} in the past 24 hours.</Text>
+              <Text style={[styles.textBase, {color:'white'}]}>{teamToken.teamName} has made $ {teamTipsTotal} in the past 24 hours as a team.</Text>
               </View>
               <View style={styles.container}>
             {/* <View>

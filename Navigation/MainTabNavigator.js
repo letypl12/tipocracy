@@ -34,7 +34,7 @@ function TeamsNav() {
       <TeamsStack.Group>
         <TeamsStack.Screen name="Teams" component={TeamsScreen} initialParams={{ reload: false }} options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
         <TeamsStack.Screen name="Create A Team" component={TeamsCreateScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
-        <TeamsStack.Screen name="Edit A Team" component={TeamsEditScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
+        <TeamsStack.Screen name="TeamsEdit" component={TeamsEditScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
         <TeamsStack.Screen name="Tips" component={TipsScreen}  options={{headerStyle:{backgroundColor:'#FFE500'}}}/>
       </TeamsStack.Group>
     </TeamsStack.Navigator>

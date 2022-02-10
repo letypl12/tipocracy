@@ -172,7 +172,7 @@ const renderTeams = (myTeams) =>{
   if (myTeams.length > 0){
     tmpArr.push(<Text style={styles.textH1}>My Teams</Text>)
   
-    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.  You can edit a team you created.</Text>)        
+    tmpArr.push(<Text style={styles.textBase}>Click to choose a team to work on below.</Text>)        
     
     tmpArr.push(
     <FlatList
@@ -202,7 +202,7 @@ const renderTeams = (myTeams) =>{
                                             if (index == 0){
                                               chooseTeam(item)
                                             }else{
-                                              navigation.navigate("TeamsEdit", {item})
+                                              navigation.navigate("TeamsEdit", {myTeam:item})
                                             }
                                           }
                                 }
@@ -269,10 +269,7 @@ const renderInvites = (myInvites) =>{
       <View style={styles.container}>
         {renderedTeams}
         {renderedInvites}      
-            
-
-  
-  
+              
         <Text style={styles.textH1}>New Team</Text>
         <Text style={styles.textBase}>Create a new team by clicking below.</Text>  
         <Button
