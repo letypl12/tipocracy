@@ -19,7 +19,7 @@ import Svg from "react-native-svg";
 import moment from "moment";
 
 function HomeScreen({ route, navigation }) {
-  const { reload } = route.params;
+  const { reload, teamTokenFromRoute } = route.params;
   const [teamToken, setTeamToken] = useState({teamName:'', team_uid:'', teamDescription:''});
   const [isLoading, setIsLoading] = useState(true);
   const [myTipsTotal, setMyTipsTotal] = useState(0);
@@ -36,19 +36,25 @@ function HomeScreen({ route, navigation }) {
   
   useEffect(() => {
     const getData = async () =>{
-      if (global.teamToken !== null){
-        //we have the teamToken already saved somewhere      
-        console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
-        setTeamToken(global.teamToken);
-        
+      if (teamTokenFromRoute) {
+        console.log('TOKEN FROM ROUTE ' + teamTokenFromRoute.team_uid)
+        setTeamToken(teamTokenFromRoute)
       }else{
-        //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
-        //if the global.userToken.defaultTeam !== ''
-        console.log('in getData, our team_uid is:' + teamToken.team_uid);
-      };
+        if (global.teamToken !== null){
+          //we have the teamToken already saved somewhere      
+          //console.log('in getData, our global team_uid is:' + global.teamToken.team_uid);
+          console.log('TOKEN FROM GLOBAL ' + global.teamToken.team_uid)
+          setTeamToken(global.teamToken);
+          
+        }else{
+          //call firestore with the global.userToken.defaultTeam to find and build a new global.teamToken
+          //if the global.userToken.defaultTeam !== ''
+          console.log('TOKEN FROM STATE ' + teamToken.team_uid)
+        }
+      }
+      await getTipsTotal("team_uid", teamToken.team_uid);
+      await getTipsTotal("uid", global.userToken.uid);
       setIsLoading(false);
-      getTipsTotal("team_uid", teamToken.team_uid);
-      getTipsTotal("uid", global.userToken.uid);
     };
     getData();
     
@@ -58,8 +64,11 @@ function HomeScreen({ route, navigation }) {
 
 
   
-  const getTipsTotal = (queryparam, queryvalue) => {
+  const getTipsTotal = async (queryparam, queryvalue) => {
     // firebase
+    if (queryvalue == ''){
+      return false
+    }
       let myTips = [];
       let date24 = moment().subtract(24, "hours").toDate();
       console.log(date24);
@@ -67,10 +76,10 @@ function HomeScreen({ route, navigation }) {
       firestore()
       .collection("Tips")
       .where(queryparam, "==", queryvalue)
-      .where("createdDateTime", ">=", firestore.Timestamp.fromDate(date24))
+      //.where("createdDateTime", ">=", firestore.Timestamp.fromDate(date24))
       .get()
       .then((querySnapshot) => {
-        console.log("Firestore Total Teams in tips: ", querySnapshot.size);
+        //console.log("Firestore Total tips records: " + querySnapshot.size + " for " + queryparam + " : " + queryvalue);
        
         querySnapshot.forEach((documentSnapshot) => {
           let tmpTip = {
@@ -93,25 +102,20 @@ function HomeScreen({ route, navigation }) {
         // teamTipsTotal=myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
       
         result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
-        console.log('in getTipsTotal, with query for: ' + queryparam + ', the total is: ' + result);
+        console.log('in getTipsTotal, with query for: ' + queryparam + ': ' + queryvalue + ', the total is: ' + result);
         if (queryparam == 'uid'){
           setMyTipsTotal(parseFloat(result).toFixed(2))
         }else{
           setTeamTipsTotal(parseFloat(result).toFixed(2));
         }
-        
-      
-
       }); 
-    //   let result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
-    //     console.log((result));
-    // return result 
+
         
 
   }
 
   const renderHomeMessage = () =>{
-    console.log('in renderHomeMewssage, with team_uid: ' + teamToken.team_uid);
+    console.log('in renderHomeMessage, with team_uid: ' + teamToken.team_uid);
     let tmpArr = [];
 
 
@@ -141,24 +145,8 @@ function HomeScreen({ route, navigation }) {
               <View style={styles.containerRow}>
               <Text style={[styles.textBase, {color:'white'}]}>{teamToken.teamName} has made $ {teamTipsTotal} in the past 24 hours as a team.</Text>
               </View>
-              <View style={styles.container}>
-            {/* <View>
-                <Text>Total:{result}</Text>
-                <Text style={styles.textH1}>
-                  
-                </Text>
-            </View>
-          
-            <View>
-                <Button
-                  title="total"
-                  onPress={() => {getTipsTotal()}}
-                  buttonStyle={styles.buttonBase}
-                  titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
-                />         
-            </View> */}
+
           </View>
-            </View>
             )      
     }
 

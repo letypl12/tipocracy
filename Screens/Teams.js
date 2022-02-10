@@ -129,7 +129,7 @@ const chooseTeam = async (data) => {
           //4. navigate to home, and have home reload to show the new team name
           console.log('in 4')
           setIsLoading(false)
-          navigation.navigate('Home', {team_uid:data.team_uid})
+          navigation.navigate('Home', {teamTokenFromRoute:data})
         })
       })
     })
