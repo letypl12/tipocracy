@@ -169,8 +169,8 @@ function TipsScreen({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor:'#00000050'}]}>
-        <Video
+    <View style={[styles.container, {backgroundColor:'#FFF'}]}>
+        {/* <Video
         source={require("../images/tipVideo2_white.mp4")}
         style={styles.backgroundVideo}
         muted={true}
@@ -178,7 +178,7 @@ function TipsScreen({ navigation }) {
         resizeMode={"cover"}
         rate={1.0}
         ignoreSilentSwitch={"obey"}
-        />   
+        />    */}
       {renderTips()}
     </View>
   );

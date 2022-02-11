@@ -82,6 +82,7 @@ const SignUpScreen = ({ navigation }) => {
                 .collection("Users")
                 .doc(myUser.uid)
                 .set({
+                    uid: myUser.uid,
                     name: myUser.displayName,
                     email: myUser.email,
                     defaultTeam: "",

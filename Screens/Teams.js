@@ -104,10 +104,12 @@ const chooseTeam = async (data) => {
         //1b. update the SecureStore userToken so the 'defaultTeam' is set to the team_uid
         //first check if the userToken exists in SecureStore (meaning they clicked "Remember Me")
         //if it does not, you can skip this step.
-      SecureStore.getItemAsync('userToken')
+      userTokenobj = SecureStore.getItemAsync('userToken')
       .then(async (userTokenobj) =>{
         console.log('in 1')
-        if (typeof(userTokenobj) !== 'undefined'){
+        
+        if ((typeof(userTokenobj) !== 'undefined')&&(userTokenobj !== null)){
+          console.log('====== ' + JSON.stringify(userTokenobj));
           userTokenobj = JSON.parse(userTokenobj);
           userTokenobj.defaultTeam = data.team_uid;
           await SecureStore.setItemAsync('userToken', JSON.stringify(userTokenobj))

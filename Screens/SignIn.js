@@ -21,7 +21,7 @@ import auth from '@react-native-firebase/auth';
 import * as SecureStore from "expo-secure-store";
 import * as Icons from "react-native-vector-icons";
 import styles from "../utils/styles";
-
+import firestore from "@react-native-firebase/firestore";
 
 const SignInScreen = ({ navigation }) => {
     const [emailAddress, setemailAddress] = useState('');
@@ -77,22 +77,47 @@ const SignInScreen = ({ navigation }) => {
             
             let myUser = auth().currentUser;
             console.log('The user\'s ID is: ' + myUser.uid);
-                //Now store it in the authContext (global state)
+
+            firestore()
+            .collection("Users")
+            .doc(myUser.uid)
+            .get()
+            .then(async (documentSnapshot) => {
+                
+                
+                  const data = documentSnapshot.data();
+                  //console.log(documentSnapshot.id, data);
+                
+
                 const userToken = {
-                    uid: myUser.uid,
-                    name: myUser.displayName,
-                    email: myUser.email,
-                    defaultTeam: ''                            
+                    uid: data.uid,
+                    email: data.email,
+                    name: data.name,
+                    defaultTeam: data.defaultTeam,
+                    phone: data.phoneNumber,
+                    pronouns: data.pronouns,
+                    avatarObj: data.avatarObj
                 }
+
+                console.log('=====newUserObj=====' + JSON.stringify(userToken))
 
                 if (rememberMe){
                     await SecureStore.setItemAsync('userToken', JSON.stringify(userToken))
                     
                 }
+
+                console.log('User account signed in!  Dispatching to protected route/screen.');
+                signIn({ emailAddress, password, userToken }); 
+
+              })
+            .catch(err => {
+            console.log('Error getting documents', err);
+            });
+
+
             
 
-            console.log('User account signed in!  Dispatching to protected route/screen.');
-            signIn({ emailAddress, password, userToken });                
+                           
         })               
         .catch(error => {
             const formatError = {};

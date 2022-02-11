@@ -25,7 +25,7 @@ export default App = ({ navigation }) => {
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-
+      
       try {
         SecureStore.getItemAsync("userToken").then((token) => {
           console.log('token from secure store is: ' + JSON.stringify(token))

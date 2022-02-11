@@ -2,6 +2,7 @@
   "expo": {
     "name": "TIPocracy",
     "slug": "tipocracy",
+    "owner": "letypl12",
     "version": "1.0.0",
     "icon": "./images/tipocracy_icon.png",
     "splash": {
