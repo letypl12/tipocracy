@@ -88,9 +88,10 @@ const SignInScreen = ({ navigation }) => {
                   const data = documentSnapshot.data();
                   //console.log(documentSnapshot.id, data);
                 
-
+                //Note: we use the myUser.uid to set the userToken because some old user accounts
+                //      did not have uid as a separate field in the record itself.
                 const userToken = {
-                    uid: data.uid,
+                    uid: myUser.uid,
                     email: data.email,
                     name: data.name,
                     defaultTeam: data.defaultTeam,
@@ -105,7 +106,8 @@ const SignInScreen = ({ navigation }) => {
                     await SecureStore.setItemAsync('userToken', JSON.stringify(userToken))
                     
                 }
-
+                
+                global.userToken = userToken;
                 console.log('User account signed in!  Dispatching to protected route/screen.');
                 signIn({ emailAddress, password, userToken }); 
 
