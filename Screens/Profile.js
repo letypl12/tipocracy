@@ -290,6 +290,7 @@ function ProfileScreen({ route, navigation }) {
 
     }
 
+    console.log('==== New Object for the user is: ' + JSON.stringify(newUserObj));
     firestore()
     .collection("Users")
     .doc(global.userToken.uid)
@@ -393,30 +394,26 @@ function ProfileScreen({ route, navigation }) {
             <View style={{flex:.5, flexDirection:'column', alignItems:'flex-start'}}>
                 <BigHead
                     accessory={accessory}
-
                     body={body}
                     clothing={clothing}
                     clothingColor={clothingColor}
-
                     eyes={eyes}
                     eyebrows={eyebrows}  
                     graphic={graphic}
                     hair={hair}
                     hairColor={hairColor}
-
                     lashes={true}
                     lipColor={lipColor}
                     mouth={mouth}
                     showBackground={true}
                     size={200}
                     skinTone={skinTone}
-
                     facialHair={facialHair}   
                     hat="none"
                     hatColor="green"                     
                     bgColor="blue"
                     bgShape="squircle"                                                  
-/>                
+                />                
             </View>            
         </View>
 

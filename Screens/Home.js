@@ -18,6 +18,8 @@ import Video from "react-native-video";
 import Svg from "react-native-svg";
 import moment from "moment";
 
+import { BigHead } from 'react-native-bigheads'
+
 function HomeScreen({ route, navigation }) {
   const { reload, teamTokenFromRoute } = route.params;
   const [teamToken, setTeamToken] = useState({teamName:'', team_uid:'', teamDescription:''});
@@ -140,9 +142,36 @@ function HomeScreen({ route, navigation }) {
               titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
 
 
-              />
-            
+              />           
             </View>)
+      if (global.userToken.avatarObj){
+        tmpArr.push(
+          <View style={{flex:1, flexDirection:'row',alignItems:'center', alignContent:'center'}}>
+              <BigHead
+              accessory={global.userToken.avatarObj.accessory}
+              body={global.userToken.avatarObj.body}
+              clothing={global.userToken.avatarObj.clothing}
+              clothingColor={global.userToken.avatarObj.clothingColor}
+              eyes={global.userToken.avatarObj.eyes}
+              eyebrows={global.userToken.avatarObj.eyebrows}  
+              graphic={global.userToken.avatarObj.graphic}
+              hair={global.userToken.avatarObj.hair}
+              hairColor={global.userToken.avatarObj.hairColor}
+              lashes={global.userToken.avatarObj.true}
+              lipColor={global.userToken.avatarObj.lipColor}
+              mouth={global.userToken.avatarObj.mouth}
+              showBackground={true}
+              size={300}
+              skinTone={global.userToken.avatarObj.skinTone}
+              facialHair={global.userToken.avatarObj.facialHair}   
+              hat="none"
+              hatColor="green"                     
+              bgColor="yellow"
+              bgShape="circle"                                                  
+              /> 
+            </View>   
+        )
+      }
     }else{
       tmpArr.push(
             <View>
@@ -157,7 +186,35 @@ function HomeScreen({ route, navigation }) {
               </View>
 
           </View>
-            )      
+            )   
+      if (global.userToken.avatarObj){
+        tmpArr.push(
+          <View style={{flex:1, flexDirection:'row',alignItems:'center', alignContent:'center'}}>
+              <BigHead
+              accessory={global.userToken.avatarObj.accessory}
+              body={global.userToken.avatarObj.body}
+              clothing={global.userToken.avatarObj.clothing}
+              clothingColor={global.userToken.avatarObj.clothingColor}
+              eyes={global.userToken.avatarObj.eyes}
+              eyebrows={global.userToken.avatarObj.eyebrows}  
+              graphic={global.userToken.avatarObj.graphic}
+              hair={global.userToken.avatarObj.hair}
+              hairColor={global.userToken.avatarObj.hairColor}
+              lashes={global.userToken.avatarObj.true}
+              lipColor={global.userToken.avatarObj.lipColor}
+              mouth={global.userToken.avatarObj.mouth}
+              showBackground={true}
+              size={300}
+              skinTone={global.userToken.avatarObj.skinTone}
+              facialHair={global.userToken.avatarObj.facialHair}   
+              hat="none"
+              hatColor="green"                     
+              bgColor="yellow"
+              bgShape="circle"                                                  
+              /> 
+            </View>   
+        )
+      }               
     }
 
     return tmpArr

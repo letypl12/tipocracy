@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     home_containerBody: {
         flex:.9,
         flexDirection: "column",
-        alignItems: "flex-start",
+        alignItems: "center",
         justifyContent: "flex-start",
         width:'100%',
     },

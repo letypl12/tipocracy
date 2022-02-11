@@ -94,7 +94,7 @@ const SignInScreen = ({ navigation }) => {
                     email: data.email,
                     name: data.name,
                     defaultTeam: data.defaultTeam,
-                    phone: data.phoneNumber,
+                    phone: data.phone,
                     pronouns: data.pronouns,
                     avatarObj: data.avatarObj
                 }
