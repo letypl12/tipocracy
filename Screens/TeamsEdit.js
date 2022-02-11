@@ -50,11 +50,16 @@ return (
         errorStyle={{ color: "red" }}
         errorMessage={TeamsErrors ? TeamsErrors.description : null}
     />
-    <Button title="Save Tip" 
-        onPress={saveTip}
+    <Button title="Save Team" 
+        onPress={()=>{alert('Save Team')}}
         buttonStyle={styles.buttonBase}
         titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
     />
+    <Button title="Delete Team" 
+        onPress={deleteTeam}
+        buttonStyle={styles.buttonBase}
+        titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+    />    
     {/* <Input label={"Creator"} value={creator}></Input> */}
 
   </View>
