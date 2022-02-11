@@ -20,7 +20,9 @@ import 'react-native-gesture-handler';
 const Stack = createNativeStackNavigator();
 
 export default App = ({ navigation }) => {
+  // SecureStore.deleteItemAsync('userToken');
   const [state, dispatch] = useReducer(reducer, initialState);
+ 
 
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place

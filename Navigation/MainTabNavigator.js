@@ -132,6 +132,25 @@ const MainTabNavigator = () => {
             headerTintColor: '#000',
           }}
         />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            headerShown: true,
+            tabBarLabel: "Settings",
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? "settings" : "settings-outline"}
+                color={color}
+                size={size}
+              />
+            ),
+            headerStyle: {
+              backgroundColor: '#FFE500',
+            },
+            headerTintColor: '#000',
+          }}
+        />        
       </Tab.Navigator>
     </NavigationContainer>
   );
