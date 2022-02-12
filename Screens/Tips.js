@@ -34,6 +34,7 @@ function TipsScreen({ navigation }) {
   }, [navigation]);
 
   const saveTip = () => {
+    setTipErrors({});
     // validate the input
     const rules = {
       tip: "required|number|above:0",

@@ -30,6 +30,8 @@ function TeamsCreateScreen({ navigation }) {
   const creator_uid = global.userToken.uid;
   const EMAIL = global.userToken.email;
   const addTeam = async () => {
+    setTeamsErrors({});
+
     //Validate all the data you are sending
     // https://indicative.adonisjs.com
     const rules = {
@@ -57,6 +59,7 @@ function TeamsCreateScreen({ navigation }) {
           .add({
             name: teamName,
             creator: creator_uid,
+            teamDescription: teamDescription,
           })
           .then((docRef) => {
             console.log(docRef);
@@ -114,6 +117,7 @@ function TeamsCreateScreen({ navigation }) {
   };
 
   const handleAddFriend = async () => {
+    setInvitesErrors({});
     //validate the email
     // https://indicative.adonisjs.com
     const rules = {

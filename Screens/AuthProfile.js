@@ -35,6 +35,8 @@ function ProfileScreen({ route, navigation }) {
   useEffect(() => {}, [PasswordErrors]);
 
   const validatePassword = async () => {
+    setPasswordErrors({});
+    
     // https://indicative.adonisjs.com
     const rules = {
     currentPassword: "required|string",
