@@ -158,7 +158,7 @@ function HomeScreen({ route, navigation }) {
               graphic={global.userToken.avatarObj.graphic}
               hair={global.userToken.avatarObj.hair}
               hairColor={global.userToken.avatarObj.hairColor}
-              lashes={global.userToken.avatarObj.true}
+              lashes={global.userToken.avatarObj.eyeLashes?global.userToken.avatarObj.eyeLashes=='true'?true:false:false}
               lipColor={global.userToken.avatarObj.lipColor}
               mouth={global.userToken.avatarObj.mouth}
               showBackground={true}
@@ -208,7 +208,7 @@ function HomeScreen({ route, navigation }) {
               graphic={global.userToken.avatarObj.graphic}
               hair={global.userToken.avatarObj.hair}
               hairColor={global.userToken.avatarObj.hairColor}
-              lashes={global.userToken.avatarObj.true}
+              lashes={global.userToken.avatarObj.eyeLashes?global.userToken.avatarObj.eyeLashes=='true'?true:false:false}
               lipColor={global.userToken.avatarObj.lipColor}
               mouth={global.userToken.avatarObj.mouth}
               showBackground={true}

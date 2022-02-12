@@ -67,6 +67,9 @@ function ProfileScreen({ route, navigation }) {
   
   const [eyes, setEyes] = useState(userTokenAvatarObj.eyes);
   const [eyesExpanded, setEyesExpanded] = useState(false);
+  
+  const [eyeLashes, setEyeLashes] = useState(userTokenAvatarObj.eyes);
+  const [eyeLashesExpanded, setEyeLashesExpanded] = useState(false);
 
   const [eyebrows, setEyebrows] = useState(userTokenAvatarObj.eyebrows);
   const [eyebrowsExpanded, setEyebrowsExpanded] = useState(false);  
@@ -110,7 +113,14 @@ function ProfileScreen({ route, navigation }) {
         options: ['normal', 'leftTwitch', 'happy', 'content', 'squint', 'simple', 'dizzy', 'wink', 'hearts', 'crazy', 'cute', 'dollars', 'stars', 'cyborg', 'simplePatch', 'piratePatch']
     },
 
-        
+    {
+        title: 'Eye Lashes', 
+        name:eyeLashes, 
+        setFunc: setEyeLashes, 
+        expandedName: eyeLashesExpanded, 
+        expandedFunc: setEyeLashesExpanded,
+        options: ['true', 'false']
+    },        
     {
         title: 'Eyebrows', 
         name:eyebrows, 
@@ -209,52 +219,7 @@ function ProfileScreen({ route, navigation }) {
 
   useEffect(() => {
       setIsLoading(false);
-    // const getData = async () => {
-    //   console.log('in getData, checking records for:' + global.userToken.email);
-    //   firestore()
-    //     .collection("Invites")
-    //     .where("email", "==", global.userToken.email)
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       console.log("Firestore Total Teams: ", querySnapshot.size);
-
-    //       querySnapshot.forEach((documentSnapshot) => {
-    //         if (documentSnapshot.get("active") == true){
-    //           let tmpTeam = {
-    //                           teamName: documentSnapshot.get("teamName"),
-    //                           teamDescription: documentSnapshot.get("teamDescription"),
-    //                           team_uid: documentSnapshot.get("team_uid"),
-    //                           creator_uid: documentSnapshot.get("creator_uid")
-    //                         }
-    //           myTeams.push(tmpTeam)
-    //           setDataSourceTeams((oldArray) => [tmpTeam, ...oldArray]);                          
-    //         }else{
-    //           console.log('there is an invite');
-    //           myInvites.push({
-    //             teamName: documentSnapshot.get("teamName"),
-    //             teamDescription: documentSnapshot.get("teamDescription"),
-    //             team_uid: documentSnapshot.get("team_uid"),
-    //             creator_uid: documentSnapshot.get("creator_uid")
-    //           })
-    //         }
-    //       });
-    //       // 
-    //       // setDataSourceInvites((oldArray) => [myInvites, ...oldArray]);
-
-    //       setDataSourceTeams(myTeams);  
-    //       setDataSourceInvites(myInvites);  
-    //       console.log('Length of new teams object:' + myTeams.length);   
-    //       console.log('TEAMS: ' + JSON.stringify(myTeams));
-    //       console.log('INVITES: ' + JSON.stringify(myInvites));
-    //       console.log('dataSourceTeams: ' + JSON.stringify(dataSourceTeams));
-
-          
-    //       setIsLoading(false);
-    //     })
-
-    // };
-
-    // getData();
+  
   }, [reload]);
 
  const saveProfile = () =>{
@@ -279,6 +244,7 @@ function ProfileScreen({ route, navigation }) {
             clothing:clothing,
             clothingColor:clothingColor,
             eyes:eyes,
+            eyeLashes:eyeLashes,
             eyebrows: eyebrows,
             body:body,
             graphic:graphic,
@@ -326,8 +292,6 @@ function ProfileScreen({ route, navigation }) {
 
       <ScrollView style={styles.container}>
 
-
-        <Text style={styles.textH1}>Login Info</Text>
 
 
         <Text style={styles.textH1}>Personal Info</Text>
@@ -402,7 +366,7 @@ function ProfileScreen({ route, navigation }) {
                     graphic={graphic}
                     hair={hair}
                     hairColor={hairColor}
-                    lashes={true}
+                    lashes={eyeLashes=='true'?true:false}
                     lipColor={lipColor}
                     mouth={mouth}
                     showBackground={true}

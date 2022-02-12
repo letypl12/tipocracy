@@ -62,6 +62,17 @@ function SettingsScreen({ route, navigation }) {
           onPress={editProfile}
         />       
 
+
+        <Text style={styles.textH1}>Login Info</Text>
+        <Text style={styles.textBase}>Change your password.</Text>  
+        <Button
+          buttonStyle={styles.buttonBase}
+          titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+
+          title="Edit Login"
+          onPress={()=>{navigation.navigate("Login Info")}}
+        />      
+
         <Text style={[styles.textH1, {marginTop:20}]}>Sign Out</Text>
         <Text style={styles.textBase}>Click the button below to sign out completely from TIPocracy.</Text>  
         <Button

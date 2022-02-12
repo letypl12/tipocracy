@@ -8,6 +8,7 @@ import HomeScreen from "../Screens/Home";
 import SettingsScreen from "../Screens/Settings";
 import TeamsScreen from "../Screens/Teams";
 import ProfileScreen from "../Screens/Profile";
+import AuthProfileScreen from "../Screens/AuthProfile";
 import TeamsCreateScreen from "../Screens/TeamsCreate";
 import TeamsEditScreen from "../Screens/TeamsEdit";
 import TipsScreen from "../Screens/Tips";
@@ -22,6 +23,7 @@ function HomeNav() {
         <HomeStack.Screen name="Home" component={HomeScreen} initialParams={{ team_uid: '' }} options={{headerShown: false}}/>
         <HomeStack.Screen name="Settings" component={SettingsScreen} options={{headerStyle:{backgroundColor:'#FFE500'}}}/> 
         <HomeStack.Screen name="Profile" component={ProfileScreen} initialParams={{ reload: false }} options={{headerStyle:{backgroundColor:'#FFE500'}}}/>        
+        <HomeStack.Screen name="Login Info" component={AuthProfileScreen} initialParams={{ reload: false }} options={{headerStyle:{backgroundColor:'#FFE500'}}}/>  
       </HomeStack.Group>
     </HomeStack.Navigator>
   );
