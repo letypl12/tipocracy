@@ -131,9 +131,6 @@ function HomeScreen({ route, navigation }) {
       tmpArr.push(
         <View style={{flex:1, flexDirection:'column',alignItems:'flex-start', alignContent:'flex-start'}}>
           <View style={styles.containerRow}>
-            <Text style={[styles.textBase, {color:'white'}]}>Your current team is: {teamToken.teamName} </Text>
-          </View>
-          <View style={styles.containerRow}>
             <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
           </View>
           <Button
