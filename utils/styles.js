@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     },    
 
     textBase:{
+        fontSize: normalize(15),
         padding:1,
         margin:5
         // margin:10,

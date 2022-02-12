@@ -146,6 +146,7 @@ function HomeScreen({ route, navigation }) {
             </View>)
       if (global.userToken.avatarObj){
         tmpArr.push(
+          <View style={{flex:1, flexDirection:'column',alignItems:'center', alignContent:'flex-start'}}>
           <View style={{flex:1, flexDirection:'row',alignItems:'center', alignContent:'center'}}>
               <BigHead
               accessory={global.userToken.avatarObj.accessory}
@@ -169,26 +170,33 @@ function HomeScreen({ route, navigation }) {
               bgColor="yellow"
               bgShape="circle"                                                  
               /> 
-            </View>   
+            </View>
+            <View style={{flex:1, flexDirection:'row',alignItems:'flex-end', alignContent:'center'}}>
+              <Text style={[styles.textH1home, {color:'white'}]}>
+                {global.userToken.pronouns}
+              </Text> 
+            </View>
+          </View> 
         )
       }
     }else{
       tmpArr.push(
-            <View>
+            <View style={{flex:1, flexDirection:'column',alignItems:'flex-start', alignContent:'flex-start'}}>
               <View style={styles.containerRow}>
                 <Text style={[styles.textBase, {color:'white'}]}>Your current team is: {teamToken.teamName} </Text>
               </View>
               <View style={styles.containerRow}>
-              <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
+              <Text style={[styles.textBase, {color:'white'}]}>{teamToken.teamName} has made $ {teamTipsTotal} in the past 24 hours as a team.</Text>
               </View>
               <View style={styles.containerRow}>
-              <Text style={[styles.textBase, {color:'white'}]}>{teamToken.teamName} has made $ {teamTipsTotal} in the past 24 hours as a team.</Text>
+              <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
               </View>
 
           </View>
             )   
       if (global.userToken.avatarObj){
         tmpArr.push(
+          <View style={{flex:1, flexDirection:'column',alignItems:'center', alignContent:'flex-start'}}>
           <View style={{flex:1, flexDirection:'row',alignItems:'center', alignContent:'center'}}>
               <BigHead
               accessory={global.userToken.avatarObj.accessory}
@@ -212,7 +220,14 @@ function HomeScreen({ route, navigation }) {
               bgColor="yellow"
               bgShape="circle"                                                  
               /> 
-            </View>   
+            </View>
+            <View style={{flex:1, flexDirection:'row',alignItems:'flex-end', alignContent:'center'}}>
+              <Text style={[styles.textH1home, {color:'white'}]}>
+                {global.userToken.pronouns}
+              </Text> 
+            </View>
+          </View>
+               
         )
       }               
     }
@@ -267,6 +282,7 @@ function HomeScreen({ route, navigation }) {
             </Text> 
 
           </View>
+          
 
           {renderHomeMessage()}
         </View>
