@@ -68,7 +68,7 @@ function ProfileScreen({ route, navigation }) {
   const [eyes, setEyes] = useState(userTokenAvatarObj.eyes);
   const [eyesExpanded, setEyesExpanded] = useState(false);
   
-  const [eyeLashes, setEyeLashes] = useState(userTokenAvatarObj.eyes);
+  const [eyeLashes, setEyeLashes] = useState(userTokenAvatarObj.eyeLashes);
   const [eyeLashesExpanded, setEyeLashesExpanded] = useState(false);
 
   const [eyebrows, setEyebrows] = useState(userTokenAvatarObj.eyebrows);
