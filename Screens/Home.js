@@ -127,58 +127,63 @@ function HomeScreen({ route, navigation }) {
 
 
     if (teamToken.team_uid == ''){
+
       tmpArr.push(
-        <View style={styles.containerRow}>
-        <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
-        </View>
-      )
-      tmpArr.push(
-            <View style={styles.containerRow} style={{alignItems:'center', justifyContent:'center', width:'100%'}}>
-              <Button
+        <View style={{flex:1, flexDirection:'column',alignItems:'flex-start', alignContent:'flex-start'}}>
+          <View style={styles.containerRow}>
+            <Text style={[styles.textBase, {color:'white'}]}>Your current team is: {teamToken.teamName} </Text>
+          </View>
+          <View style={styles.containerRow}>
+            <Text style={[styles.textBase, {color:'white'}]}>You have made $ {myTipsTotal} in the past 24 hours in all of your teams.</Text>
+          </View>
+          <Button
               title="Choose A Team To Get Started"
               onPress={() => navigation.navigate("TeamsTab")}
               key={"chooseTeam"}
               buttonStyle={[styles.buttonBase, {marginTop:20}]}
               titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+          />           
+        </View>
+        ) 
+
+        if (global.userToken.avatarObj){
+          tmpArr.push(
+            <View style={{flex:1, flexDirection:'column',alignItems:'center', alignContent:'flex-start'}}>
+            <View style={{flex:1, flexDirection:'row',alignItems:'center', alignContent:'center'}}>
+                <BigHead
+                accessory={global.userToken.avatarObj.accessory}
+                body={global.userToken.avatarObj.body}
+                clothing={global.userToken.avatarObj.clothing}
+                clothingColor={global.userToken.avatarObj.clothingColor}
+                eyes={global.userToken.avatarObj.eyes}
+                eyebrows={global.userToken.avatarObj.eyebrows}  
+                graphic={global.userToken.avatarObj.graphic}
+                hair={global.userToken.avatarObj.hair}
+                hairColor={global.userToken.avatarObj.hairColor}
+                lashes={global.userToken.avatarObj.eyeLashes?global.userToken.avatarObj.eyeLashes=='true'?true:false:false}
+                lipColor={global.userToken.avatarObj.lipColor}
+                mouth={global.userToken.avatarObj.mouth}
+                showBackground={true}
+                size={300}
+                skinTone={global.userToken.avatarObj.skinTone}
+                facialHair={global.userToken.avatarObj.facialHair}   
+                hat="none"
+                hatColor="green"                     
+                bgColor="yellow"
+                bgShape="circle"                                                  
+                /> 
+              </View>
+              <View style={{flex:1, flexDirection:'row',alignItems:'flex-end', alignContent:'center'}}>
+                <Text style={[styles.textH1home, {color:'white'}]}>
+                  {global.userToken.pronouns}
+                </Text> 
+              </View>
+            </View>
+                 
+          )
+        }
 
 
-              />           
-            </View>)
-      if (global.userToken.avatarObj){
-        tmpArr.push(
-          <View style={{flex:1, flexDirection:'column',alignItems:'center', alignContent:'flex-start'}}>
-          <View style={{flex:1, flexDirection:'row',alignItems:'center', alignContent:'center'}}>
-              <BigHead
-              accessory={global.userToken.avatarObj.accessory}
-              body={global.userToken.avatarObj.body}
-              clothing={global.userToken.avatarObj.clothing}
-              clothingColor={global.userToken.avatarObj.clothingColor}
-              eyes={global.userToken.avatarObj.eyes}
-              eyebrows={global.userToken.avatarObj.eyebrows}  
-              graphic={global.userToken.avatarObj.graphic}
-              hair={global.userToken.avatarObj.hair}
-              hairColor={global.userToken.avatarObj.hairColor}
-              lashes={global.userToken.avatarObj.eyeLashes?global.userToken.avatarObj.eyeLashes=='true'?true:false:false}
-              lipColor={global.userToken.avatarObj.lipColor}
-              mouth={global.userToken.avatarObj.mouth}
-              showBackground={true}
-              size={300}
-              skinTone={global.userToken.avatarObj.skinTone}
-              facialHair={global.userToken.avatarObj.facialHair}   
-              hat="none"
-              hatColor="green"                     
-              bgColor="yellow"
-              bgShape="circle"                                                  
-              /> 
-            </View>
-            <View style={{flex:1, flexDirection:'row',alignItems:'flex-end', alignContent:'center'}}>
-              <Text style={[styles.textH1home, {color:'white'}]}>
-                {global.userToken.pronouns}
-              </Text> 
-            </View>
-          </View> 
-        )
-      }
     }else{
       tmpArr.push(
             <View style={{flex:1, flexDirection:'column',alignItems:'flex-start', alignContent:'flex-start'}}>
