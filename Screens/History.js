@@ -12,6 +12,7 @@ import firestore from "@react-native-firebase/firestore";
 
 
 function HistoryScreen({ navigation }) {
+  const [allTips, setAllTips]=useState([]);
   const [startOpen, setStartOpen] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endOpen, setEndOpen] = useState(false);
@@ -56,6 +57,8 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
       console.log('Length of new tips object:' + myTips.length);   
       console.log('TIPS: ' + JSON.stringify(myTips));
 
+      setAllTips(myTips);
+
       // teamTipsTotal=myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
     
       // result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
@@ -80,10 +83,10 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
       <Text style={styles.item_myTips}>{title}</Text>
     </View>
   );
-  const renderTipRecords = ({ Item }) => <Item title={item.amount} />;
+  const renderTipRecords = ({ Record }) => {console.log('renderTipRecords '+ JSON.stringify(Record)); return(<Item title={Record.amount} />);}
 
 
-//  }
+ 
 
   return (
     <View style={{ flex: 1, flexDirection:'column', alignItems:'flex-start', alignContent:'flex-start' }}>
@@ -145,8 +148,8 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
         <ScrollView>
           <FlatList
           label="Tips History"
-          data={myTips}
-          renderItem={renderTipRecords}
+          data={allTips}
+          renderItem={(item)=>{renderTipRecords}}
           keyExtractor={(item, index) => index}
           style={{ flex: 1, margin: 20, height: 100 }}
           />
