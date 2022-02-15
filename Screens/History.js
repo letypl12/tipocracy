@@ -99,7 +99,12 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
 
         <View style={{flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
             <View style={{ flex: .5, alignItems: "center", justifyContent: "center" }}>
-              <Button title="Choose Start Date" onPress={() => setStartOpen(true)} />
+              <Button
+                buttonStyle={styles.buttonBase}
+                title="Choose Start Date"
+                onPress={() => setStartOpen(true)}
+                titleStyle={{ fontWeight: 'bold', fontSize: 16, color:'#000' }}
+              />
               <DatePicker
                 modal
                 open={startOpen}
@@ -114,7 +119,12 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
               />  
             </View>
           <View style={{ flex: .5, alignItems: "center", justifyContent: "center" }}>
-            <Button title="Choose End Date" onPress={() => setEndOpen(true)} />
+            <Button
+              buttonStyle={styles.buttonBase} 
+              title="Choose End Date" 
+              onPress={() => setEndOpen(true)}
+              titleStyle={{ fontWeight: 'bold', fontSize: 16, color:'#000' }}
+            />
             <DatePicker
               modal
               open={endOpen}
@@ -135,7 +145,7 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
             buttonStyle={styles.buttonBase}
             title="Get Tips"
             onPress={() => getTipsRangeDate('uid',global.userToken.uid)}
-            titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
+            titleStyle={{ fontWeight: 'bold', fontSize: 16, color:'#000' }}
           />
 
         </View>
