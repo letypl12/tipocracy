@@ -1,21 +1,27 @@
 import { StatusBar } from "expo-status-bar";
 
 import React, { useState, useEffect, useContext, useMemo, useReducer } from "react";
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, Text,  } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import MainTabNavigator from "./Navigation/MainTabNavigator";
 import * as SecureStore from "expo-secure-store";
-
+import {
+  SafeAreaView,
+  SafeAreaProvider,
+  SafeAreaInsetsContext,
+  useSafeAreaInsets,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 import { stateConditionString } from "./utils/helpers";
 import { AuthContext } from "./utils/authContext";
 import { reducer, initialState } from "./utils/reducer";
 
 import SignInScreen from "./Screens/SignIn";
 import SignUpScreen from "./Screens/SignUp";
-import SplashScreen from "./Screens/Splash";
-import 'react-native-gesture-handler';
+import SplashScreen2 from "./Screens/Splash";
+// import 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 
@@ -109,7 +115,7 @@ export default App = ({ navigation }) => {
 
     switch (navigateTo) {
       case "LOAD_APP":
-        arr.push(<Stack.Screen name="Splash" component={SplashScreen} />);
+        arr.push(<Stack.Screen name="Splash" component={SplashScreen2} />);
         break;
 
       case "LOAD_SIGNUP":
@@ -153,6 +159,8 @@ export default App = ({ navigation }) => {
           <MainTabNavigator />
         </SafeAreaView>
       </AuthContext.Provider>
+
+      
     );
   } else {
     return (

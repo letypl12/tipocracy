@@ -128,12 +128,15 @@ const SignInScreen = ({ navigation }) => {
                 formatError['email'] = 'That email address is already in use!';
             }
 
-            if (error.code === 'auth/invalid-email') {
+            else if (error.code === 'auth/invalid-email') {
                 formatError['email'] = 'That email address is invalid!';
             }   
-            if (error.code === 'auth/wrong-password') {
+            else if (error.code === 'auth/wrong-password') {
                 formatError['password'] = 'Incorrect password.';
-            }                         
+            }   
+            else {
+                formatError['email'] = error.message;
+            }                      
             
             setSignUpErrors(formatError);                            
             return false

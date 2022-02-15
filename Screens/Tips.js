@@ -12,7 +12,7 @@ import styles from "../utils/styles";
 // import { firebase } from "@react-native-firebase/auth";
 import { firebase, firestore } from "@react-native-firebase/firestore";
 import { validateAll, validations, validate } from "indicative/validator";
-import Video from "react-native-video";
+
 
 function TipsScreen({ navigation }) {
   const [TipErrors, setTipErrors] = useState({});

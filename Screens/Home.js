@@ -14,8 +14,8 @@ import styles from "../utils/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as SecureStore from "expo-secure-store";
 import { reducer, initialState } from "../utils/reducer";
-import Video from "react-native-video";
-import Svg from "react-native-svg";
+
+
 import moment from "moment";
 
 import { BigHead } from 'react-native-bigheads'

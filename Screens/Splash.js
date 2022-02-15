@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-export const SplashScreen = () => {
+const SplashScreen2 = () => {
   return (
     <View style={styles}>
       <Text>Loading...</Text>
@@ -20,3 +20,5 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 });
+
+export default SplashScreen2;
