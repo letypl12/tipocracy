@@ -5,10 +5,12 @@ import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
 // import { navigation } from '@react-navigation/native';
 import { Button, CheckBox, Icon, Card, Input } from "react-native-elements";
 import DatePicker from 'react-native-date-picker';
-import {moment} from 'moment';
+import moment from 'moment';
+
 import { ScrollView } from "react-native-gesture-handler";
 import styles from "../utils/styles";
 import firestore from "@react-native-firebase/firestore";
+// import * as Localization from 'expo-localization';
 
 
 function HistoryScreen({ navigation }) {
@@ -17,60 +19,54 @@ function HistoryScreen({ navigation }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endOpen, setEndOpen] = useState(false);
   const [endDate, setEndDate] = useState(new Date());
-
+  // const [timeZone, setTimeZone] = useState(Localization.timezone())
 //Refresh the screen on navigation listener thing
 
 //function to pull the records between the dates
 const getTipsRangeDate = async (queryparam, queryvalue) => {
-  // firebase
-  // if (queryvalue == ''){
-  //   return false
-  // }
-    let myTips = [];
-    // let date24 = moment().subtract(24, "hours").toDate();
-    console.log(startDate);
-    console.log(firestore.Timestamp.fromDate(startDate));
-    firestore()
-    .collection("Tips")
-    .where('createdDateTime', ">=", startDate)
-    .where("createdDateTime", "<=", endDate)
-    .get()
-    .then((querySnapshot) => {
-      console.log("Firestore Total tips records: " + querySnapshot.size + " for " + queryparam + " : " + queryvalue + startDate + endDate);
-     
-      querySnapshot.forEach((documentSnapshot) => {
-        let tmpTip = {
-                        amount: documentSnapshot.get('amount'),
-                        createdDateTime: documentSnapshot.get("createdDateTime"),
-                        team_uid: documentSnapshot.get("team_uid"),
-                        uid: documentSnapshot.get("uid")
-                      }
-        myTips.push(tmpTip)                        
-       
-      });
-      for (i=0; i<myTips.length; i++){
-        // myTips[i].amount = parseFloat(myTips[i].amount);
-        myTips[i].amount = parseFloat(myTips[i].amount);
-        myTips[i].createdDateTime=(myTips[i].createdDateTime).toDate()
+  //First get the teams and set them to a state variable for easy lookup later
+  let myTips = [];
+  
 
-      }
-      console.log('Length of new tips object:' + myTips.length);   
-      console.log('TIPS: ' + JSON.stringify(myTips));
 
-      setAllTips(myTips);
+        console.log(startDate);
+        console.log(firestore.Timestamp.fromDate(startDate));
+        firestore()
+        .collection("Tips")
+        .where(queryparam, "==", queryvalue)
+        .where('createdDateTime', ">=", startDate)
+        .where("createdDateTime", "<=", endDate)
+        .get()
+        .then((querySnapshot) => {
+          console.log("Firestore Total tips records: " + querySnapshot.size + " for " + queryparam + " : " + queryvalue + startDate + endDate);
+         
+          querySnapshot.forEach((documentSnapshot) => {
+            let tmpTip = {
+                            amount: documentSnapshot.get('amount'),
+                            createdDateTime: documentSnapshot.get("createdDateTime"),
+                            team_uid: documentSnapshot.get("team_uid"),
+                            uid: documentSnapshot.get("uid"),
+                            teamName: documentSnapshot.get("teamName"),
+                            note: documentSnapshot.get("note")
+                          }
+            myTips.push(tmpTip)                        
+           
+          })
 
-      // teamTipsTotal=myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
-    
-      // result = myTips.reduce((total, currentValue) => total = total + (currentValue.amount),0);
-      // console.log('in getTipsTotal, with query for: ' + queryparam + ': ' + queryvalue + ', the total is: ' + result);
-      // if (queryparam == 'uid'){
-      //   setMyTipsTotal(parseFloat(result).toFixed(2))
-      // }else{
-      //   setTeamTipsTotal(parseFloat(result).toFixed(2));
-      // }
-    }); 
-
+            for (i=0; i<myTips.length; i++){
+              // myTips[i].amount = parseFloat(myTips[i].amount);
+              myTips[i].amount = parseFloat(myTips[i].amount);
+              myTips[i].createdDateTime=(myTips[i].createdDateTime).toDate()
       
+            }
+            console.log('Length of new tips object:' + myTips.length);   
+            // console.log('TIPS: ' + JSON.stringify(myTips));
+      
+            setAllTips(myTips);
+
+
+    
+        });       
 
 }
 
@@ -89,8 +85,9 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
  
 
   return (
-    <View style={{ flex: 1, flexDirection:'column', alignItems:'flex-start', alignContent:'flex-start' }}>
-        <View style={{ flex: 1, flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
+    // <View style={{ flex: 1, flexDirection:'column', alignItems:'flex-start', alignContent:'flex-start' }}>
+    <View style={styles.container}>
+        <View style={{flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
               <View style={{ flex: .5, alignItems: "center", justifyContent: "center" }}>
                 <Text>{startDate.toUTCString()}</Text>
               </View>
@@ -100,7 +97,7 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
         </View>
 
 
-        <View style={{ flex: 1, flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
+        <View style={{flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
             <View style={{ flex: .5, alignItems: "center", justifyContent: "center" }}>
               <Button title="Choose Start Date" onPress={() => setStartOpen(true)} />
               <DatePicker
@@ -132,34 +129,53 @@ const getTipsRangeDate = async (queryparam, queryvalue) => {
             />  
           </View>
         </View>
-        <View style={{ flex: 1, flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
-        {/* <View style={{ flex: 0.2, flexDirection: "column" }}> */}
+        <View style={{flexDirection:'row', alignItems: "center", justifyContent: "center" }}>
+
           <Button
             buttonStyle={styles.buttonBase}
             title="Get Tips"
             onPress={() => getTipsRangeDate('uid',global.userToken.uid)}
             titleStyle={{ fontWeight: 'bold', fontSize: 18, color:'#000' }}
           />
-        {/* </View> */}
-          {/* 
-          Add a button to run the query 
-          */}
+
         </View>
-        <ScrollView>
+
           <FlatList
           label="Tips History"
+          containerStyle={{width:'100%'}}
           data={allTips}
-          renderItem={(item)=>{renderTipRecords}}
+          renderItem={({ item }) => {
+            // //{moment(item.createdDateTime).format(“dddd”)}
+            let theDate = moment(item.createdDateTime).format('MM/DD/YY HH:mm');
+            // //let theDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+            // console.log('moment:' + moment(item.createdDateTime).format('dddd'));
+            return(
+              <View style={{flex:1, flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#eee', marginBottom:3}}>
+                <View style={{flexDirection:'column', flex:.25, padding:2}}>
+                  <Text>{theDate}</Text> 
+                </View>
+                <View style={{flexDirection:'column', flex:.25, padding:2}}>
+                  <Text>${parseFloat(item.amount).toFixed(2)}</Text>
+                </View>
+                <View style={{flexDirection:'column', flex:.25, padding:2}}>
+                  <Text>{item.teamName?item.teamName:item.team_uid}</Text>
+                </View>
+                <View style={{flexDirection:'column', flex:.25, padding:2}}>
+                  <Text>{item.note}</Text>
+                </View>
+              </View>
+            )
+            // return(
+            //   <View style={{flexDirection:'row'}}>
+            //     <Text>{item.teamName}</Text>
+            //   </View>
+            // )            
+          }}
           keyExtractor={(item, index) => index}
           style={{ flex: 1, margin: 20, height: 100 }}
           />
-          {/* 
-          Create a new component called TipRecords that is the repeat of all your views
-          {renderTipRecords}
-          
-          */}
 
-        </ScrollView>
+
     </View>
   );
 }

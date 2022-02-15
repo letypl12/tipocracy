@@ -17,6 +17,7 @@ import Video from "react-native-video";
 function TipsScreen({ navigation }) {
   const [TipErrors, setTipErrors] = useState({});
   const [tip, setTip] = useState('');
+  const [note, setNote] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [chosenTeam, setChosenTeam] = useState(
     global.teamToken || { teamName: "", team_uid: "", teamDescription: "" }
@@ -63,13 +64,16 @@ function TipsScreen({ navigation }) {
           .collection("Tips")
           .add({
             team_uid: global.userToken.defaultTeam,
+            teamName: global.teamToken.teamName,
             uid: global.userToken.uid,
             amount: tip,
+            note: note,
             createdDateTime: timestamp,
           })
           .then(() => {
             console.log("tip added");
-            setTip(0.0);
+            setTip('');
+            setNote('');
             navigation.navigate("Home", { reload: true });
           });
       })
@@ -146,6 +150,24 @@ function TipsScreen({ navigation }) {
                 fontWeight: 'bold'
               }}
             />
+            <Input
+              label={"Note"}
+              placeholder="optional"
+              value={note}
+              onChangeText={setNote}
+              errorStyle={{ color: "red" }}
+              errorMessage={TipErrors ? TipErrors.tip : null}
+              keyboardType="default"
+              placeholderTextColor={'black'}
+              labelStyle={{
+                color: 'black',
+                fontWeight: 'bold'
+              }}
+              inputStyle={{
+                color: 'black',
+                fontWeight: 'bold'
+              }}
+            />            
             <Button title="Save Tip" 
                     onPress={saveTip}
                     buttonStyle={styles.buttonBase}
