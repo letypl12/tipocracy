@@ -35,8 +35,8 @@ function TeamsCreateScreen({ navigation }) {
     //Validate all the data you are sending
     // https://indicative.adonisjs.com
     const rules = {
-      name: "required|string|min:4|max:15",
-      description: "required|string|min:6|max:40",
+      name: "required|string|min:4|max:40",
+      description: "required|string|min:4|max:100",
     };
 
     const data = {
@@ -47,7 +47,11 @@ function TeamsCreateScreen({ navigation }) {
     const messages = {
       required: (field) => `${field} is required`,
       "name.alpha": "The name of the team contains unallowed characters",
+      "name.max": "Team name can only be 40 characters.",
+      "name.min": "Team name must be at least 4 characters.",
       "description.alpha": "Provide valid description",
+      "description.max": "Description can only be 100 characters.",
+      "description.min": "Description must be at least 4 characters.",
     };
 
     validateAll(data, rules, messages)
