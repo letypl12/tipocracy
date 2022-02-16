@@ -244,7 +244,7 @@ function ProfileScreen({ route, navigation }) {
             clothing:clothing,
             clothingColor:clothingColor,
             eyes:eyes,
-            eyeLashes:eyeLashes,
+            // eyeLashes:eyeLashes,
             eyebrows: eyebrows,
             body:body,
             graphic:graphic,
@@ -257,6 +257,7 @@ function ProfileScreen({ route, navigation }) {
     }
 
     console.log('==== New Object for the user is: ' + JSON.stringify(newUserObj));
+    console.log('userToken uid: ' + global.userToken.uid);
     firestore()
     .collection("Users")
     .doc(global.userToken.uid)
